@@ -31,6 +31,7 @@ void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext
         if(metka_message && !metka_message_painter){
             metka_message_painter = true;
+            timer_message->stop();
             timer_message->start(5000);
             connect(timer_message, SIGNAL(timeout()), this, SLOT(no_message()));
         }
@@ -44,12 +45,12 @@ void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 }
 
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
-    qDebug() << "Player11111111111111111111111111111111111111111";
+    qDebug() << "keyPressEventPLAYE";
 
     const int FPS = 100;
 
-    update_movement(1, apKeyEvent); // передаем 1 т.к. произошло нажатие
-
+    update_movement(1, apKeyEvent); // меняем скорость передвижения. передаем 1 т.к. произошло нажатие
+    update_direction(apKeyEvent);   // меняем направления игрока
     if(!timer_move->isActive()){
         qDebug() <<"TIMER";
         timer_move->start(1000/FPS); // проблема, что 2 раза вызывается, для первого клика + второго!!!
@@ -58,7 +59,7 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
-   qDebug() << "PlayerRelease";
+   qDebug() << "keyReleaseEventPLAYER";
 
    update_movement(-1, apKeyEvent); // передаем -1 т.к. произошло отжатие
    if (timer_move->isActive()) {
@@ -105,6 +106,14 @@ void Player::update_movement(int sign, QKeyEvent *apKeyEvent){
     }
 }
 
+void Player::update_direction(QKeyEvent *apKeyEvent){
+    if(apKeyEvent->key() == Qt::Key_A){
+        direction = false;                  // пока не понятно интуитивно (TODO: переделать)
+    }
+    if(apKeyEvent->key() == Qt::Key_D){
+        direction = true;                  // пока не понятно интуитивно (TODO: переделать)
+    }
+}
 
 void Player::no_message(){
     metka_message = false;

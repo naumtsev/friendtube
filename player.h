@@ -29,7 +29,8 @@ public:
     explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_ = "RED_PLAYER", QObject *parent = 0); // записывание имени
     void keyPressEvent(QKeyEvent *)      override;  // зажимание клавиши
     void keyReleaseEvent(QKeyEvent *)    override;  // отжимание клавиши
-    void update_movement(int sign, QKeyEvent *apKeyEvent);
+    void update_movement(int sign, QKeyEvent *apKeyEvent);          // обновление передвижения игрока
+    void update_direction(QKeyEvent *apKeyEvent);                   // обновление направления
     ~Player();
 
 protected:

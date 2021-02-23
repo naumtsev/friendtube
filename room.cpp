@@ -48,18 +48,23 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent)
             this->close();
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
+        player->movement = {0,0};                       // при вводе сообщения игрок останавливается
+
         while(true){
             bool click = false;
             QString message = "Your message....";
-            QString str = QInputDialog::getText(0, "Enter your name!", message, QLineEdit::Normal, "", &click);
+            QString str = QInputDialog::getText(0, "Enter message!", message, QLineEdit::Normal, "", &click);
             if(!click){ // была нажата кнопка Cancel
                 break;
             }
-            if(2 < str.size() && str.size() < 17 && str!="") {
-                player->message = str;
-                player->metka_message = true;
-                player->update(); // нужно для перерисовки TODO: тесты!!!, может и не нужна строчка
+            if(str.size() == 0){ // если ничего не ввёл, то ничего непроизошло
                 break;
+            }else if(0 < str.size() && str.size() < 17 && str!="") {
+                    player->message = str;
+                    player->metka_message = true;
+                    player->metka_message_painter = false;
+                    player->update(); // нужно для перерисовки TODO: тесты!!!, может и не нужна строчка
+                    break;
             }// TODO: эксперименты с размером сообщения и если нужно, то отредактировать
         }
     }else {
