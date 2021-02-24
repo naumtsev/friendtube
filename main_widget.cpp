@@ -3,7 +3,7 @@
 
 
 #include <QKeyEvent>
-
+#include <QFile>
 
 void main_widget::enter_to_room(){
     Room *room = new Room{player.player_name, player.color_square};
@@ -24,7 +24,7 @@ void CreateMainWidget(QString player_name, QString color){
     // чтобы нельзя было менять размер - раcкомментируйте (гипотеза - может быть плохо, если использовать на разных компьютерах)
     global_windom->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     // определеный размер
-    // global_windom->setFixedSize(800,600);
+    // global_windom->setFixedSize(1200, 800);
     // на полный экран
     global_windom->showFullScreen();
 
@@ -50,8 +50,13 @@ main_widget::main_widget()
     play_button->move(1000,800);    // getTextBounds() при помощи этого метода
                                     // определять координаты кнопки
     play_button->show();
-
     QPushButton *change_player_name_button = new QPushButton(this); // кнопка входа в комнату
+
+    QFile file(":/img/images/css_push_button/change_name.css");
+    file.open(QFile::ReadOnly);
+    change_player_name_button->setStyleSheet(file.readAll());
+    file.close();
+
     change_player_name_button->setText("change name");
     change_player_name_button->move(1000,800);  // getTextBounds() при помощи этого метода
                                                 // определять координаты кнопки
@@ -60,12 +65,6 @@ main_widget::main_widget()
 
     connect(play_button, &QPushButton::clicked, this, &main_widget::enter_to_room); // при нажатии на кнопку, заходим в комнату
     connect(change_player_name_button, &QPushButton::clicked, this, &main_widget::change_player_name); // при нажатии на кнопку, заходим в комнату
-    // создаем таймер для вывода имени
-    // TODO:(может нужно сделать так, чтобы функция вывода вызывалась только при замени имени)
-
-    //timer = new QTimer();
-    //connect(timer, &QTimer::timeout, this, &main_widget::draw_player_name);
-    //timer->start(50);
 }
 
 main_widget::main_widget(QString& player_name_, QString& color_)
@@ -79,16 +78,16 @@ main_widget::main_widget(QString& player_name_, QString& color_)
 
     QPushButton *change_player_name_button = new QPushButton(this); // кнопка входа в комнату
     change_player_name_button->setText("change name");
+    QFile file(":/img/images/css_push_button/change_name.css");
+    file.open(QFile::ReadOnly);
+    change_player_name_button->setStyleSheet(file.readAll());
+    file.close();
     change_player_name_button->move(1000,1000);
     change_player_name_button->show();
 
 
     connect(play_button, &QPushButton::clicked, this, &main_widget::enter_to_room); // при нажатии на кнопку, заходим в комнату
     connect(change_player_name_button, &QPushButton::clicked, this, &main_widget::change_player_name); // при нажатии на кнопку, заходим в комнату
-
-    //timer = new QTimer();
-    //connect(timer, &QTimer::timeout, this, &main_widget::draw_player_name);
-    //timer->start(50);
 }
 
 void main_widget::keyReleaseEvent(QKeyEvent *apKeyEvent){

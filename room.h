@@ -23,6 +23,7 @@ public:
 
     void keyPressEvent  (QKeyEvent *)       override;  // обработка нажатий клавиш
     void keyReleaseEvent(QKeyEvent *)       override;  // обработка отжатия клавиш
+
     ~Room();
 
 private:

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/img">
         <file>images/backgrounds/2738.jpg</file>
+        <file>images/css_push_button/change_name.css</file>
     </qresource>
 </RCC>

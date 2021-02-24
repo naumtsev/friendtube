@@ -29,17 +29,15 @@ void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         painter->drawText(-55,25,110,20,Qt::AlignCenter,player_name);   //отображение имени под персонажем + выравнивание посередине
         //хочу canvas.drawtext сюда впихнуть!!! чтобы можно было норм текст рисовать.
         //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext
-        if(metka_message && !metka_message_painter){
-            metka_message_painter = true;
+        if(player_message.metka_message && !player_message.metka_message_painter){
+            player_message.metka_message_painter = true;
             timer_message->stop();
             timer_message->start(5000);
             connect(timer_message, SIGNAL(timeout()), this, SLOT(no_message()));
         }
-        if(metka_message_painter){
-            painter->drawText(-55,-40,110,20,Qt::AlignRight,message);
+        if(player_message.metka_message_painter){
+            painter->drawText(-55,-40,110,20,Qt::AlignRight,player_message.send_message);
         }
-        // когда много сообщений подряд, то очень плохо - т.к. таймер не очень работает
-        // TODO: сделать так, чтобы можно было подрят сообщения писать и таймер перезапускался.
         Q_UNUSED(option);
         Q_UNUSED(widget);
 }
@@ -73,17 +71,21 @@ void Player::move(){
     setPos(mapToParent(movement.x, movement.y)); // перемещение игрока в зависимости от нажатых кнопок
 
     // Проверка на выход за границы поля
-    if(this->x() - 10 < -350){
+    if(this->x - 10 < -350){
         setPos(mapToParent( move_distance, 0));
+        x += move_distance;
     }
-    if(this->x() + 10 > 350){
+    if(this->x + 10 > 350){
         setPos(mapToParent(-move_distance, 0));
+        x -= move_distance;
     }
-    if(this->y() - 10 < -350){
+    if(this->y - 10 < -350){
         setPos(mapToParent( 0, move_distance));
+        y += move_distance;
     }
-    if(this->y() + 10 > 350){
+    if(this->y + 10 > 350){
         setPos(mapToParent( 0,-move_distance));
+        y -= move_distance;
     }
 }
 
@@ -116,8 +118,34 @@ void Player::update_direction(QKeyEvent *apKeyEvent){
 }
 
 void Player::no_message(){
-    metka_message = false;
-    metka_message_painter = false;
-    message = "";
+    player_message.metka_message = false;
+    player_message.metka_message_painter = false;
+    player_message.send_message = "";
     update();
 }
+
+QJsonDocument Player::player_to_json(){
+    QJsonObject json_player;
+    json_player.insert("name", QJsonValue::fromVariant(player_name)); // почему-то первым message идёт - TODO: изменить
+    json_player.insert("id", QJsonValue::fromVariant(client_id));
+    json_player.insert("x", QJsonValue::fromVariant(this->x));
+    json_player.insert("y", QJsonValue::fromVariant(this->y));
+    json_player.insert("message", player_message.from_message_to_json());
+
+    qDebug() << json_player;
+    QJsonDocument doc(json_player);
+    QString json_string = doc.toJson(QJsonDocument::Indented);
+    QTextStream out(stdout);
+    out << json_string;
+    return doc;
+}
+
+static Player from_json(QJsonObject json_player){
+    Player p;
+    p.player_name = json_player["name"].toString();
+    p.x = json_player["x"].toDouble();
+    p.y = json_player["y"].toDouble();
+    p.player_message = Message::from_json_to_message(json_player["message"].toObject()); // Создать для message
+    return p;
+}
+

@@ -60,9 +60,9 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent)
             if(str.size() == 0){ // если ничего не ввёл, то ничего непроизошло
                 break;
             }else if(0 < str.size() && str.size() < 17 && str!="") {
-                    player->message = str;
-                    player->metka_message = true;
-                    player->metka_message_painter = false;
+                    player->player_message.send_message = str;
+                    player->player_message.metka_message = true;
+                    player->player_message.metka_message_painter = false;
                     player->update(); // нужно для перерисовки TODO: тесты!!!, может и не нужна строчка
                     break;
             }// TODO: эксперименты с размером сообщения и если нужно, то отредактировать
