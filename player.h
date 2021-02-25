@@ -29,36 +29,39 @@ public slots:
 
 public:
     explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_ = "RED_PLAYER", QObject *parent = 0); // записывание имени
-    static Player from_json(QJsonObject json_player);
+
+    Player(QJsonObject json_player);
+    QJsonDocument player_to_json();
+
     void keyPressEvent(QKeyEvent *)      override;  // зажимание клавиши
     void keyReleaseEvent(QKeyEvent *)    override;  // отжимание клавиши
+
     void update_movement(int sign, QKeyEvent *apKeyEvent);          // обновление передвижения игрока
     void update_direction(QKeyEvent *apKeyEvent);                   // обновление направления
-    QJsonDocument player_to_json();
     ~Player();
 
 protected:
-    QRectF boundingRect() const override; // чекнуть про override    
+    QRectF boundingRect() const override; // чекнуть про override
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 public:
 
     QString player_name = "YOUR_PLAYER_NAME"; // имя игрока
+
     double x = 0;
     double y = 0;
+
     Message player_message;
     QString client_id;
+
     QTimer *timer_move = new QTimer(this);
     QTimer *timer_message = new QTimer(this);
 
     player_move movement = {0,0};
     const int move_distance = 3;
     bool direction = false; // направление: false - смотрит влево, true - смотрит вправо.
-
     QString color_square = "RED";
 
-private:
-    QSet<int> setPressKey;
 };
 
 #endif // PLAYER_H

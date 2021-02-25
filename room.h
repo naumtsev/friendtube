@@ -4,12 +4,12 @@
 #include "main_widget.h"
 #include "player.h"
 #include <QWidget>
-#include <QGLWidget>
-#include <QGraphicsScene>
+#include <QPainter>
 #include <QShortcut>
 #include <QTimer>
 #include <QMessageBox>
 #include <QDebug>
+#include <QVector>
 namespace Ui {
 class Room;
 }
@@ -20,10 +20,10 @@ class Room : public QWidget
 
 public:
     explicit Room(const QString& player_name = "YOUR_NAME_ROOM", const QString& color = "COLOR_RED", QWidget *parent = 0);
-
+    void paintEvent(QPaintEvent *event)     override;
     void keyPressEvent  (QKeyEvent *)       override;  // обработка нажатий клавиш
     void keyReleaseEvent(QKeyEvent *)       override;  // обработка отжатия клавиш
-
+    void update_position_local_player();
     ~Room();
 
 private:

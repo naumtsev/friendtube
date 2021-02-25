@@ -8,40 +8,25 @@ Player::Player(const QString& player_name_, const QString& color_, QObject *pare
     connect(timer_move, &QTimer::timeout, this, &Player::move);
 }
 
+Player::Player(QJsonObject json_player){
+    player_name = json_player["name"].toString();
+    client_id =json_player["id"].toString();
+    x = json_player["x"].toDouble();
+    y = json_player["y"].toDouble();
+    player_message = from_json_to_message(json_player["message"].toObject()); // Создать для message
+}
+
 
 Player::~Player()
 {
 
 }
-
-QRectF Player::boundingRect() const   // сделать отдельную структурку message
-                                      // которая будет рисовать сообщение, чтобы не наслаивалось,
-                                      // когда много игроков
-{
-    return QRectF(-55,-45,110,110);   // Ограничиваем область, в которой лежит квадрат
+QRectF Player::boundingRect() const {
+    //empty
 }
-
-void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-        QPolygon polygon({QPoint(-25, -25), QPoint(25, -25), QPoint( 25, 25), QPoint(-25, 25)}); //рисуем квадрат
-        painter->setBrush(Qt::red);                                     //задаём цвет квадрата
-        painter->drawPolygon(polygon);                                  //рисуем персонажа TODO: Будем рисовать текстуры
-        painter->drawText(-55,25,110,20,Qt::AlignCenter,player_name);   //отображение имени под персонажем + выравнивание посередине
-        //хочу canvas.drawtext сюда впихнуть!!! чтобы можно было норм текст рисовать.
-        //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext
-        if(player_message.metka_message && !player_message.metka_message_painter){
-            player_message.metka_message_painter = true;
-            timer_message->stop();
-            timer_message->start(5000);
-            connect(timer_message, SIGNAL(timeout()), this, SLOT(no_message()));
-        }
-        if(player_message.metka_message_painter){
-            painter->drawText(-55,-40,110,20,Qt::AlignRight,player_message.send_message);
-        }
-        Q_UNUSED(option);
-        Q_UNUSED(widget);
+void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    //empty
 }
-
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
     qDebug() << "keyPressEventPLAYE";
 
@@ -67,24 +52,20 @@ void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 }
 
 void Player::move(){
-
-    setPos(mapToParent(movement.x, movement.y)); // перемещение игрока в зависимости от нажатых кнопок
+    x += movement.x; // перемещение игрока в зависимости от нажатых кнопок
+    y += movement.y;
 
     // Проверка на выход за границы поля
     if(this->x - 10 < -350){
-        setPos(mapToParent( move_distance, 0));
         x += move_distance;
     }
     if(this->x + 10 > 350){
-        setPos(mapToParent(-move_distance, 0));
         x -= move_distance;
     }
     if(this->y - 10 < -350){
-        setPos(mapToParent( 0, move_distance));
         y += move_distance;
     }
     if(this->y + 10 > 350){
-        setPos(mapToParent( 0,-move_distance));
         y -= move_distance;
     }
 }
@@ -121,7 +102,7 @@ void Player::no_message(){
     player_message.metka_message = false;
     player_message.metka_message_painter = false;
     player_message.send_message = "";
-    update();
+    //update(); // это важная штучка!!!!!(наверно)
 }
 
 QJsonDocument Player::player_to_json(){
@@ -139,13 +120,3 @@ QJsonDocument Player::player_to_json(){
     out << json_string;
     return doc;
 }
-
-static Player from_json(QJsonObject json_player){
-    Player p;
-    p.player_name = json_player["name"].toString();
-    p.x = json_player["x"].toDouble();
-    p.y = json_player["y"].toDouble();
-    p.player_message = Message::from_json_to_message(json_player["message"].toObject()); // Создать для message
-    return p;
-}
-
