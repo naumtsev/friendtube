@@ -21,7 +21,7 @@ class Room : public QWidget
     Q_OBJECT
 
 public:
-    explicit Room(const QString& player_name = "YOUR_NAME_ROOM", const QString& color = "COLOR_RED", QWidget *parent = 0);
+    explicit Room(const QString& player_name = "YOUR_NAME_ROOM", QWidget *parent = 0);
     void draw_scene();
     void keyPressEvent  (QKeyEvent *)       override;  // обработка нажатий клавиш
     void keyReleaseEvent(QKeyEvent *)       override;  // обработка отжатия клавиш

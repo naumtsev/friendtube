@@ -1,8 +1,8 @@
 #include "Player.h"
 
 
-Player::Player(const QString& player_name_, const QString& color_, QObject *parent) :
-    QObject(parent), QGraphicsItem(), player_name(player_name_), color_square(color_)
+Player::Player(const QString& player_name_, QObject *parent) :
+    QObject(parent), QGraphicsItem(), player_name(player_name_)
 {
     // задать ориентацию (смотрит влево или вправо)
     connect(timer_move, &QTimer::timeout, this, &Player::move);
@@ -13,7 +13,8 @@ Player::Player(QJsonObject json_player){
     client_id =json_player["id"].toString();
     x = json_player["x"].toDouble();
     y = json_player["y"].toDouble();
-    player_message = from_json_to_message(json_player["message"].toObject()); // Создать для message
+    player_message = from_json_to_message(json_player["message"].toObject()); // передаём сообщение
+    color = from_json_to_hsl(json_player["HSL"].toObject()); // передаём цвет
 }
 
 
@@ -21,12 +22,14 @@ Player::~Player()
 {
 
 }
+
 QRectF Player::boundingRect() const {
     //empty
 }
 void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     //empty
 }
+
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
     qDebug() << "keyPressEventPLAYE";
 
@@ -38,6 +41,7 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
         qDebug() <<"TIMER";
         timer_move->start(1000/FPS); // проблема, что 2 раза вызывается, для первого клика + второго!!!
     }
+    player_to_json();
 }
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
@@ -56,16 +60,17 @@ void Player::move(){
     y += movement.y;
 
     // Проверка на выход за границы поля
-    if(this->x - 10 < -350){
+    int size_picture = 25;
+    if(this->x < size_picture){
         x += move_distance;
     }
-    if(this->x + 10 > 350){
+    if(this->x > 1280 - size_picture){
         x -= move_distance;
     }
-    if(this->y - 10 < -350){
+    if(this->y < size_picture){
         y += move_distance;
     }
-    if(this->y + 10 > 350){
+    if(this->y > 720 - size_picture){
         y -= move_distance;
     }
 }
@@ -112,6 +117,7 @@ QJsonDocument Player::player_to_json(){
     json_player.insert("x", QJsonValue::fromVariant(this->x));
     json_player.insert("y", QJsonValue::fromVariant(this->y));
     json_player.insert("message", player_message.from_message_to_json());
+    json_player.insert("HSL", color.from_hsl_to_json());
 
     qDebug() << json_player;
     QJsonDocument doc(json_player);

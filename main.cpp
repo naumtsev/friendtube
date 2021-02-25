@@ -6,7 +6,7 @@ int main(int argc, char *argv[]) {
 
     appSettings::settings();
 
-    CreateMainWidget("Your name", "RED");
+    CreateMainWidget("Your name");
 
     return a.exec();
 }

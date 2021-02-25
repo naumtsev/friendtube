@@ -19,7 +19,7 @@
 struct MainWindow : QWidget
 {
     MainWindow();
-    MainWindow(QString& name_player, QString& color);// конструктор, чтобы сохранять имя игрока
+    MainWindow(QString& name_player);// конструктор, чтобы сохранять имя игрока
 
 public slots:
     void enter_to_room();         // вход в комнату
@@ -35,5 +35,5 @@ public:
     QTimer *timer;
 };
 
-void CreateMainWidget(QString player_name, QString color); // создание главного меню
+void CreateMainWidget(QString player_name); // создание главного меню
 #endif // MAINWINDOW_H

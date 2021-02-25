@@ -6,14 +6,14 @@
 #include <QFile>
 
 void MainWindow::enter_to_room(){
-    Room *room = new Room{player.player_name, player.color_square};
+    Room *room = new Room{player.player_name};
     room->show();
     close();
 }
 
-void CreateMainWidget(QString player_name, QString color){
+void CreateMainWidget(QString player_name){
 
-    MainWindow* global_windom = new MainWindow{player_name, color};        // создание главного окна
+    MainWindow* global_windom = new MainWindow{player_name};        // создание главного окна
     QBrush br(Qt::TexturePattern);
         br.setTextureImage(QImage(":/img/images/backgrounds/2738.jpg"));// задаём фон главного окна
         QPalette plt = global_windom->palette();
@@ -67,8 +67,8 @@ MainWindow::MainWindow()
     connect(change_player_name_button, &QPushButton::clicked, this, &MainWindow::change_player_name); // при нажатии на кнопку, заходим в комнату
 }
 
-MainWindow::MainWindow(QString& player_name_, QString& color_)
-    : player(player_name_, color_)
+MainWindow::MainWindow(QString& player_name_)
+    : player(player_name_)
 {
 
     QPushButton *play_button = new QPushButton(this);               // кнопка замены имени

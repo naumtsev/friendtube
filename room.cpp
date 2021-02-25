@@ -4,7 +4,7 @@
 
 QVector<PlayerView> players;
 
-Room::Room(const QString& player_name,const QString& color, QWidget *parent) :
+Room::Room(const QString& player_name, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Room)
 {
@@ -14,13 +14,13 @@ Room::Room(const QString& player_name,const QString& color, QWidget *parent) :
     //this->showFullScreen();
 
     scene = new QGraphicsScene();
-    local_player = new Player{player_name, color};        // создаём персонажа
+    local_player = new Player{player_name};        // создаём персонажа
     PlayerView view_local_player(*local_player);             // создаём урезанную копию для вектора
 
     players.push_back(view_local_player);
 
     //DELETED
-    Player *local_player_2 = new Player{"123333", color};        // для тестов
+    Player *local_player_2 = new Player{"123333"};        // для тестов
     PlayerView view_local_player_2(*local_player_2);             // создаём урезанную копию для вектора
     view_local_player_2.x = 200;
     view_local_player_2.y = 200;
@@ -38,6 +38,7 @@ void Room::paintEvent(QPaintEvent *event){
     qDebug() << "paintEvent";
     draw_scene();
 }
+
 void Room::draw_scene(){ // event сам и не нужен
     qDebug() << "draw_scene";
     QPainter painter(this);
@@ -80,7 +81,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent)
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
-            CreateMainWidget(local_player->player_name, local_player->color_square);
+            CreateMainWidget(local_player->player_name);
             this->close();
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){

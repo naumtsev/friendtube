@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Message.h"
+#include "Hsl.h"
 #include <QObject>
 #include <QGraphicsItem>
 #include <QPainter>
@@ -28,7 +29,7 @@ public slots:
     void move();
 
 public:
-    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_ = "RED_PLAYER", QObject *parent = 0); // записывание имени
+    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", QObject *parent = 0); // записывание имени
 
     Player(QJsonObject json_player);
     QJsonDocument player_to_json();
@@ -48,8 +49,8 @@ public:
 
     QString player_name = "YOUR_PLAYER_NAME"; // имя игрока
 
-    double x = 0;
-    double y = 0;
+    double x = 30;
+    double y = 30;
 
     Message player_message;
     QString client_id;
@@ -60,8 +61,7 @@ public:
     player_move movement = {0,0};
     const int move_distance = 3;
     bool direction = false; // направление: false - смотрит влево, true - смотрит вправо.
-    QString color_square = "RED";
-
+    HSL color;
 };
 
 #endif // PLAYER_H
