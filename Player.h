@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "message.h"
+#include "Message.h"
 #include <QObject>
 #include <QGraphicsItem>
 #include <QPainter>

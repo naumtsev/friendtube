@@ -1,72 +1,73 @@
 #include "room.h"
-#include "player_data.h"
+#include "PlayerView.h"
 #include "ui_room.h"
 
-QVector<player_data> player_from_the_room;
+QVector<PlayerView> players;
 
 Room::Room(const QString& player_name,const QString& color, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Room)
 {
     ui->setupUi(this);
-    this->resize(800,800);
-    this->setFixedSize(800,800);
+    this->resize(1280,720);
+    this->setFixedSize(1280,720);
     //this->showFullScreen();
 
     scene = new QGraphicsScene();
-    player = new Player{player_name, color};        // создаём персонажа
-    player_data player_data_new(*player);             // создаём урезанную копию для вектора
-    player_from_the_room.push_back(player_data_new);
-    /*)
-    ui->graphicsView->setScene(scene); // забирала
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setFocusPolicy(Qt::NoFocus); // TODO: чекнуть почему заработало?
+    local_player = new Player{player_name, color};        // создаём персонажа
+    PlayerView view_local_player(*local_player);             // создаём урезанную копию для вектора
 
-    scene->setSceneRect(0, 0, 0, 0);
+    players.push_back(view_local_player);
 
-    scene->addLine(-300,0,300,0,QPen(Qt::black));
-    scene->addLine(0,-300,0,300,QPen(Qt::black));
+    //DELETED
+    Player *local_player_2 = new Player{"123333", color};        // для тестов
+    PlayerView view_local_player_2(*local_player_2);             // создаём урезанную копию для вектора
+    view_local_player_2.x = 200;
+    view_local_player_2.y = 200;
+    players.push_back(view_local_player_2);
+    //DELETED
 
-    scene->addLine(-350,-350, 350,-350, QPen(Qt::black));
-    scene->addLine(-350, 350, 350, 350, QPen(Qt::black));
-    scene->addLine(-350,-350,-350, 350, QPen(Qt::black));
-    scene->addLine( 350,-350, 350, 350, QPen(Qt::black));
-*/ // чекнуть, как можно сделать, чтоыб
+
+    QTimer *update_draw_timer = new QTimer();
+    connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
+    update_draw_timer->start(1000/FPS);
 
 }
-void Room::paintEvent(QPaintEvent *event){ // event сам и не нужен
+
+void Room::paintEvent(QPaintEvent *event){
     qDebug() << "paintEvent";
+    draw_scene();
+}
+void Room::draw_scene(){ // event сам и не нужен
+    qDebug() << "draw_scene";
     QPainter painter(this);
-    update_position_local_player(); // обновляем позицию игрока
-    for(std::size_t i = 0; i < player_from_the_room.size(); i++){
-        if(player_from_the_room[i].client_id == player->client_id){
-            if(player->player_message.metka_message && !player->player_message.metka_message_painter){
-                player->player_message.metka_message_painter = true;
-                player->timer_message->stop();
-                player->timer_message->start(5000);
-                connect(player->timer_message, SIGNAL(timeout()), this, SLOT(no_message()));
-            }
-            if(player->player_message.metka_message_painter){
-                painter.drawText(-55 + player->x,-40 + player->y,110,20,Qt::AlignRight,player->player_message.send_message);
+    update_local_player_position(); // обновляем позицию игрока
+    for(std::size_t i = 0; i < players.size(); i++){
+        if(players[i].client_id == local_player->client_id){
+            if(local_player->player_message.metka_message && !local_player->player_message.metka_message_painter){
+                local_player->player_message.metka_message_painter = true;
+                local_player->timer_message->stop();
+                local_player->timer_message->start(5000);
+                connect(local_player->timer_message, SIGNAL(timeout()), this, SLOT(no_message()));
             }
         }
-        QPolygon polygon({QPoint(-25 + player->x, -25 +  player->y), QPoint(25 +  player->x, -25 +  player->y), QPoint( 25 +  player->x, 25 +  player->y), QPoint(-25 +  player->x, 25 +  player->y)}); //рисуем квадрат
-        painter.setBrush(Qt::red);                                     //задаём цвет квадрата
-        painter.drawPolygon(polygon);                                  //рисуем персонажа TODO: Будем рисовать текстуры
-        painter.drawText(-55 + player->x,25 + player->y,110,20,Qt::AlignCenter,player->player_name);   //отображение имени под персонажем + выравнивание посередине
-        //хочу canvas.drawtext сюда впихнуть!!! чтобы можно было норм текст рисовать.
-        //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext
+        if(players[i].player_message.metka_message_painter){
+            painter.drawText(-55 + local_player->x,-40 + local_player->y,110,20,Qt::AlignRight,local_player->player_message.send_message);
+        }
+        players[i].draw(painter);
     }
 }
 
-void Room::update_position_local_player(){
-    for(int i = 0; i < player_from_the_room.size(); i++){
-        if(player_from_the_room[i].client_id == player->client_id){
-            player_from_the_room[i].x = player->x;
-            player_from_the_room[i].y = player->y;
-            player_from_the_room[i].player_message = player->player_message;
+void Room::drawPlayer(PlayerView& player){
+
+}
+
+void Room::update_local_player_position(){
+    for(int i = 0; i < players.size(); i++){
+        if(players[i].client_id == local_player->client_id){
+            players[i].x = local_player->x;
+            players[i].y = local_player->y;
+            players[i].player_message = local_player->player_message;
             break;
         }
     }
@@ -75,16 +76,15 @@ void Room::update_position_local_player(){
 void Room::keyPressEvent(QKeyEvent *apKeyEvent)
 {
     qDebug() << "KeyPressEvent";
-    update();
     if(apKeyEvent->key() == Qt::Key_Escape) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
-            CreateMainWidget(player->player_name, player->color_square);
+            CreateMainWidget(local_player->player_name, local_player->color_square);
             this->close();
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
-        player->movement = {0,0};                       // при вводе сообщения игрок останавливается
+        local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
 
         while(true){
             bool click = false;
@@ -96,21 +96,21 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent)
             if(str.size() == 0){ // если ничего не ввёл, то ничего непроизошло
                 break;
             }else if(0 < str.size() && str.size() < 17 && str!="") {
-                    player->player_message.send_message = str;
-                    player->player_message.metka_message = true;
-                    player->player_message.metka_message_painter = false;
+                    local_player->player_message.send_message = str;
+                    local_player->player_message.metka_message = true;
+                    local_player->player_message.metka_message_painter = false;
                     break;
             }// TODO: эксперименты с размером сообщения и если нужно, то отредактировать
         }
     }else {
-        player->keyPressEvent(apKeyEvent);
+        local_player->keyPressEvent(apKeyEvent);
     }
 }
 
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
     qDebug() << "KeyReleaseEvent";
 
-    player->keyReleaseEvent(apKeyEvent);
+    local_player->keyReleaseEvent(apKeyEvent);
 }
 
 

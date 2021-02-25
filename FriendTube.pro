@@ -9,23 +9,23 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    MainWindow.cpp \
+    Message.cpp \
+    Player.cpp \
+    PlayerView.cpp \
     appsettings.cpp \
     drawer.cpp \
     main.cpp \
-    main_widget.cpp \
-    message.cpp \
-    player.cpp \
-    player_data.cpp \
     room.cpp \
 
 
 HEADERS += \
+    MainWindow.h \
+    Message.h \
+    Player.h \
+    PlayerView.h \
     appsettings.h \
     drawer.h \
-    main_widget.h \
-    message.h \
-    player.h \
-    player_data.h \
     room.h
 
 # Default rules for deployment.

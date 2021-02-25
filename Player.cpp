@@ -1,4 +1,4 @@
-#include "player.h"
+#include "Player.h"
 
 
 Player::Player(const QString& player_name_, const QString& color_, QObject *parent) :

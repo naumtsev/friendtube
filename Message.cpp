@@ -1,4 +1,4 @@
-#include "message.h"
+#include "Message.h"
 
 QJsonObject Message::from_message_to_json(){
     QJsonObject json_message;

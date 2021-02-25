@@ -1,11 +1,11 @@
-#include "main_widget.h"
+#include "MainWindow.h"
 #include "appsettings.h"
 
 
 #include <QKeyEvent>
 #include <QFile>
 
-void main_widget::enter_to_room(){
+void MainWindow::enter_to_room(){
     Room *room = new Room{player.player_name, player.color_square};
     room->show();
     close();
@@ -13,7 +13,7 @@ void main_widget::enter_to_room(){
 
 void CreateMainWidget(QString player_name, QString color){
 
-    main_widget* global_windom = new main_widget{player_name, color};        // создание главного окна
+    MainWindow* global_windom = new MainWindow{player_name, color};        // создание главного окна
     QBrush br(Qt::TexturePattern);
         br.setTextureImage(QImage(":/img/images/backgrounds/2738.jpg"));// задаём фон главного окна
         QPalette plt = global_windom->palette();
@@ -31,7 +31,7 @@ void CreateMainWidget(QString player_name, QString color){
 
 }
 
-void main_widget::paintEvent(QPaintEvent *event)
+void MainWindow::paintEvent(QPaintEvent *event)
 {
     qDebug() << "draw_player_name";
     QPainter painter(this);
@@ -42,7 +42,7 @@ void main_widget::paintEvent(QPaintEvent *event)
 }
 
 
-main_widget::main_widget()
+MainWindow::MainWindow()
 {
 
     QPushButton *play_button = new QPushButton(this);
@@ -63,11 +63,11 @@ main_widget::main_widget()
     change_player_name_button->show();
 
 
-    connect(play_button, &QPushButton::clicked, this, &main_widget::enter_to_room); // при нажатии на кнопку, заходим в комнату
-    connect(change_player_name_button, &QPushButton::clicked, this, &main_widget::change_player_name); // при нажатии на кнопку, заходим в комнату
+    connect(play_button, &QPushButton::clicked, this, &MainWindow::enter_to_room); // при нажатии на кнопку, заходим в комнату
+    connect(change_player_name_button, &QPushButton::clicked, this, &MainWindow::change_player_name); // при нажатии на кнопку, заходим в комнату
 }
 
-main_widget::main_widget(QString& player_name_, QString& color_)
+MainWindow::MainWindow(QString& player_name_, QString& color_)
     : player(player_name_, color_)
 {
 
@@ -86,18 +86,18 @@ main_widget::main_widget(QString& player_name_, QString& color_)
     change_player_name_button->show();
 
 
-    connect(play_button, &QPushButton::clicked, this, &main_widget::enter_to_room); // при нажатии на кнопку, заходим в комнату
-    connect(change_player_name_button, &QPushButton::clicked, this, &main_widget::change_player_name); // при нажатии на кнопку, заходим в комнату
+    connect(play_button, &QPushButton::clicked, this, &MainWindow::enter_to_room); // при нажатии на кнопку, заходим в комнату
+    connect(change_player_name_button, &QPushButton::clicked, this, &MainWindow::change_player_name); // при нажатии на кнопку, заходим в комнату
 }
 
-void main_widget::keyReleaseEvent(QKeyEvent *apKeyEvent){
+void MainWindow::keyReleaseEvent(QKeyEvent *apKeyEvent){
     if(apKeyEvent->key() == Qt::Key_Escape){    // выход из программы
         close();
     }
 }
 
 
-void main_widget::change_player_name(){
+void MainWindow::change_player_name(){
     bool error = false;         // для отображени сообщения при некорректном имени при вводе
     while(true){                // пока игрок не введёт имя, которое подходит под шаблон
         bool click = false;

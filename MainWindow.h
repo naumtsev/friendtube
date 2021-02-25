@@ -1,5 +1,5 @@
-#ifndef MAIN_WIDGET_H
-#define MAIN_WIDGET_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QWidget>
 #include <QtGui>
@@ -14,12 +14,12 @@
 #include <QPaintEvent>
 
 #include "room.h"
-#include "player.h"
+#include "Player.h"
 
-struct main_widget : QWidget
+struct MainWindow : QWidget
 {
-    main_widget();
-    main_widget(QString& name_player, QString& color);// конструктор, чтобы сохранять имя игрока
+    MainWindow();
+    MainWindow(QString& name_player, QString& color);// конструктор, чтобы сохранять имя игрока
 
 public slots:
     void enter_to_room();         // вход в комнату
@@ -36,4 +36,4 @@ public:
 };
 
 void CreateMainWidget(QString player_name, QString color); // создание главного меню
-#endif // MAIN_WIDGET_H
+#endif // MAINWINDOW_H

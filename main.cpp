@@ -1,4 +1,4 @@
-#include "main_widget.h"
+#include "MainWindow.h"
 #include "appsettings.h"
 
 int main(int argc, char *argv[]) {
