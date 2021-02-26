@@ -35,6 +35,7 @@ public:
 
     void keyPressEvent(QKeyEvent *)   ;  // зажимание клавиши
     void keyReleaseEvent(QKeyEvent *) ;  // отжимание клавиши
+    void draw(QPainter& painter);
 
     void update_movement(int sign, QKeyEvent *apKeyEvent);          // обновление передвижения игрока
     void update_direction(QKeyEvent *apKeyEvent);                   // обновление направления

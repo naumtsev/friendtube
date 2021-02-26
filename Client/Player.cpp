@@ -16,11 +16,25 @@ Player::Player(QJsonObject json_player){
     color = from_json_to_hsl(json_player["HSL"].toObject()); // передаём цвет
 }
 
-
+void Player::draw(QPainter& painter){
+    if(player_message.metka_message && !player_message.metka_message_painter){
+        player_message.metka_message_painter = true;
+        timer_message->stop();
+        timer_message->start(5000);
+        connect(timer_message, SIGNAL(timeout()), this, SLOT(no_message()));
+    }
+    if(player_message.metka_message_painter){
+        painter.drawText(-55 + x,-40 + y,110,20,Qt::AlignRight,player_message.send_message);
+    }
+    QPolygon polygon({QPoint(-25 + x, -25 +  y), QPoint(25 + x, -25 + y), QPoint( 25 +  x, 25 + y), QPoint(-25 + x, 25 + y)}); //рисуем квадрат
+    painter.setBrush(Qt::red);                                     //задаём цвет квадрата
+    painter.drawPolygon(polygon);                                //рисуем персонажа TODO: Будем рисовать текстуры
+    painter.drawText(-55 + x,25 + y,110,20,Qt::AlignCenter,player_name);   //отображение имени под персонажем + выравнивание посередине
+    //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext
+}
 Player::~Player() {
 
 }
-
 
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 
@@ -36,7 +50,7 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
-    qDebug() << "KeyPress";
+   qDebug() << "KeyPress";
    update_movement(-1, apKeyEvent); // передаем -1 т.к. произошло отжатие
    if (timer_move->isActive()) {
        timer_move->stop();
@@ -44,6 +58,7 @@ void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 }
 
 void Player::move(){
+    qDebug() << "-----------!!!!!!!!!!!!!!!!------------------------------------!!!!!!!!!";
     x += movement.x; // перемещение игрока в зависимости от нажатых кнопок
     y += movement.y;
 

@@ -78,8 +78,8 @@ void Client::socketReady() {
                 // server update our state successfully
             } else if(event_type == "scene_data") {
                  // get scene
-                  //qDebug() << "ok";
-                  QJsonObject scene = json_data.value("scene_data").toObject();
+                  qDebug() << "ok";
+                  QJsonObject scene = json_data.value("data").toObject();
                   QJsonArray json_players = scene.value("clients").toArray();
                   QVector<PlayerView> players_;
                   for(auto json_player: json_players) {
