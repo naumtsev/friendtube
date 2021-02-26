@@ -21,7 +21,15 @@ void SocketThread::run() {
 
     qDebug() << client_id + " client connected";
 
-    socket->write(client_id.toUtf8());
+
+    QJsonObject jsonResponse;
+    jsonResponse.insert("type", "first_connection");
+    jsonResponse.insert("client_id", client_id);
+    QJsonDocument doc(jsonResponse);
+    socket->write(doc.toJson());
+
+    socket->flush();
+
     exec();
 }
 
@@ -40,6 +48,8 @@ void SocketThread::readyRead() {
 
             if(!event_type.size()) {
                 socket->write(json_handler::generate_error("missing request type").toJson());
+                socket->flush();
+
                 return;
             }
 
@@ -54,6 +64,7 @@ void SocketThread::readyRead() {
 
                 QJsonDocument doc(jsonResponse);
                 socket->write(doc.toJson());
+                socket->flush();
 
                 return;
 
@@ -68,8 +79,11 @@ void SocketThread::readyRead() {
                 QJsonDocument doc(jsonResponse);
 
                 socket->write(doc.toJson());
+                socket->flush();
+
                 return;
             } else if(event_type == "get_scene") {
+
                 QJsonObject jsonResponse;
 
                 jsonResponse.insert("type", "scene_data");
@@ -77,15 +91,18 @@ void SocketThread::readyRead() {
                 jsonResponse.insert("client_id", client_id);
 
                 QJsonDocument doc(jsonResponse);
+                qDebug() << "smb get scene";
 
                 socket->write(doc.toJson());
+                socket->flush();
+
                 return;
 
             }
-            socket->flush();
 
         } else { // invalid json
            socket->write(json_handler::generate_error("Invalid json").toJson());
+           socket->flush();
 
         }
 

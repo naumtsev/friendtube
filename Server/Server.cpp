@@ -68,7 +68,7 @@ QJsonObject Server::get_scene_data(){
 
 
     for(SocketThread *socket: sockets) {
-        clients_data.append(socket->person_data);
+        clients_data.push_back(socket->person_data);
     }
 
     QJsonObject res;

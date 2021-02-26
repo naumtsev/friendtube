@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowTitle("FriendTube");
 
-
+    ui->serverIpEdit->setText("127.0.0.1:6666");
     ui->circle_pos->setVisible(false);
     this->setFixedSize(1280, 720);
 
@@ -98,14 +98,10 @@ void MainWindow::on_connectButton_clicked() {
            player = new Player(ui->nameEdit->text());
            player->color = HSL(ui->h_slider->value(), ui->s_slider->value(), ui->l_slider->value());
 
+
            client->main_window = this;
 
-           qDebug() << "Succes connect";
 
-           QJsonObject req;
-           req.insert("type", "connect");
-           req.insert("person_data", player->to_json().object());
-           QJsonDocument doc(req);
-           client->socket->write(doc.toJson());
+
        }
 }

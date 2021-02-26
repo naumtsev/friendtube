@@ -23,14 +23,12 @@ Room::Room(Player *player_, QVector<PlayerView> &players_, QWidget *parent):
 }
 
 void Room::paintEvent(QPaintEvent *event){
-    qDebug() << "paintEvent";
     draw_scene();
 }
 
 void Room::draw_scene(){ // event сам и не нужен
-    qDebug() << "draw_scene";
     QPainter painter(this);
-    main_window->client->request_get_scene_on_the_server();
+    //main_window->client->request_get_scene_on_the_server();
     update_local_player_position(); // обновляем позицию игрока
 
     for(std::size_t i = 0; i < players.size(); i++){
@@ -53,7 +51,7 @@ void Room::draw_scene(){ // event сам и не нужен
 void Room::update_local_player_position(){
     //main_window->client->socket->wa
     //qDebug() << "test";
-    main_window->client->update_state_on_the_server(local_player->to_json());
+    //main_window->client->update_state_on_the_server(local_player->to_json());
     for(int i = 0; i < players.size(); i++){
         if(players[i].client_id == local_player->client_id){
             players[i].x = local_player->x;

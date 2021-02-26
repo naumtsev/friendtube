@@ -17,8 +17,7 @@ bool Client::connect_to_server(QString ip, int port) {
    socket->waitForConnected(3000);
 
    if(socket->state() == QTcpSocket::ConnectedState) {
-       socket->readyRead();
-       client_id = socket->readAll();
+
        return true;
    }
 
@@ -41,12 +40,24 @@ void Client::socketReady() {
 
         QJsonParseError json_data_error;
         QJsonObject json_data = QJsonDocument::fromJson(data, &json_data_error).object();
+        qDebug() << "_______________\n" << data << "______________\n";
 
-        qDebug() << "_______________________________________________\n" << data;
         if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
             QString event_type = json_data.value("type").toString();
+            if(event_type == "first_connection") {
+               client_id = json_data.value("client_id").toString();
+               main_window->player->client_id = client_id;
+               qDebug() << "\nID:" << client_id << "\n";
 
-            if(event_type == "connected") {
+               QJsonObject req;
+               req.insert("type", "connect");
+               req.insert("person_data", main_window->player->to_json().object());
+               QJsonDocument doc(req);
+               socket->write(doc.toJson());
+               socket->flush();
+               return;
+
+            } else if(event_type == "connected") {
                 QJsonObject scene = json_data.value("scene_data").toObject();
                 QJsonArray json_players = scene.value("clients").toArray();
 
@@ -63,23 +74,20 @@ void Client::socketReady() {
                 main_window->setVisible(false);
 
                 //
-                return;
             } else if(event_type == "updated_successfully"){
                 // server update our state successfully
-                return;
             } else if(event_type == "scene_data") {
                  // get scene
-                  qDebug() << "ok";
+                  //qDebug() << "ok";
                   QJsonObject scene = json_data.value("scene_data").toObject();
                   QJsonArray json_players = scene.value("clients").toArray();
                   QVector<PlayerView> players_;
                   for(auto json_player: json_players) {
                       players_.push_back(PlayerView(std::move(Player(json_player.toObject()))));
                   }
-                  main_window->room->players = players_;
-                  return;
+                  main_window->room->players = std::move(players_);
+
             }
-            socket->flush();
 
         }
     }

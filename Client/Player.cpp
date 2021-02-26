@@ -23,14 +23,12 @@ Player::~Player() {
 
 
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
-    qDebug() << "keyPressEventPLAYE";
 
     const int FPS = 100;
 
     update_movement(1, apKeyEvent); // меняем скорость передвижения. передаем 1 т.к. произошло нажатие
     update_direction(apKeyEvent);   // меняем направления игрока
     if(!timer_move->isActive()){
-        qDebug() <<"TIMER";
         timer_move->start(1000/FPS); // проблема, что 2 раза вызывается, для первого клика + второго!!!
     }
     to_json();
@@ -38,11 +36,9 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
-   qDebug() << "keyReleaseEventPLAYER";
-
+    qDebug() << "KeyPress";
    update_movement(-1, apKeyEvent); // передаем -1 т.к. произошло отжатие
    if (timer_move->isActive()) {
-       qDebug() <<"TIMER-STOP";
        timer_move->stop();
    }
 }
