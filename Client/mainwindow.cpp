@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
@@ -70,7 +69,7 @@ void MainWindow::on_s_slider_sliderMoved([[maybe_unused]] int len) {
 
 //connect to server
 void MainWindow::on_connectButton_clicked() {
-
+        qDebug() << "Main Thread " << QThread::currentThreadId();
        // this->setVisible(false);
 
        QString ip, s_port;
@@ -92,16 +91,30 @@ void MainWindow::on_connectButton_clicked() {
 
 
        // qDebug() << "Try to connect " << ip << " " << s_port;
-       client = new Client();
+       client = new Client(ip, s_port.toInt(), this);
+       client_thread = new QThread();
+       connect(client_thread, &QThread::started, client, &Client::run);
+       (*client).moveToThread(client_thread);
 
-       if(client->connect_to_server(ip, s_port.toInt())) { // succesed connect
-           player = new Player(ui->nameEdit->text());
-           player->color = HSL(ui->h_slider->value(), ui->s_slider->value(), ui->l_slider->value());
+        client_thread->start();
 
+       qDebug() << "STARTED";
+       player = new Player(ui->nameEdit->text());
+       player->color = HSL(ui->h_slider->value(), ui->s_slider->value(), ui->l_slider->value());
+       client->main_window = this;
 
-           client->main_window = this;
-
-
-
-       }
 }
+
+
+void MainWindow::createRoom(Player *player, QVector<PlayerView> players_) {
+
+    qDebug() << QThread::currentThreadId() << "CREATE ROOM MAINWINDOW";
+    room = new Room(player, players_);
+    connect(room, SIGNAL(request_get_scene_on_the_server()), client, SLOT(request_get_scene_on_the_server()));
+    connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), client, SLOT(update_state_on_the_server(QJsonDocument)));
+
+    room->main_window = this;
+    room->show();
+    setVisible(false);
+}
+

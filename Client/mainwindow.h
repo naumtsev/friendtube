@@ -8,6 +8,7 @@
 #include "Client.h"
 #include "HSL.h"
 #include "Room.h"
+#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,11 +25,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void paintEvent(QPaintEvent *event) override;
-private slots:
+public slots:
     void on_h_slider_sliderMoved(int len);
     void on_s_slider_sliderMoved(int len);
     void on_l_slider_sliderMoved(int len);
     void on_connectButton_clicked();
+    void createRoom(Player *player, QVector<PlayerView> players_);
 
 public:
     Ui::MainWindow *ui;
@@ -36,6 +38,6 @@ public:
     Room *room;
     Client *client;
     Player *player;
-
+    QThread *client_thread;
 };
 #endif // MAINWINDOW_H

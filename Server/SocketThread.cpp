@@ -37,17 +37,17 @@ void SocketThread::run() {
 
 void SocketThread::readyRead() {
     if(socket->waitForConnected(500)) {
-        socket->waitForReadyRead(300);
         QByteArray data = socket->readAll();
         QJsonParseError json_data_error;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &json_data_error);
-        qDebug() << "____________________________________________________________\n" << data;
+        qDebug() << "____________________________________________________________\n" << data << "\n_________________________________";
 
         if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
             QString event_type = json_data.object().value("type").toString();
 
             if(!event_type.size()) {
                 socket->write(json_handler::generate_error("missing request type").toJson());
+                socket->waitForBytesWritten();
                 socket->flush();
 
                 return;
@@ -64,6 +64,8 @@ void SocketThread::readyRead() {
 
                 QJsonDocument doc(jsonResponse);
                 socket->write(doc.toJson());
+                socket->waitForBytesWritten();
+
                 socket->flush();
 
                 return;
@@ -79,11 +81,13 @@ void SocketThread::readyRead() {
                 QJsonDocument doc(jsonResponse);
 
                 socket->write(doc.toJson());
+                socket->waitForBytesWritten();
+
                 socket->flush();
 
                 return;
             } else if(event_type == "get_scene") {
-
+                 qDebug() << "smb get scene";
                 QJsonObject jsonResponse;
 
                 jsonResponse.insert("type", "scene_data");
@@ -91,9 +95,10 @@ void SocketThread::readyRead() {
                 jsonResponse.insert("client_id", client_id);
 
                 QJsonDocument doc(jsonResponse);
-                qDebug() << "smb get scene";
 
                 socket->write(doc.toJson());
+                socket->waitForBytesWritten();
+
                 socket->flush();
 
                 return;
@@ -102,6 +107,8 @@ void SocketThread::readyRead() {
 
         } else { // invalid json
            socket->write(json_handler::generate_error("Invalid json").toJson());
+           socket->waitForBytesWritten();
+
            socket->flush();
 
         }

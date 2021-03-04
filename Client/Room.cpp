@@ -28,8 +28,13 @@ void Room::paintEvent(QPaintEvent *event){
 
 void Room::draw_scene(){ // event сам и не нужен
     QPainter painter(this);
-    //main_window->client->request_get_scene_on_the_server();
-    //update_local_player_position(); // обновляем позицию игрока
+    if(!is_got_scene) {
+        emit request_get_scene_on_the_server();
+        //qDebug() << "GET SCENE";
+        is_got_scene = true;
+    }
+
+    update_local_player_position(); // обновляем позицию игрока
 
     for(std::size_t i = 0; i < players.size(); i++){
         if(players[i].client_id != local_player->client_id){
@@ -40,14 +45,21 @@ void Room::draw_scene(){ // event сам и не нужен
 }
 
 
+
+
 void Room::update_local_player_position(){
     //qDebug() << "test";
-    //main_window->client->update_state_on_the_server(local_player->to_json());
+    auto data = local_player->to_json();
+    if(!is_updated_data) {
+        emit update_state_on_the_server(data);
+        is_updated_data = true;
+        //qDebug() << "UPDATE SCENE";
+    }
 }
 
-void Room::keyPressEvent(QKeyEvent *apKeyEvent)
-{
-    qDebug() << "KeyPressEvent";
+void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
+
+    //qDebug() << "KeyPressEvent";
     if(apKeyEvent->key() == Qt::Key_Escape) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
@@ -80,7 +92,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent)
 }
 
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
-    qDebug() << "KeyReleaseEvent";
+    //qDebug() << "KeyReleaseEvent";
 
     local_player->keyReleaseEvent(apKeyEvent);
 }

@@ -3,7 +3,7 @@
 
 #include "Message.h"
 #include "Player.h"
-class PlayerView {
+struct PlayerView {
 public:
     PlayerView();
     PlayerView(Player& player);

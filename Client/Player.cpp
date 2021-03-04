@@ -50,7 +50,7 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
-   qDebug() << "KeyPress";
+   //qDebug() << "KeyPress";
    update_movement(-1, apKeyEvent); // передаем -1 т.к. произошло отжатие
    if (timer_move->isActive()) {
        timer_move->stop();
@@ -58,7 +58,7 @@ void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 }
 
 void Player::move(){
-    qDebug() << "-----------!!!!!!!!!!!!!!!!------------------------------------!!!!!!!!!";
+    //qDebug() << "-----------!!!!!!!!!!!!!!!!------------------------------------!!!!!!!!!";
     x += movement.x; // перемещение игрока в зависимости от нажатых кнопок
     y += movement.y;
 

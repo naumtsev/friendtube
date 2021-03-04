@@ -10,7 +10,6 @@
 #include "Server.h"
 #include "JsonHandler.h"
 
-
 class Server;
 
 class SocketThread : public QThread {

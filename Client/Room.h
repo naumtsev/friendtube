@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QVector>
 #include <QInputDialog>
+#include <QThreadPool>
 
 class MainWindow;
 
@@ -41,9 +42,15 @@ public:
     QGraphicsScene    *scene;
     Player            *local_player;
     QTimer            *update_draw_timer;
-    int                FPS = 30;
+    int                FPS = 20;
     QVector<PlayerView> players;
     MainWindow * main_window;
+    bool is_got_scene = false;
+    bool is_updated_data = false;
+
+signals:
+    void request_get_scene_on_the_server();
+    void update_state_on_the_server(QJsonDocument);
 };
 
 #endif // ROOM_H

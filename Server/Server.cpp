@@ -32,7 +32,7 @@ void Server::incomingConnection(qintptr socketDescriptor){
     sockets.push_back(s_thread);
 
     connect(s_thread, SIGNAL(finished()), s_thread, SLOT(deleteLater()));
-    s_thread->run();
+    s_thread->start();
 
 }
 
