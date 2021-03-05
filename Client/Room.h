@@ -42,7 +42,7 @@ public:
     QGraphicsScene    *scene;
     Player            *local_player;
     QTimer            *update_draw_timer;
-    int                FPS = 20;
+    int                FPS = 60;
     QVector<PlayerView> players;
     MainWindow * main_window;
     bool is_got_scene = false;

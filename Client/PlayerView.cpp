@@ -9,7 +9,7 @@ PlayerView::PlayerView(Player& player){
     y = player.y;
     client_id = player.client_id;
     player_message = player.player_message;
-    color = QColor(player.color.h, player.color.s, player.color.l);
+    color = player.color.to_qcolor();
 }
 
 PlayerView::PlayerView(Player&& player){
@@ -18,7 +18,7 @@ PlayerView::PlayerView(Player&& player){
     y = std::move(player.y);
     client_id = std::move(player.client_id);
     player_message = std::move(player.player_message);
-    color = QColor(player.color.h, player.color.s, player.color.l);
+    color = player.color.to_qcolor();
 }
 
 void PlayerView::draw(QPainter& painter){

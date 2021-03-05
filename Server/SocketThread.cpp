@@ -27,9 +27,7 @@ void SocketThread::run() {
     jsonResponse.insert("client_id", client_id);
     QJsonDocument doc(jsonResponse);
     socket->write(doc.toJson());
-
     socket->flush();
-
     exec();
 }
 
@@ -46,9 +44,7 @@ void SocketThread::readyRead() {
             QString event_type = json_data.object().value("type").toString();
 
             if(!event_type.size()) {
-                socket->write(json_handler::generate_error("missing request type").toJson());
-                socket->waitForBytesWritten();
-                socket->flush();
+                socket->write(json_handler::generate_error("missing request type").toJson());                socket->flush();
 
                 return;
             }
@@ -64,8 +60,6 @@ void SocketThread::readyRead() {
 
                 QJsonDocument doc(jsonResponse);
                 socket->write(doc.toJson());
-                socket->waitForBytesWritten();
-
                 socket->flush();
 
                 return;
@@ -81,8 +75,6 @@ void SocketThread::readyRead() {
                 QJsonDocument doc(jsonResponse);
 
                 socket->write(doc.toJson());
-                socket->waitForBytesWritten();
-
                 socket->flush();
 
                 return;
@@ -97,8 +89,6 @@ void SocketThread::readyRead() {
                 QJsonDocument doc(jsonResponse);
 
                 socket->write(doc.toJson());
-                socket->waitForBytesWritten();
-
                 socket->flush();
 
                 return;
@@ -107,8 +97,6 @@ void SocketThread::readyRead() {
 
         } else { // invalid json
            socket->write(json_handler::generate_error("Invalid json").toJson());
-           socket->waitForBytesWritten();
-
            socket->flush();
 
         }
@@ -127,5 +115,6 @@ void SocketThread::disconnected() {
 
 void SocketThread::sendData(QString data) {
     socket->write(data.toUtf8());
+    socket->flush();
 }
 

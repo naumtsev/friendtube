@@ -18,3 +18,9 @@ HSL from_json_to_hsl(QJsonObject json_color){
     color.l = json_color["l"].toInt();
     return color;
 }
+
+QColor HSL::to_qcolor() {
+    QColor color;
+    color.setHsl(h, s, l);
+    return color;
+}

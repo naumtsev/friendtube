@@ -6,6 +6,7 @@
 #include <QJsonParseError>
 #include <QFile>
 #include <QTextStream>
+#include <QColor>
 
 class HSL
 {
@@ -17,6 +18,7 @@ public:
     int s = 80;
     int l = 150;
     QJsonObject from_hsl_to_json();
+    QColor to_qcolor();
 };
 
 HSL from_json_to_hsl(QJsonObject);

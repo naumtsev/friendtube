@@ -10,6 +10,11 @@ Room::Room(Player *player_, QVector<PlayerView> &players_, QWidget *parent):
     this->resize(1280,720);
     this->setFixedSize(1280,720);
     //this->showFullScreen();
+    this->setWindowTitle("FriendTube");
+    QPixmap icon;
+    icon.load(":/images/icon.png");
+    this->setWindowIcon(QIcon(icon));
+
 
     scene = new QGraphicsScene();
     local_player =  player_;        // создаём персонажа
@@ -23,17 +28,19 @@ Room::Room(Player *player_, QVector<PlayerView> &players_, QWidget *parent):
 }
 
 void Room::paintEvent(QPaintEvent *event){
-    draw_scene();
-}
 
-void Room::draw_scene(){ // event сам и не нужен
-    QPainter painter(this);
+    draw_scene();
     if(!is_got_scene) {
         emit request_get_scene_on_the_server();
         //qDebug() << "GET SCENE";
         is_got_scene = true;
     }
+}
 
+void Room::draw_scene(){ // event сам и не нужен
+    QPainter painter(this);
+
+   // qDebug() << "ROOM DRAW";
     update_local_player_position(); // обновляем позицию игрока
 
     for(std::size_t i = 0; i < players.size(); i++){

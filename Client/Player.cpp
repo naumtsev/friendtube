@@ -27,7 +27,7 @@ void Player::draw(QPainter& painter){
         painter.drawText(-55 + x,-40 + y,110,20,Qt::AlignRight,player_message.send_message);
     }
     QPolygon polygon({QPoint(-25 + x, -25 +  y), QPoint(25 + x, -25 + y), QPoint( 25 +  x, 25 + y), QPoint(-25 + x, 25 + y)}); //рисуем квадрат
-    painter.setBrush(Qt::red);                                     //задаём цвет квадрата
+    painter.setBrush(color.to_qcolor());                                     //задаём цвет квадрата
     painter.drawPolygon(polygon);                                //рисуем персонажа TODO: Будем рисовать текстуры
     painter.drawText(-55 + x,25 + y,110,20,Qt::AlignCenter,player_name);   //отображение имени под персонажем + выравнивание посередине
     //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext

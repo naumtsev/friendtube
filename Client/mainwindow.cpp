@@ -8,14 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     this->setWindowTitle("FriendTube");
+    QPixmap icon;
+    icon.load(":/images/icon.png");
+    this->setWindowIcon(QIcon(icon));
+
 
     ui->serverIpEdit->setText("127.0.0.1:6666");
     ui->circle_pos->setVisible(false);
     this->setFixedSize(1280, 720);
-
-    QPixmap icon;
-    icon.load(":/images/icon.png");
-    this->setWindowIcon(QIcon(icon));
 
 
     QBrush background(Qt::TexturePattern);
