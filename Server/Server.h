@@ -7,6 +7,8 @@
 #include <QTcpServer>
 #include <QJsonArray>
 #include <QRandomGenerator>
+#include <QMutex>
+#include <QMutexLocker>
 
 class SocketThread;
 
@@ -28,6 +30,7 @@ public:
     QList<SocketThread*> sockets;
     qint16 port;
     const qint16 client_id_size = 6;
+    QMutex data_mutex;
 };
 
 #endif // SERVER_H

@@ -21,12 +21,13 @@ void Server::startServer() {
         qDebug() << "Could not start server";
     } else {
         qDebug() << "Listening to port " << port << "...";
-        qDebug() << "My ip " << serverAddress().toString() << "...";
+        qDebug() << "My ip " << serverAddress().toString() << "... THREAD: " << QThread::currentThreadId();
 
     }
 }
 
 void Server::incomingConnection(qintptr socketDescriptor){
+    QMutexLocker locker(&data_mutex);
 
     SocketThread *s_thread = new SocketThread(socketDescriptor, generate_client_id(client_id_size), this);
     sockets.push_back(s_thread);
@@ -52,6 +53,7 @@ void Server::send_data_to_all_users(QString data){ //
 }
 
 void Server::socket_disconnected(SocketThread* socket){
+    QMutexLocker locker(&data_mutex);
     qDebug() << "Disconnected " << socket->client_id << "," << sockets.size() - 1 << " clients on connections";
     for(int i = 0; i < sockets.size(); i++){
         if(socket == sockets[i]) {
@@ -64,9 +66,8 @@ void Server::socket_disconnected(SocketThread* socket){
 
 
 QJsonObject Server::get_scene_data(){
+    QMutexLocker locker(&data_mutex);
     QJsonArray clients_data;
-
-
     for(SocketThread *socket: sockets) {
         clients_data.push_back(socket->person_data);
     }

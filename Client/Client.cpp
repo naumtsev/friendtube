@@ -37,7 +37,7 @@ void Client::socketDisconnect() {
 
 void Client::socketReady() {
     QMutexLocker locker(&socket_mutex);
-    qDebug() << "MUTEX LOCK";
+    qDebug() << "MUTEX LOCK" << QThread::currentThreadId();
     if(socket->waitForConnected(500)){
         QByteArray data = socket->readAll();
        // qDebug() << "Client Thread" << QThread::currentThreadId();
@@ -65,7 +65,7 @@ void Client::socketReady() {
 
                socket->write(doc.toJson());
                socket->flush();
-                qDebug() << "MUTEX UNLOCK";
+                qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
                return;
             } else if(event_type == "connected") {
                 QJsonObject scene = json_data.value("scene_data").toObject();
@@ -80,11 +80,11 @@ void Client::socketReady() {
                 emit createRoom(main_window->player, std::move(players_));
                 //    Room(Player *player_, QVector<Player> players_, QWidget *parent);
 
-                 qDebug() << "MUTEX UNLOCK";
+                 qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
                  return;
             } else if(event_type == "updated_successfully"){
                 main_window->room->is_updated_data = false;
-                 qDebug() << "MUTEX UNLOCK";
+                 qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
                 return;
                 // server update our state successfully
             } else if(event_type == "scene_data") {
@@ -100,53 +100,39 @@ void Client::socketReady() {
                   }
                   //qDebug() << "UPDATE PLAYER_STATES";
                   main_window->room->players = std::move(players_);
-                 qDebug() << "MUTEX UNLOCK";
+                 qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
                 return;
 
             }
         }
     }
-    qDebug() << "MUTEX UNLOCK";
+    qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
 }
 
 
 
 void Client::update_state_on_the_server(QJsonDocument state){
     QMutexLocker locker(&socket_mutex);
-    qDebug() << "MUTEX LOCK";
-    qDebug() << "UPDATE BEGIN";
-
-    //qDebug() << "Update State";
+    qDebug() << "UPDATE BEGIN" << QThread::currentThreadId();
     QJsonObject req;
     req.insert("type", "update_my_state");
     req.insert("client_id", client_id);
     req.insert("person_data", state.object());
     QJsonDocument doc(req);
-    qDebug() << socket->isOpen() << socket->isWritable();
     socket->write(doc.toJson(), doc.toJson().size());
     socket->flush();
-    //socket->flush();
-    qDebug() << "UPDATE ENDED";
-    qDebug() << "MUTEX UNLOCK";
+    qDebug() << "UPDATE ENDED" << QThread::currentThreadId();
 }
 
 
 void Client::request_get_scene_on_the_server(){
     QMutexLocker locker(&socket_mutex);
-    qDebug() << "MUTEX LOCK";
-    qDebug() << "GET BEGIN";
-
-    //qDebug() << "Request Scene";
+    qDebug() << "GET BEGIN" << QThread::currentThreadId();
     QJsonObject req;
     req.insert("type", "get_scene");
     req.insert("client_id", client_id);
     QJsonDocument doc(req);
-    qDebug() << socket->isOpen() << socket->isWritable();
-
     socket->write(doc.toJson(), doc.toJson().size());
     socket->flush();
-    qDebug() << "GET ENDED";
-
-//    socket->flush();
-    qDebug() << "MUTEX UNLOCK";
+    qDebug() << "GET ENDED" << QThread::currentThreadId();
 }

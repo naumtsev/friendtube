@@ -45,7 +45,7 @@ void SocketThread::readyRead() {
 
             if(!event_type.size()) {
                 socket->write(json_handler::generate_error("missing request type").toJson());                socket->flush();
-
+                socket->flush();
                 return;
             }
 
@@ -65,8 +65,12 @@ void SocketThread::readyRead() {
                 return;
 
             } else if (event_type == "update_my_state") {
+                server->data_mutex.lock();
                 QJsonObject json = json_data.object();
+                server->data_mutex.unlock();
                 person_data = json.value("person_data").toObject();
+                qDebug () << "SMD REQUIRE UPDATE HIS DATE" << person_data;
+
 
                 QJsonObject jsonResponse;
                 jsonResponse.insert("type", "updated_successfully");
