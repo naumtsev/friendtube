@@ -11,23 +11,25 @@ Client::~Client(){
 }
 
 
-void Client::run() {
-   socket = new QTcpSocket(this);
-   socket->connectToHost(ip.toUtf8(), port);
-   socket->waitForConnected(3000);
-
-   connect(socket, SIGNAL(readyRead()), this, SLOT(socketReady()));
-   connect(socket, SIGNAL(disconnected()), this, SLOT(socketDisconnect()));
+void Client::run() {   
+    socket = new QWebSocket();
+    connect(socket, &QWebSocket::connected, this, &Client::onConnected);
+    connect(socket, &QWebSocket::disconnected, this, &Client::socketDisconnect);
+    connect(socket, &QWebSocket::binaryMessageReceived, this, &Client::socketReady);
    connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView>)), this->main_window, SLOT(createRoom(Player*, QVector<PlayerView>)));
 
+   //socket->open(QUrl(ip + ":" + QString::number(port)));
+   socket->open(QUrl("ws://localhost:" + QString::number(port)));
+
    //qDebug() << "Try connect" << ip.toUtf8() << " ";
-
-
-   if(socket->state() == QTcpSocket::ConnectedState) {
-       // qDebug() << "SUCCES";
-   }
 }
 
+
+void Client::onConnected() {
+    qDebug() << "Connection is successful";
+
+
+}
 
 
 void Client::socketDisconnect() {
@@ -35,11 +37,9 @@ void Client::socketDisconnect() {
 }
 
 
-void Client::socketReady() {
+void Client::socketReady(const QByteArray &data) {
     QMutexLocker locker(&socket_mutex);
     qDebug() << "MUTEX LOCK" << QThread::currentThreadId();
-    if(socket->waitForConnected(500)){
-        QByteArray data = socket->readAll();
        // qDebug() << "Client Thread" << QThread::currentThreadId();
 
 
@@ -62,10 +62,9 @@ void Client::socketReady() {
                req.insert("person_data", main_window->player->to_json().object());
                QJsonDocument doc(req);
 
+               sendData(doc.toJson());
 
-               socket->write(doc.toJson());
-               socket->flush();
-                qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+               qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
                return;
             } else if(event_type == "connected") {
                 QJsonObject scene = json_data.value("scene_data").toObject();
@@ -90,22 +89,18 @@ void Client::socketReady() {
             } else if(event_type == "scene_data") {
 
                   main_window->room->is_got_scene = false;
-                 // get scene
-                 // qDebug() << "ok";
                   QJsonObject scene = json_data.value("data").toObject();
                   QJsonArray json_players = scene.value("clients").toArray();
                   QVector<PlayerView> players_;
                   for(auto json_player: json_players) {
                       players_.push_back(PlayerView(std::move(Player(json_player.toObject()))));
                   }
-                  //qDebug() << "UPDATE PLAYER_STATES";
                   main_window->room->players = std::move(players_);
                  qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
                 return;
 
             }
         }
-    }
     qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
 }
 
@@ -119,9 +114,14 @@ void Client::update_state_on_the_server(QJsonDocument state){
     req.insert("client_id", client_id);
     req.insert("person_data", state.object());
     QJsonDocument doc(req);
-    socket->write(doc.toJson(), doc.toJson().size());
-    socket->flush();
+    sendData(doc.toJson());
     qDebug() << "UPDATE ENDED" << QThread::currentThreadId();
+}
+
+
+void Client::sendData(const QByteArray &data) {
+    socket->sendBinaryMessage(data);
+    socket->flush();
 }
 
 
@@ -132,7 +132,8 @@ void Client::request_get_scene_on_the_server(){
     req.insert("type", "get_scene");
     req.insert("client_id", client_id);
     QJsonDocument doc(req);
-    socket->write(doc.toJson(), doc.toJson().size());
-    socket->flush();
+    sendData(doc.toJson());
     qDebug() << "GET ENDED" << QThread::currentThreadId();
 }
+
+

@@ -12,6 +12,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <thread>
+#include <QtWebSockets/QWebSocket>
 
 class MainWindow;
 
@@ -31,12 +32,14 @@ signals:
 
 public slots:
     void run();
-    void socketReady();
+    void socketReady(const QByteArray &data);
     void socketDisconnect();
     void request_get_scene_on_the_server();
     void update_state_on_the_server(QJsonDocument state);
+    void onConnected();
 public:
-     QTcpSocket* socket;
+    void sendData(const QByteArray &data);
+     QWebSocket* socket;
      QString client_id;
      MainWindow * main_window;
      QMutex socket_mutex;

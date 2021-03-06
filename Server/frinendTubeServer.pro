@@ -1,7 +1,7 @@
 QT       += core
 QT       += network
 QT       -= gui
-
+QT       += websockets
 TARGET = MultiThreadedQTcpServer
 CONFIG   += console
 CONFIG   -= app_bundle
@@ -12,13 +12,11 @@ CONFIG   -= app_bundle
 
 
 HEADERS += \
-    EventManager.h \
     JsonHandler.h \
     Server.h \
     SocketThread.h
 
 SOURCES += \
-        EventManager.cpp \
         JsonHandler.cpp \
         Server.cpp \
         SocketThread.cpp \

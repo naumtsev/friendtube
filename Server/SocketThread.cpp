@@ -8,15 +8,8 @@ SocketThread::SocketThread(qintptr ID, QString client_id_, Server *server_, QObj
 }
 
 void SocketThread::run() {
-
-    socket = new QTcpSocket();
-
-    if(!socket->setSocketDescriptor(this->socketDescriptor)) {
-        emit error(socket->error());
-        return;
-    }
-
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()), Qt::DirectConnection);
+    qDebug() << "RUN THREAD " << QThread::currentThreadId();
+    connect(socket, SIGNAL(binaryMessageReceived(const QByteArray &)), this, SLOT(read_data(const QByteArray&)));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     qDebug() << client_id + " client connected";
@@ -26,16 +19,15 @@ void SocketThread::run() {
     jsonResponse.insert("type", "first_connection");
     jsonResponse.insert("client_id", client_id);
     QJsonDocument doc(jsonResponse);
-    socket->write(doc.toJson());
-    socket->flush();
+    sendData(doc.toJson());
     exec();
 }
 
 
 
-void SocketThread::readyRead() {
-    if(socket->waitForConnected(500)) {
-        QByteArray data = socket->readAll();
+void SocketThread::read_data(const QByteArray &data) {
+        qDebug() << "read_data Thread:" << QThread::currentThreadId();
+
         QJsonParseError json_data_error;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &json_data_error);
         qDebug() << "____________________________________________________________\n" << data << "\n_________________________________";
@@ -44,8 +36,7 @@ void SocketThread::readyRead() {
             QString event_type = json_data.object().value("type").toString();
 
             if(!event_type.size()) {
-                socket->write(json_handler::generate_error("missing request type").toJson());                socket->flush();
-                socket->flush();
+                sendData(json_handler::generate_error("missing request type").toJson());
                 return;
             }
 
@@ -59,9 +50,7 @@ void SocketThread::readyRead() {
                 jsonResponse.insert("scene_data", server->get_scene_data());
 
                 QJsonDocument doc(jsonResponse);
-                socket->write(doc.toJson());
-                socket->flush();
-
+                sendData(doc.toJson());
                 return;
 
             } else if (event_type == "update_my_state") {
@@ -78,9 +67,7 @@ void SocketThread::readyRead() {
 
                 QJsonDocument doc(jsonResponse);
 
-                socket->write(doc.toJson());
-                socket->flush();
-
+                sendData(doc.toJson());
                 return;
             } else if(event_type == "get_scene") {
                  qDebug() << "smb get scene";
@@ -91,23 +78,14 @@ void SocketThread::readyRead() {
                 jsonResponse.insert("client_id", client_id);
 
                 QJsonDocument doc(jsonResponse);
-
-                socket->write(doc.toJson());
-                socket->flush();
-
+                sendData(doc.toJson());
                 return;
 
             }
 
         } else { // invalid json
-           socket->write(json_handler::generate_error("Invalid json").toJson());
-           socket->flush();
-
+           sendData(json_handler::generate_error("Invalid json").toJson());
         }
-
-   }
-
-
 }
 
 
@@ -118,7 +96,7 @@ void SocketThread::disconnected() {
 
 
 void SocketThread::sendData(QString data) {
-    socket->write(data.toUtf8());
+    socket->sendBinaryMessage(data.toUtf8());
     socket->flush();
 }
 

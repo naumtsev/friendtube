@@ -9,6 +9,7 @@
 #include <QJsonParseError>
 #include "Server.h"
 #include "JsonHandler.h"
+#include "QtWebSockets/QWebSocket"
 
 class Server;
 
@@ -19,17 +20,15 @@ public:
 
      void run();
      void sendData(QString data);
-signals:
-    void error(QTcpSocket::SocketError socketerror);
 
 
 public slots:
-    void readyRead();
+    void read_data(const QByteArray &data);
     void disconnected();
 public:
     QString client_id;
     Server* server;
-    QTcpSocket *socket;
+    QWebSocket *socket;
     qintptr socketDescriptor;
     QJsonObject person_data;
 };

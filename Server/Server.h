@@ -2,20 +2,21 @@
 #define SERVER_H
 
 #include "SocketThread.h"
-#include "EventManager.h"
 #include "JsonHandler.h"
 #include <QTcpServer>
 #include <QJsonArray>
 #include <QRandomGenerator>
 #include <QMutex>
 #include <QMutexLocker>
+#include "QtWebSockets/QWebSocketServer"
+#include "QtWebSockets/QWebSocket"
 
 class SocketThread;
 
-class Server : public QTcpServer {
+class Server : public QObject {
     Q_OBJECT
 public:
-    explicit Server(qint16 port);
+    explicit Server(quint16 port, QObject *parent = nullptr);
     void startServer();
     void send_data_to_all_users(QString data);
     ~Server();
@@ -24,12 +25,13 @@ public:
 signals:
 
 public slots:
-  void incomingConnection(qintptr socketDescriptor);
+  void incomingConnection();
 
 public:
     QList<SocketThread*> sockets;
+    QWebSocketServer *web_socket_server;
     qint16 port;
-    const qint16 client_id_size = 6;
+    const qint16 client_id_size = 10;
     QMutex data_mutex;
 };
 
