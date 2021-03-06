@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>m_DinoSprites - vitaBIG.png</file>
+        <file>DinoSprites - tard.png</file>
+        <file>DinoSprites - mort.png</file>
+        <file>DinoSprites - doux.png</file>
+        <file>m_DinoSprites - douxBIG.png</file>
+        <file>m_DinoSprites - mortBIG.png</file>
+        <file>m_DinoSprites - tardBIG.png</file>
+        <file>DinoSprites - vita.png</file>
+    </qresource>
+</RCC>
