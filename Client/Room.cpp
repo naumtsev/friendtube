@@ -56,8 +56,8 @@ void Room::draw_scene(){ // event сам и не нужен
 
 void Room::update_local_player_position(){
     //qDebug() << "test";
-    auto data = local_player->to_json();
     if(!is_updated_data) {
+         auto data = local_player->to_json();
         emit update_state_on_the_server(data);
         is_updated_data = true;
         //qDebug() << "UPDATE SCENE";
@@ -86,7 +86,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
             }
             if(str.size() == 0){ // если ничего не ввёл, то ничего непроизошло
                 break;
-            }else if(0 < str.size() && str.size() < 17 && str!="") {
+            }else if(0 < str.size() && str.size() < 17) {
                     local_player->player_message.send_message = str;
                     local_player->player_message.metka_message = true;
                     local_player->player_message.metka_message_painter = false;
