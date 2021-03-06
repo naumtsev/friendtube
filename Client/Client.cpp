@@ -46,7 +46,7 @@ void Client::socketReady(const QByteArray &data) {
 
         QJsonParseError json_data_error;
         QJsonObject json_data = QJsonDocument::fromJson(data, &json_data_error).object();
-        qDebug() << "_______________\n" << data << "\n______________\n";
+        qDebug() << "_______________\n" << json_data << "\n______________\n";
 
         if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
             QString event_type = json_data.value("type").toString();

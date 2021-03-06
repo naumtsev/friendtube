@@ -26,5 +26,6 @@ void PlayerView::draw(QPainter& painter){
     painter.setBrush(color);                                     //задаём цвет квадрата
     painter.drawPolygon(polygon);                                //рисуем персонажа TODO: Будем рисовать текстуры
     painter.drawText(-55 + x,25 + y,110,20,Qt::AlignCenter,player_name);   //отображение имени под персонажем + выравнивание посередине
+    painter.drawText(-55 + x,-40 + y,110,20,Qt::AlignRight,player_message.send_message); // чтобы отображалось сообщение
     //http://developer.alexanderklimov.ru/android/catshop/android.graphics.canvas.php#drawtext
 }
