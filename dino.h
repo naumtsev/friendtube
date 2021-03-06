@@ -61,6 +61,9 @@ private:
 
     QVector<QPair<QPixmap, spriteData>> Pixmaps;
     QString color_dino;
+public:
+    QGraphicsTextItem *name = new QGraphicsTextItem;
+    //QString name = "Drago";
 };
 
 #endif // DINO_H

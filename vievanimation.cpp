@@ -31,7 +31,8 @@ VievAnimation::VievAnimation(QString color_dino)
 
 void VievAnimation::init_view_elements(){
     dinozavr.setPos(0,100);
-
+    //scene.addText(dinozavr.name);
+    scene.addItem(dinozavr.name);
     scene.addItem(&dinozavr);
 }
 

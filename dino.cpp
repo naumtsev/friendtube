@@ -54,10 +54,13 @@ Dino::Dino(QString color_dino){
     tmp.second.border = 0;
     Pixmaps.push_back(tmp);
 
+    // имя
+    name->setPlainText("DDDDDDDDADDDDDDDD");
+
 
 
     connect(&timer, &QTimer::timeout, this, &Dino::next_frame);
-    timer.start(100);
+    timer.start(100); // если на 100, то очень плохо движется имя, поэтому при показе нужно на 30 сделать или на 10
 }
 
 
@@ -74,6 +77,15 @@ const Dino::spriteData& Dino::csd() const {
 }
 
 void Dino::next_frame(){
+    if(direction == "left"){
+        int left_x = 24;                        // не знаю костыль ли это, или нормальное решение.
+        name->setPos(pos().x() + Dx + left_x  - name->boundingRect().width()/2, pos().y() + Dy - 10);     // чтобы не было глюков при замене direction нужно,
+        //name->setPos(pos().x() + Dx + left_x, pos().y() + Dy - 10);
+    }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
+        int right_x = 24;
+        name->setPos(pos().x() + Dx - right_x - name->boundingRect().width()/2, pos().y() + Dy - 10); // -  boundingRect().height()/2
+        //name->setPos(pos().x() + Dx - right_x, pos().y() + Dy - 10);
+    }
     switch(state){
         case Dino::AnimateState::Moving:
         {
