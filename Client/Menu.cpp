@@ -68,7 +68,7 @@ void Menu::on_s_slider_sliderMoved([[maybe_unused]] int len) {
 
 
 void Menu::on_nameEdit_textChanged(const QString &nickname) {
-
+    player->player_name = ui->nameEdit->text();
 
 }
 
