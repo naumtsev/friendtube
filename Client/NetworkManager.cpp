@@ -1,6 +1,6 @@
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_, QObject *parent) : QObject(parent) {
+NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_, QObject *parent) : QObject() {
     client = client_;
     socket_mutex = new QMutex();
     ip = ip_;

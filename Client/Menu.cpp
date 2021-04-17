@@ -68,7 +68,7 @@ void Menu::on_s_slider_sliderMoved([[maybe_unused]] int len) {
 
 
 void Menu::on_nameEdit_textChanged(const QString &nickname) {
-    player->player_name = ui->nameEdit->text();
+    player->player_name = nickname;
 
 }
 
@@ -76,26 +76,29 @@ void Menu::on_nameEdit_textChanged(const QString &nickname) {
 //connect to server
 void Menu::on_connectButton_clicked() {
         qDebug() << "Main Thread " << QThread::currentThreadId();
-       // this->setVisible(false);
 
        QString ip, s_port;
        QString str = ui->serverIpEdit->text();
 
-       int i = 0;
-       for(; i < str.size(); i++) {
-             if(str[i] == ":") {
-                 i++;
-                 break;
-             }
-              ip += str[i];
-        }
+       QRegExp reg("((([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9])).){2}([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9]))):([0-9]{1,4})$");
+       int pos = reg.indexIn(str);
+       if(pos > -1) {
+            ip = reg.cap(1);
+            s_port =  reg.cap(7);
+       } else {
+           ui->ip_label->setStyleSheet("color: red;");
+           ui->ip_label->setText("Incorrect ip's format");
+           QTimer *incorrect_ip_timer = new QTimer();
 
 
+           connect(incorrect_ip_timer, &QTimer::timeout, [=]() {
+               ui->ip_label->clear();
+               incorrect_ip_timer->~QTimer();
+             } );
 
-       for(; i < str.size(); i++) {
-           s_port += str[i];
+           incorrect_ip_timer->start(3000);
+           return;
        }
-
 
        client->connect_to_server(ip, s_port.toInt());
 }

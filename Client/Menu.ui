@@ -310,6 +310,22 @@ QSlider::handle:horizontal {
       <string>SERVER IP:</string>
      </property>
     </widget>
+    <widget class="QLabel" name="ip_label">
+     <property name="geometry">
+      <rect>
+       <x>254</x>
+       <y>200</y>
+       <width>171</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

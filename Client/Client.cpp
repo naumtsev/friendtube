@@ -27,7 +27,8 @@ void Client::connect_to_server(const QString &ip, int port) {
 
 void Client::createRoom(Player *player, QVector<PlayerView> players_) {
 
-    qDebug() << QThread::currentThreadId() << "CREATE ROOM MAINWINDOW";
+    qDebug() << QThread::currentThreadId() << "CREATE ROOM";
+
     room = new Room(this, player, players_);
     connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager, SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager, SLOT(update_state_on_the_server(QJsonDocument)));

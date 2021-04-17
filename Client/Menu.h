@@ -9,6 +9,8 @@
 #include "HSL.h"
 #include "Room.h"
 #include <QThread>
+#include <QRegExp>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { struct Menu; }
