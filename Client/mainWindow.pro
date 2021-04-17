@@ -2,6 +2,7 @@ QT       += core
 QT       += network
 QT       += gui
 QT       += websockets
+QT       += widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,23 +15,25 @@ CONFIG += c++11
 SOURCES += \
     Client.cpp \
     HSL.cpp \
+    Menu.cpp \
     Message.cpp \
+    NetworkManager.cpp \
     Player.cpp \
     PlayerView.cpp \
     Room.cpp \
-    main.cpp \
-    mainwindow.cpp
+    main.cpp
 HEADERS += \
     Client.h \
     HSL.h \
+    Menu.h \
     Message.h \
+    NetworkManager.h \
     Player.h \
     PlayerView.h \
-    Room.h \
-    mainwindow.h
+    Room.h
 FORMS += \
-    Room.ui \
-    mainwindow.ui
+    Menu.ui \
+    Room.ui
 
 
 # Default rules for deployment.

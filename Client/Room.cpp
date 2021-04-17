@@ -3,9 +3,9 @@
 #include "ui_Room.h"
 
 
-Room::Room(Player *player_, QVector<PlayerView> &players_, QWidget *parent):
+Room::Room(Client *client_, Player *player_, QVector<PlayerView> &players_, QWidget *parent):
     QWidget(parent),
-    ui(new Ui::Room) {
+    ui(new Ui::Room), client(client_) {
     ui->setupUi(this);
     this->resize(1280,720);
     this->setFixedSize(1280,720);

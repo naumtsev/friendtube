@@ -1,11 +1,11 @@
-#include "mainwindow.h"
+#include "Client.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     qDebug() << "main" << QThread::currentThreadId();
-    MainWindow w1;
-    w1.show();
+    Client client;
+    client.start();
     return a.exec();
 }

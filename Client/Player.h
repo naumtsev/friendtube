@@ -20,7 +20,7 @@ struct player_move{
     int y;
 };
 
-class Player : public QObject {
+struct Player : public QObject {
     Q_OBJECT
 
 public slots:

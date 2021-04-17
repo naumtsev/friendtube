@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MENU_H
+#define MENU_H
 
 #include <QMainWindow>
 #include <QPainter>
@@ -11,33 +11,32 @@
 #include <QThread>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { struct Menu; }
 QT_END_NAMESPACE
 
+struct Client;
 
-class Room;
-class Client;
-
-class MainWindow : public QMainWindow {
+struct Menu : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    Menu(Client *client_, QWidget *parent = nullptr);
+    ~Menu();
     void paintEvent(QPaintEvent *event) override;
 public slots:
     void on_h_slider_sliderMoved(int len);
     void on_s_slider_sliderMoved(int len);
     void on_l_slider_sliderMoved(int len);
     void on_connectButton_clicked();
-    void createRoom(Player *player, QVector<PlayerView> players_);
 
 public:
-    Ui::MainWindow *ui;
-    QColor circle_color = Qt::red;
-    Room *room;
+    Ui::Menu *ui;
+
     Client *client;
+
+    QColor circle_color = Qt::red;
     Player *player;
-    QThread *client_thread;
+private slots:
+    void on_nameEdit_textChanged(const QString &arg1);
 };
-#endif // MAINWINDOW_H
+#endif // MENU_H

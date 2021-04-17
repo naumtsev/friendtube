@@ -1,51 +1,38 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <QMainWindow>
-#include <QTcpSocket>
-#include <QJsonObject>
-#include <QJsonParseError>
-#include <QJsonArray>
+#include "Menu.h"
 #include "Room.h"
-#include "mainwindow.h"
-#include "PlayerView.h"
-#include <QMutex>
-#include <QMutexLocker>
-#include <thread>
-#include <QtWebSockets/QWebSocket>
+#include "NetworkManager.h"
 
-class MainWindow;
+#include <QObject>
 
-class Client : public QObject {
+
+struct Menu;
+struct Room;
+struct NetworkManager;
+
+struct Client : QObject {
     Q_OBJECT
-
 public:
-    Client(QString ip_, int port_, QWidget *parent = nullptr);
-    ~Client();
-    bool connect_to_server(QString ip, int port);
-
-
-
+    Client(QObject *parent = nullptr);
+    void start();
+    void connect_to_server(const QString &ip, int port);
+    friend Menu;
+    friend Room;
+    friend NetworkManager;
 signals:
-    void createRoom(Player*, QVector<PlayerView>);
-
 
 public slots:
-    void run();
-    void socketReady(const QByteArray &data);
-    void socketDisconnect();
-    void request_get_scene_on_the_server();
-    void update_state_on_the_server(QJsonDocument state);
-    void onConnected();
-public:
-    void sendData(const QByteArray &data);
-     QWebSocket* socket;
-     QString client_id;
-     MainWindow * main_window;
-     QMutex socket_mutex;
-     QString ip;
-     int port;
+    void createRoom(Player *player, QVector<PlayerView> players_);
 
+private:
+    Menu *menu;
+    Room *room;
+    NetworkManager *n_manager;
+    QThread *n_thread;
 };
+
+
 
 #endif // CLIENT_H

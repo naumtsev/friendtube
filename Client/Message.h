@@ -16,6 +16,8 @@ struct Message{
     bool metka_message_painter = false; // чтобы заново таймер не запускать - скажем нет бесконечности
     QJsonObject from_message_to_json();
 };
+
+
 Message from_json_to_message(QJsonObject);
 
 #endif // MESSAGE_H
