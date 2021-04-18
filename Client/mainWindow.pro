@@ -3,6 +3,7 @@ QT       += network
 QT       += gui
 QT       += websockets
 QT       += widgets
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,6 +22,8 @@ SOURCES += \
     Player.cpp \
     PlayerView.cpp \
     Room.cpp \
+    Video.cpp \
+    VideoPlayer.cpp \
     main.cpp
 HEADERS += \
     Client.h \
@@ -30,7 +33,9 @@ HEADERS += \
     NetworkManager.h \
     Player.h \
     PlayerView.h \
-    Room.h
+    Room.h \
+    Video.h \
+    VideoPlayer.h
 FORMS += \
     Menu.ui \
     Room.ui
