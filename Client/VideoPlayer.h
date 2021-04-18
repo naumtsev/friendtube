@@ -11,7 +11,7 @@ enum VideoPlayerState {
     Loading
 };
 
-
+// TODO
 class VideoPlayer : QObject {
 public:
     VideoPlayer(QObject *parent = nullptr);
