@@ -1,5 +1,6 @@
-#include "MediaPlayer.h"
+#include "VideoPlayer.h"
 
-MediaPlayer::MediaPlayer() {
+VideoPlayer::VideoPlayer(QObject *parent) : QObject(parent) {
 
 }
+

@@ -12,13 +12,13 @@ Video::Video(const QJsonObject &json) {
     sender_name = json["sender_name"].toString();
 }
 
+Video::~Video() {
 
+}
 
 QJsonDocument Video::to_json() {
     QJsonObject json_video;
-    json_video.insert("stream_url", QJsonValue::fromVariant(stream_url)); // почему-то первым message идёт - TODO: изменить
-    json_video.insert("duration", QJsonValue::fromVariant(duration));
-    json_video.insert("name", QJsonValue::fromVariant(name));
+    json_video.insert("stream_url", QJsonValue::fromVariant(stream_url));
     json_video.insert("sender_name", QJsonValue::fromVariant(sender_name));
 
     QJsonDocument doc(json_video);

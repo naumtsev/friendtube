@@ -13,12 +13,9 @@ struct Video : public QObject {
 public:
     Video(const QUrl &stream_url_, qint64 duration_, const QString &name_, const QString &sender_name_);
     Video(const QJsonObject &json);
+    ~Video();
     QJsonDocument to_json();
 
-public slots:
-
-
-signals:
     QUrl stream_url;
     qint64 duration;
     qint64 begin_time;
