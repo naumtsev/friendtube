@@ -11,6 +11,7 @@
 struct Menu;
 struct Room;
 struct NetworkManager;
+namespace Ui { struct Menu; }
 
 struct Client : QObject {
     Q_OBJECT
@@ -25,7 +26,7 @@ signals:
 
 public slots:
     void createRoom(Player *player, QVector<PlayerView> players_);
-
+    void return_to_menu(const QString &reason);
 private:
     Menu *menu;
     Room *room;

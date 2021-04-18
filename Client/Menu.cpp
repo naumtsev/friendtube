@@ -19,7 +19,7 @@ Menu::Menu(Client *client_, QWidget *parent)
     ui->serverIpEdit->setText("127.0.0.1:6666");
 
     ui->circle_pos->setVisible(false);
-
+    ui->advert_frame->setVisible(false);
     QBrush background(Qt::TexturePattern);
     background.setTextureImage(QImage(":/images/background.png"));
     QPalette plt = this->palette();
@@ -75,16 +75,15 @@ void Menu::on_nameEdit_textChanged(const QString &nickname) {
 
 //connect to server
 void Menu::on_connectButton_clicked() {
-        qDebug() << "Main Thread " << QThread::currentThreadId();
-
        QString ip, s_port;
        QString str = ui->serverIpEdit->text();
 
-       QRegExp reg("((([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9])).){2}([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9]))):([0-9]{1,4})$");
+       QRegExp reg("((([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9])).){3}([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9]))|(localhost)):([0-9]{1,4})$");
        int pos = reg.indexIn(str);
        if(pos > -1) {
             ip = reg.cap(1);
-            s_port =  reg.cap(7);
+            s_port =  reg.cap(8);
+            qDebug() << ip << " " << s_port;
        } else {
            ui->ip_label->setStyleSheet("color: red;");
            ui->ip_label->setText("Incorrect ip's format");
@@ -101,6 +100,22 @@ void Menu::on_connectButton_clicked() {
        }
 
        client->connect_to_server(ip, s_port.toInt());
+}
+
+
+void Menu::make_advert(const QString &advert) {
+    qDebug() << "Make advert" << advert;
+    QTimer *advert_timer = new QTimer();
+    ui->advert_frame->setVisible(true);
+    ui->advert_label->setStyleSheet("color: red;");
+    ui->advert_label->setText("Attention!\n" + advert);
+    connect(advert_timer, &QTimer::timeout, [=]() {
+        ui->advert_label->clear();
+        advert_timer->~QTimer();
+        ui->advert_frame->setVisible(false);
+      } );
+
+    advert_timer->start(5000);
 }
 
 

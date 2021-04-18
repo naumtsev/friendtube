@@ -12,7 +12,11 @@ void Client::start() {
 
 
 void Client::connect_to_server(const QString &ip, int port) {
-    n_manager = new NetworkManager(this, ip, port, this);
+    qDebug() << "Try connect";
+
+
+    n_manager = new NetworkManager(this, ip, port);
+    connect(n_manager, SIGNAL(disconnect(const QString &)), this, SLOT(return_to_menu(const QString &)));
 
     n_thread = new QThread();
 
@@ -21,6 +25,8 @@ void Client::connect_to_server(const QString &ip, int port) {
     n_manager->moveToThread(n_thread);
 
     n_thread->start();
+
+
 }
 
 
@@ -36,4 +42,26 @@ void Client::createRoom(Player *player, QVector<PlayerView> players_) {
 
     room->show();
     menu->setVisible(false);
+}
+
+
+void Client::return_to_menu(const QString &reason) {
+
+    qDebug() << "return to menu. Reason: " << reason;
+    if(n_manager != nullptr) {
+
+        n_manager->~NetworkManager();
+
+        n_thread->terminate();
+        n_thread->~QThread();
+        n_thread = nullptr;
+    }
+
+    if(room != nullptr) {
+        room->~Room();
+        room = nullptr;
+    }
+
+    emit menu->make_advert(reason);
+    menu->setVisible(true);
 }

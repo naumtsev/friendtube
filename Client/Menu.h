@@ -13,7 +13,7 @@
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { struct Menu; }
+namespace Ui { struct Menu;}
 QT_END_NAMESPACE
 
 struct Client;
@@ -30,6 +30,7 @@ public slots:
     void on_s_slider_sliderMoved(int len);
     void on_l_slider_sliderMoved(int len);
     void on_connectButton_clicked();
+    void make_advert(const QString &advert);
 
 public:
     Ui::Menu *ui;

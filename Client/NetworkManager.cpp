@@ -1,6 +1,6 @@
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_, QObject *parent) : QObject() {
+NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_) : QObject() {
     client = client_;
     socket_mutex = new QMutex();
     ip = ip_;
@@ -20,22 +20,26 @@ void NetworkManager::run() {
    connect(socket, &QWebSocket::binaryMessageReceived, this, &NetworkManager::socketReady);
    connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView>)), client, SLOT(createRoom(Player*, QVector<PlayerView>)));
 
-   //socket->open(QUrl(ip + ":" + QString::number(port)));
-   socket->open(QUrl("ws://localhost:" + QString::number(port)));
 
-   //qDebug() << "Try connect" << ip.toUtf8() << " ";
+    QString adress = "ws://" + ip + ":" + QString::number(port);
+    qDebug() << "Try connect to " + adress;
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebSocketError(QAbstractSocket::SocketError)));
+
+    socket->open(QUrl(adress));
+   //socket->open(QUrl("ws://localhost:" + QString::number(port)));
 }
 
 
 void NetworkManager::onConnected() {
     qDebug() << "Connection is successful";
-
-
 }
 
 
 void NetworkManager::socketDisconnect() {
+
+   qDebug() << "Disconnect";
    socket->close();
+//   emit disconnect("Socket error: server closed connection");
 }
 
 
@@ -130,4 +134,25 @@ void NetworkManager::request_get_scene_on_the_server(){
     QJsonDocument doc(req);
 
     sendData(doc.toJson());
+}
+
+
+void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
+    switch (error) {
+    case QAbstractSocket::SocketError::RemoteHostClosedError:
+        emit disconnect("Socket error: server closed connection");
+        break;
+    case QAbstractSocket::SocketError::HostNotFoundError:
+        emit disconnect("Socket error: host was not found");
+        break;
+    case QAbstractSocket::SocketError::SocketAccessError:
+        emit disconnect("Socket error: no access to connect");
+        break;
+    case QAbstractSocket::SocketTimeoutError:
+        emit disconnect("Socket error: the socket operation timed out");
+        break;
+    default:
+        emit disconnect("Socket error");
+        break;
+    }
 }
