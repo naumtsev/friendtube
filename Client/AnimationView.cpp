@@ -43,13 +43,9 @@ AnimationView::AnimationView(QWidget *parent) :
 void AnimationView::add_players(QVector<PlayerView *> &players_, QString local_id){
     qDebug() << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\";
     scene.clear();
-    bool draw_local_player = true; // update in false
+    bool draw_local_player = false;
     QBrush whiteBrush(Qt::white);
     QPen blackPen(Qt::black);
-    //x+=distance;
-    //y+=distance;
-    //scene.addEllipse(x, y, 30, 30, blackPen, whiteBrush);
-    //scene.addEllipse(x + 500, y + 300, 30, 30, blackPen, whiteBrush);
     std::cout<<players_.size()<<std::endl;
     for(int i = 0; i < players_.size(); i++){
         if(players_[i]->client_id != local_id || draw_local_player){
@@ -57,8 +53,6 @@ void AnimationView::add_players(QVector<PlayerView *> &players_, QString local_i
             players_[i]->update_state();
             scene.addItem(players_[i]);
             scene.addItem(players_[i]->name);
-            //std::cout << "player"<<i<<players_[i].current_frame << "\n";
-            //players_[i].update_player();
         } else {
             draw_local_player = true;
         }
