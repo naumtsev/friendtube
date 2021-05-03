@@ -152,9 +152,11 @@ void Player::update_movement(QKeyEvent *apKeyEvent){
     */
 }
 
+
+// скорее всего нужно будет сделать это в PlayerView и вызывать при добавлении игрока на поле!!!
 void Player::set_left_direction(){
     if(direction == "left"){
-        this->change_direction();
+        this->change_direction(); // скорее всего не понадобиться
     }
     movement.x = -2;
     direction = "right";
@@ -162,7 +164,7 @@ void Player::set_left_direction(){
 
 void Player::set_right_direction(){
     if(direction == "right"){
-        this->change_direction();
+        this->change_direction(); // скорее всего не понадобиться
     }
     movement.x = 2;
     direction = "left";
@@ -239,6 +241,7 @@ QJsonDocument Player::to_json(){
     json_player.insert("y", QJsonValue::fromVariant(this->pos().y()));
     json_player.insert("message", player_message.from_message_to_json());
     json_player.insert("current_frame", QJsonValue::fromVariant(current_frame));
+    json_player.insert("direction", QJsonValue::fromVariant(direction));
 
     if(state == AnimateState::Standing){
         json_player.insert("AnimateState", QJsonValue::fromVariant("Standing"));

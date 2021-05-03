@@ -57,7 +57,6 @@ public:
     void keyReleaseEvent(QKeyEvent *) override;  // отжимание клавиши
 
     void update_movement(QKeyEvent *apKeyEvent);          // обновление передвижения игрока
-    void update_direction(QKeyEvent *apKeyEvent);                   // обновление направления
 
     void chat();
     //void move();

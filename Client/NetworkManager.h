@@ -39,6 +39,7 @@ public slots:
     void update_state_on_the_server(const QJsonDocument &state);
     void onConnected();
     void onWebSocketError(QAbstractSocket::SocketError);
+
 public:
     void sendData(const QByteArray &data);
     QWebSocket *socket;

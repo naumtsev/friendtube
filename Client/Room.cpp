@@ -55,6 +55,8 @@ void Room::draw_scene(){ // event сам и не нужен
 
 void Room::update_local_player_position(){
     qDebug() << "test";
+    qDebug() << local_player->direction;
+
     if(!is_updated_data) {
         auto data = local_player->to_json();
         emit update_state_on_the_server(data);

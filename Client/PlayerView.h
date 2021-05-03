@@ -16,6 +16,13 @@ public:
     void update_player();
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    void update_state();
+    void update_direction();
+    void update_position_name();
+    void change_direction();
+
+
     ~PlayerView();
 
 private:
@@ -27,7 +34,6 @@ public:
     QString color_player = ":/dino/pics/sheets/m_DinoSprites - mortBIG.png";
     QString client_id;
     Message player_message;
-    //void draw(QPainter& painter);
     QString direction = "left"; // create enum class
     AnimateState state{AnimateState::Standing};
 

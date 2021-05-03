@@ -54,6 +54,7 @@ void AnimationView::add_players(QVector<PlayerView *> &players_, QString local_i
     for(int i = 0; i < players_.size(); i++){
         if(players_[i]->client_id != local_id || draw_local_player){
             std::cout<<"11111111111111111111111111111111111111111111111111111111111111111111"<<std::endl;
+            players_[i]->update_state();
             scene.addItem(players_[i]);
             scene.addItem(players_[i]->name);
             //std::cout << "player"<<i<<players_[i].current_frame << "\n";
@@ -63,5 +64,4 @@ void AnimationView::add_players(QVector<PlayerView *> &players_, QString local_i
         }
     }
 
-    //scene.update();
 }
