@@ -14,13 +14,29 @@
 #include <QTextOption>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <iostream>
 
 struct player_move{
-    int x;
-    int y;
+    qreal x;
+    qreal y;
 };
 
-struct Player : public QObject {
+enum class AnimateState{
+    Standing = 0,
+    Moving,
+    StateEnd
+};
+
+struct sprite_data{
+    int width = 0;
+    int height = 0;
+    int current_frame = 0;
+    int frames = 0;
+    int offset = 0;
+    int border = 0;
+};
+
+class Player : public QObject,  public QGraphicsPixmapItem {
     Q_OBJECT
 
 public slots:
@@ -28,25 +44,54 @@ public slots:
     void move();
 
 public:
-    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", QObject *parent = 0); // записывание имени
+    explicit Player(QString color_player);
+    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_player = "", QObject *parent = 0); // записывание имени
 
     Player(QJsonObject json_player);
     QJsonDocument to_json();
 
-    void keyPressEvent(QKeyEvent *)   ;  // зажимание клавиши
-    void keyReleaseEvent(QKeyEvent *) ;  // отжимание клавиши
-    void draw(QPainter& painter);
+    sprite_data spriteData_from_json_to_sprite_data(QJsonObject json_sprite_data);
+    QJsonObject spriteData_from_sprite_data_to_json();
 
-    void update_movement(int sign, QKeyEvent *apKeyEvent);          // обновление передвижения игрока
+    void keyPressEvent(QKeyEvent *)   override;  // зажимание клавиши
+    void keyReleaseEvent(QKeyEvent *) override;  // отжимание клавиши
+
+    void update_movement(QKeyEvent *apKeyEvent);          // обновление передвижения игрока
     void update_direction(QKeyEvent *apKeyEvent);                   // обновление направления
+
+    void chat();
+    //void move();
+    void stop();
+
+    void set_left_direction();
+    void set_right_direction();
+    void set_up_direction();
+    void set_down_direction();
+    void change_direction();
+    void download_pixmap();
+
     ~Player();
 
+
+private slots:
+    void next_frame();
+
 public:
+    QString direction = "left"; // create enum class
+    AnimateState state{AnimateState::Standing};
 
-    QString player_name = "YOUR_PLAYER_NAME"; // имя игрока
+    int current_frame = 0;
+    QTimer timer_sprite;
+    sprite_data spriteData;
 
-    double x = 30;
-    double y = 30;
+    QVector<QPair<QPixmap, sprite_data>> Pixmaps;
+    QString color_player = ":/pics/sheets/m_DinoSprites - douxBIG.png";
+
+    QGraphicsTextItem *name = new QGraphicsTextItem;
+    //QString player_name = "YOUR_PLAYER_NAME"; // имя игрока
+
+    //double x = 30;
+    //double y = 30;
 
     Message player_message;
     QString client_id;
@@ -55,9 +100,6 @@ public:
     QTimer *timer_message = new QTimer(this);
 
     player_move movement = {0,0};
-    const int move_distance = 3;
-    bool direction = false; // направление: false - смотрит влево, true - смотрит вправо.
-    HSL color;
 };
 
 #endif // PLAYER_H

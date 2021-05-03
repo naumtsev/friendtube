@@ -31,7 +31,7 @@ void Client::connect_to_server(const QString &ip, int port) {
 
 
 
-void Client::createRoom(Player *player, QVector<PlayerView> players_) {
+void Client::createRoom(Player *player, QVector<PlayerView *> players_) {
 
     qDebug() << QThread::currentThreadId() << "CREATE ROOM";
 

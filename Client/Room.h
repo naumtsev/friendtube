@@ -3,8 +3,9 @@
 
 #include "Player.h"
 #include "PlayerView.h"
-#include "Menu.h"
+#include "AnimationView.h"
 #include <QWidget>
+#include <QIcon>
 #include <QPainter>
 #include <QShortcut>
 #include <QTimer>
@@ -14,6 +15,8 @@
 #include <QVector>
 #include <QInputDialog>
 #include <QThreadPool>
+#include <QGraphicsView>
+#include <QMutex>
 
 struct Menu;
 struct Client;
@@ -26,7 +29,7 @@ struct Room : public QWidget {
     Q_OBJECT
 
 public:
-    Room(Client *client_, Player *player_, QVector<PlayerView> &players_, QWidget *parent = nullptr);
+    Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QWidget *parent = nullptr);
     void draw_scene();
     void keyPressEvent  (QKeyEvent *)       override;  // обработка нажатий клавиш
     void keyReleaseEvent(QKeyEvent *)       override;  // обработка отжатия клавиш
@@ -43,11 +46,13 @@ signals:
 
 public:
     Ui::Room          *ui;
-    QGraphicsScene    *scene;
+    AnimationView     *animation_scene;
     Player            *local_player;
     QTimer            *update_draw_timer;
     int                FPS = 60;
-    QVector<PlayerView> players;
+    QMutex player_mutex;
+    //QVector<PlayerView> players;
+    QVector<PlayerView *> players;
     Client *client;
     bool is_got_scene = false;
     bool is_updated_data = false;

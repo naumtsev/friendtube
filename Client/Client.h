@@ -25,7 +25,7 @@ public:
 signals:
 
 public slots:
-    void createRoom(Player *player, QVector<PlayerView> players_);
+    void createRoom(Player *player, QVector<PlayerView *> players_);
     void return_to_menu(const QString &reason);
 private:
     Menu *menu;

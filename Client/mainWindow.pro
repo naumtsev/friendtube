@@ -14,6 +14,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    AnimationView.cpp \
     Client.cpp \
     HSL.cpp \
     Menu.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     VideoPlayer.cpp \
     main.cpp
 HEADERS += \
+    AnimationView.h \
     Client.h \
     HSL.h \
     Menu.h \
@@ -47,4 +49,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    sprite.qrc

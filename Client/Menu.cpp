@@ -51,6 +51,23 @@ Menu::~Menu() {
 }
 
 void Menu::on_h_slider_sliderMoved([[maybe_unused]] int len) {
+    update();
+}
+
+void Menu::on_l_slider_sliderMoved([[maybe_unused]] int len){
+    update();
+}
+
+void Menu::on_s_slider_sliderMoved([[maybe_unused]] int len) {
+    update();
+}
+
+void Menu::on_nameEdit_textChanged(const QString &nickname) {
+    player->name->setPlainText(nickname);
+}
+
+/*
+void Menu::on_h_slider_sliderMoved([[maybe_unused]] int len) {
     player->color = HSL(ui->h_slider->value(), ui->s_slider->value(), ui->l_slider->value());
     update();
 }
@@ -66,11 +83,10 @@ void Menu::on_s_slider_sliderMoved([[maybe_unused]] int len) {
     update();
 }
 
-
 void Menu::on_nameEdit_textChanged(const QString &nickname) {
     player->player_name = nickname;
 
-}
+}*/
 
 
 //connect to server

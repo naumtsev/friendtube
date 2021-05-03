@@ -18,7 +18,7 @@ void NetworkManager::run() {
    connect(socket, &QWebSocket::connected, this, &NetworkManager::onConnected);
    connect(socket, &QWebSocket::disconnected, this, &NetworkManager::socketDisconnect);
    connect(socket, &QWebSocket::binaryMessageReceived, this, &NetworkManager::socketReady);
-   connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView>)), client, SLOT(createRoom(Player*, QVector<PlayerView>)));
+   connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView *>)), client, SLOT(createRoom(Player*, QVector<PlayerView *>)));
 
 
     QString adress = "ws://" + ip + ":" + QString::number(port);
@@ -74,32 +74,31 @@ void NetworkManager::socketReady(const QByteArray &data) {
             QJsonObject scene = json_data.value("scene_data").toObject();
             QJsonArray json_players = scene.value("clients").toArray();
 
-            QVector<PlayerView> players_;
+            QVector<PlayerView *> players_;
             for(auto json_player: json_players) {
-                players_.push_back(PlayerView(std::move(Player(json_player.toObject()))));
+                players_.push_back(new PlayerView{{json_player.toObject()}});
             }
-            qRegisterMetaType<QVector<PlayerView> >("QVector<PlayerView>");
+            qRegisterMetaType<QVector<PlayerView*> >("QVector<PlayerView*>");
             emit createRoom(client->menu->player, std::move(players_));
 
-             return;
+            return;
         } else if(event_type == "updated_successfully"){
              client->room->is_updated_data = false;
              qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
             return;
             // server update our state successfully
         } else if(event_type == "scene_data") {
-
               client->room->is_got_scene = false;
               QJsonObject scene = json_data.value("data").toObject();
               QJsonArray json_players = scene.value("clients").toArray();
-              QVector<PlayerView> players_;
-              for(auto json_player: json_players) {
-                  players_.push_back(PlayerView(std::move(Player(json_player.toObject()))));
+              QVector<PlayerView *> players_;
+              for(auto QjsonArray: json_players) {
+                  players_.push_back(new PlayerView(Player(QjsonArray.toObject())));
               }
+              QMutexLocker player_locker{&client->room->player_mutex}; // То, что Женя подсказал
               client->room->players = std::move(players_);
              qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
             return;
-
         }
     }
 }
