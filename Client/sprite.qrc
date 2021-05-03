@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/dino">
+        <file>pics/sheets/sprites.qrc</file>
+        <file>pics/sheets/m_DinoSprites - vitaBIG.png</file>
+        <file>pics/sheets/m_DinoSprites - tardBIG.png</file>
+        <file>pics/sheets/m_DinoSprites - mortBIG.png</file>
+        <file>pics/sheets/m_DinoSprites - douxBIG.png</file>
+        <file>pics/sheets/DinoSprites - vita.png</file>
+        <file>pics/sheets/DinoSprites - tard.png</file>
+        <file>pics/sheets/DinoSprites - mort.png</file>
+        <file>pics/sheets/DinoSprites - doux.png</file>
+    </qresource>
+</RCC>

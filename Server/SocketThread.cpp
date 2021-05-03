@@ -50,6 +50,7 @@ void SocketThread::read_data(const QByteArray &data) {
                 jsonResponse.insert("scene_data", server->get_scene_data());
 
                 QJsonDocument doc(jsonResponse);
+                //qDebug() << doc;
                 sendData(doc.toJson());
                 return;
 

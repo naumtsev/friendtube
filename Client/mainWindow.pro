@@ -2,7 +2,6 @@ QT       += core
 QT       += network
 QT       += gui
 QT       += websockets
-QT       += widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,27 +12,27 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    AnimationView.cpp \
     Client.cpp \
     HSL.cpp \
-    Menu.cpp \
     Message.cpp \
-    NetworkManager.cpp \
     Player.cpp \
     PlayerView.cpp \
     Room.cpp \
-    main.cpp
+    main.cpp \
+    mainwindow.cpp
 HEADERS += \
+    AnimationView.h \
     Client.h \
     HSL.h \
-    Menu.h \
     Message.h \
-    NetworkManager.h \
     Player.h \
     PlayerView.h \
-    Room.h
+    Room.h \
+    mainwindow.h
 FORMS += \
-    Menu.ui \
-    Room.ui
+    Room.ui \
+    mainwindow.ui
 
 
 # Default rules for deployment.
@@ -42,4 +41,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    sprite.qrc

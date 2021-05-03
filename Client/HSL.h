@@ -8,7 +8,8 @@
 #include <QTextStream>
 #include <QColor>
 
-class HSL {
+class HSL
+{
 public:
     HSL();
     HSL(int h_, int s_, int l_) : h(h_), s(s_), l(l_) {};
