@@ -4,6 +4,7 @@ QT       += gui
 QT       += websockets
 QT       += widgets
 QT       += multimedia
+QT       += multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,6 +25,7 @@ SOURCES += \
     Room.cpp \
     Video.cpp \
     VideoPlayer.cpp \
+    VideoServer.cpp \
     main.cpp
 HEADERS += \
     Client.h \
@@ -35,7 +37,8 @@ HEADERS += \
     PlayerView.h \
     Room.h \
     Video.h \
-    VideoPlayer.h
+    VideoPlayer.h \
+    VideoServer.h
 FORMS += \
     Menu.ui \
     Room.ui
