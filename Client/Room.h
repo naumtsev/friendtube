@@ -22,7 +22,6 @@ namespace Ui {
 struct Room;
 }
 
-
 struct Room : public QWidget {
     Q_OBJECT
 
@@ -38,6 +37,10 @@ public:
 public slots:
     void update_local_player_position();
 
+signals:
+    void request_get_scene_on_the_server();
+    void update_state_on_the_server(QJsonDocument);
+
 public:
     Ui::Room          *ui;
     QGraphicsScene    *scene;
@@ -48,10 +51,6 @@ public:
     Client *client;
     bool is_got_scene = false;
     bool is_updated_data = false;
-
-signals:
-    void request_get_scene_on_the_server();
-    void update_state_on_the_server(QJsonDocument);
 };
 
 #endif // ROOM_H

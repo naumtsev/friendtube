@@ -17,13 +17,17 @@ struct Video : public QObject {
 public:
     Video(const QUrl &stream_url_, qint64 duration_, const QString &name_, const QString &sender_name_);
     Video(const QJsonObject &json);
+    ~Video();
     QJsonDocument to_json();
     void set_begin_time(qint64 b_time);
     QUrl& getStreamUrl();
     qint64 getDuration();
     QString& getName();
 
+<<<<<<< HEAD
 private:
+=======
+>>>>>>> ac66bba91203221e4730ea025560bdd78fe58093
     QUrl stream_url;
     qint64 duration;
     qint64 begin_time;

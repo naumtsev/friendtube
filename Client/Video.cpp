@@ -13,16 +13,24 @@ Video::Video(const QJsonObject &json) {
     begin_time = json["begin_time"].toInt();
 }
 
+<<<<<<< HEAD
 void Video::set_begin_time(qint64 b_time) {
     this->begin_time = b_time;
 }
+=======
+Video::~Video() {
+>>>>>>> ac66bba91203221e4730ea025560bdd78fe58093
 
+}
 
 QJsonDocument Video::to_json() {
     QJsonObject json_video;
     json_video.insert("stream_url", QJsonValue::fromVariant(stream_url));
+<<<<<<< HEAD
     json_video.insert("duration", QJsonValue::fromVariant(duration));
     json_video.insert("name", QJsonValue::fromVariant(name));
+=======
+>>>>>>> ac66bba91203221e4730ea025560bdd78fe58093
     json_video.insert("sender_name", QJsonValue::fromVariant(sender_name));
     json_video.insert("begin_time", QJsonValue::fromVariant(begin_time));
 

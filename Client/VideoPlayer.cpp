@@ -1,6 +1,7 @@
 #include "VideoPlayer.h"
 
 VideoPlayer::VideoPlayer(QObject *parent) : QObject(parent) {
+<<<<<<< HEAD
     m_player = new QMediaPlayer(this);
     m_videowidget = new QVideoWidget();
     m_player->setVideoOutput(m_videowidget);
@@ -26,8 +27,11 @@ void VideoPlayer::play(){
 void VideoPlayer::show(){
     this->m_videowidget->show();
 }
+=======
+>>>>>>> ac66bba91203221e4730ea025560bdd78fe58093
 
 void VideoPlayer::setVideo(const QUrl &url){
     this->m_player->setMedia(url);
     changeState(Loading);
 }
+

@@ -78,7 +78,7 @@ void Menu::on_connectButton_clicked() {
        QString ip, s_port;
        QString str = ui->serverIpEdit->text();
 
-       QRegExp reg("((([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9])).){3}([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9]))|(localhost)):([0-9]{1,4})$");
+       QRegExp reg("((([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|4[0-9])).){3}([0-9]{1,2}|1[0-9]{2}|2(5[0-5]|[0-][0-9]))|(localhost)):([0-9]{1,4})$");
        int pos = reg.indexIn(str);
        if(pos > -1) {
             ip = reg.cap(1);
