@@ -10,6 +10,7 @@
 #include "Room.h"
 #include <QThread>
 #include <QRegExp>
+#include <QMovie>
 
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,7 @@ public:
     Menu(Client *client_, QWidget *parent = nullptr);
     ~Menu();
     void paintEvent(QPaintEvent *event) override;
+
 public slots:
     void on_h_slider_sliderMoved(int len);
     void on_s_slider_sliderMoved(int len);
@@ -34,12 +36,17 @@ public slots:
 
 public:
     Ui::Menu *ui;
-
     Client *client;
-
     QColor circle_color = Qt::red;
     Player *player;
+    QMovie  gif_animation_dino;
+
 private slots:
     void on_nameEdit_textChanged(const QString &arg1);
+    void on_RedDino_clicked();
+    void on_BlueDino_clicked();
+    void on_YellowDino_clicked();
+    void on_GreenDino_clicked();
+
 };
 #endif // MENU_H

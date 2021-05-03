@@ -1,7 +1,7 @@
 #include "Player.h"
 
 
-Player::Player(const QString& player_name_, const QString& color_player, QObject *parent) :
+Player::Player(const QString& player_name_, const QString& color_player_, QObject *parent) :
     QObject(parent) {
     // задать ориентацию (смотрит влево или вправо)
     connect(timer_move, &QTimer::timeout, this, &Player::move);
@@ -11,6 +11,7 @@ Player::Player(const QString& player_name_, const QString& color_player, QObject
     download_pixmap();
 
     // имя
+    color_player = color_player_;
     name->setPlainText(player_name_);
     connect(&timer_sprite, &QTimer::timeout, this, &Player::next_frame);
     timer_sprite.start(50); // если на 100, то очень плохо движется имя, поэтому при показе нужно на 30 сделать или на 10
@@ -35,7 +36,11 @@ Player::Player(QJsonObject json_player){
     download_pixmap();
 }
 
+
+// нужно менять цвет в tmp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 void Player::download_pixmap(){
+    Pixmaps.clear();
     Pixmaps.reserve((int)AnimateState::StateEnd);
     QPair<QPixmap, sprite_data> tmp;
 

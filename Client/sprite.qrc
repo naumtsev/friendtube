@@ -9,5 +9,13 @@
         <file>pics/sheets/DinoSprites - tard.png</file>
         <file>pics/sheets/DinoSprites - mort.png</file>
         <file>pics/sheets/DinoSprites - doux.png</file>
+        <file>pics/gifs/DinoSprites_vita.gif</file>
+        <file>pics/gifs/DinoSprites_tard.gif</file>
+        <file>pics/gifs/DinoSprites_mort.gif</file>
+        <file>pics/gifs/DinoSprites_doux.gif</file>
+        <file>pics/sheets/BigSizeVita.png</file>
+        <file>pics/sheets/BigSizeTard.png</file>
+        <file>pics/sheets/BigSizeMort.png</file>
+        <file>pics/sheets/BigSizeDoux.png</file>
     </qresource>
 </RCC>

@@ -45,7 +45,7 @@ public slots:
 
 public:
     explicit Player(QString color_player);
-    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_player = "", QObject *parent = 0); // записывание имени
+    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_player_ = "", QObject *parent = 0); // записывание имени
 
     Player(QJsonObject json_player);
     QJsonDocument to_json();
@@ -84,7 +84,7 @@ public:
     sprite_data spriteData;
 
     QVector<QPair<QPixmap, sprite_data>> Pixmaps;
-    QString color_player = ":/pics/sheets/m_DinoSprites - douxBIG.png";
+    QString color_player = ":/pics/sheets/m_DinoSprites - mortBIG.png";
 
     QGraphicsTextItem *name = new QGraphicsTextItem;
     //QString player_name = "YOUR_PLAYER_NAME"; // имя игрока

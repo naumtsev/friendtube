@@ -16,6 +16,7 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     this->setFixedSize(1280,720);
     //this->showFullScreen();
     this->setWindowTitle("FriendTube");
+
     QPixmap icon;
     icon.load(":/images/icon.png");
     this->setWindowIcon(QIcon(icon));
