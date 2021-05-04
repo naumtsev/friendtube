@@ -51,8 +51,8 @@ public:
     QTimer            *update_draw_timer;
     int                FPS = 60;
     QMutex player_mutex;
-    //QVector<PlayerView> players;
-    QVector<PlayerView *> players;
+    QVector<PlayerView *> last_frame;
+    QVector<PlayerView *> next_frame;
     Client *client;
     bool is_got_scene = false;
     bool is_updated_data = false;

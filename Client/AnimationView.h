@@ -11,7 +11,7 @@ class AnimationView : public QGraphicsView
 
 public:
     explicit AnimationView(QWidget *parent = 0);
-    void add_players(QVector<PlayerView *> &players_, QString local_id);
+    void add_players(QVector<PlayerView *> &last_frame, QVector<PlayerView *> &next_frame, QString local_id);
 
 private:
      QGraphicsScene scene;

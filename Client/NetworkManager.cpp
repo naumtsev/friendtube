@@ -96,7 +96,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
                   players_.push_back(new PlayerView(Player(QjsonArray.toObject())));
               }
               QMutexLocker player_locker{&client->room->player_mutex}; // То, что Женя подсказал
-              client->room->players = std::move(players_);
+              client->room->next_frame = std::move(players_);
              qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
             return;
         }

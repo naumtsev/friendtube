@@ -34,28 +34,41 @@ AnimationView::AnimationView(QWidget *parent) :
         //scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
         this->setScene(&scene);          // Устанавливаем сцену в виджет
         scene.setItemIndexMethod(QGraphicsScene::NoIndex);
-        timer_update_scene = new QTimer();
-        connect(timer_update_scene, SIGNAL(timeout()), &scene, SLOT(update()));
-        timer_update_scene->start(20);
+    timer_update_scene = new QTimer();
+    connect(timer_update_scene, SIGNAL(timeout()), &scene, SLOT(update()));
+    timer_update_scene->start(10);
 }
 
 
-void AnimationView::add_players(QVector<PlayerView *> &players_, QString local_id){
+void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<PlayerView *> &next_frame, QString local_id){
     qDebug() << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\";
-    scene.clear();
+    //scene.clear();
     bool draw_local_player = false;
     QBrush whiteBrush(Qt::white);
     QPen blackPen(Qt::black);
-    std::cout<<players_.size()<<std::endl;
-    for(int i = 0; i < players_.size(); i++){
-        if(players_[i]->client_id != local_id || draw_local_player){
+    for(int i = 0; i < next_frame.size(); i++){
+        if(next_frame[i]->client_id != local_id || draw_local_player){
             std::cout<<"11111111111111111111111111111111111111111111111111111111111111111111"<<std::endl;
-            players_[i]->update_state();
-            scene.addItem(players_[i]);
-            scene.addItem(players_[i]->name);
+            next_frame[i]->update_state();
+            scene.addItem(next_frame[i]);
+            scene.addItem(next_frame[i]->name);
         } else {
             draw_local_player = true;
         }
     }
 
+    bool clear_local_player = false;
+    for(int i = 0; i < last_frame.size(); i++){
+        if(last_frame[i]->client_id != local_id || clear_local_player){
+            std::cout<<"erase_players"<<std::endl;
+            scene.removeItem(last_frame[i]);
+            scene.removeItem(last_frame[i]->name);
+        } else {
+            clear_local_player = true;
+        }
+    }
+
+    //last_frame.clear();
+    last_frame = std::move(next_frame);
+    next_frame.clear();
 }

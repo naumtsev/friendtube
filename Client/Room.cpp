@@ -23,8 +23,11 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 
     local_player =  player_;
 
-    players.clear();
-    players = players_;
+    //players.clear();
+    //players = players_;
+
+    next_frame.clear();
+    next_frame = players_;
 
     QTimer *update_draw_timer = new QTimer();
     connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -47,9 +50,8 @@ void Room::draw_scene(){ // event сам и не нужен
     qDebug() << "ROOM DRAW";
     update_local_player_position(); // обновляем позицию игрока
     QMutexLocker locker {&player_mutex};
-    players.push_back(new PlayerView(*local_player));               // добавляем в конец локального игрока
-    animation_scene->add_players(players, local_player->client_id);
-    players.clear();
+    next_frame.push_back(new PlayerView(*local_player));               // добавляем в конец локального игрока
+    animation_scene->add_players(last_frame, next_frame, local_player->client_id);
 
     local_player->chat();
 }
