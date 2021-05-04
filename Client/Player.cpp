@@ -3,18 +3,16 @@
 
 Player::Player(const QString& player_name_, const QString& color_player_, QObject *parent) :
     QObject(parent) {
-    // задать ориентацию (смотрит влево или вправо)
     connect(timer_move, &QTimer::timeout, this, &Player::move);
 
     setPos(30, 30);
 
     download_pixmap();
 
-    // имя
     color_player = color_player_;
     name->setPlainText(player_name_);
     connect(&timer_sprite, &QTimer::timeout, this, &Player::next_frame);
-    timer_sprite.start(50); // если на 100, то очень плохо движется имя, поэтому при показе нужно на 30 сделать или на 10
+    timer_sprite.start(50);
 }
 
 Player::Player(QJsonObject json_player){
@@ -64,7 +62,6 @@ void Player::download_pixmap(){
 }
 
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
-
     const int FPS = 100;
 
     update_movement(apKeyEvent);
@@ -108,42 +105,42 @@ void Player::move(){
 
 void Player::update_movement(QKeyEvent *apKeyEvent){
     //int apKey = apKeyEvent->key();
-        switch(apKeyEvent->key())
+    switch(apKeyEvent->key())
+    {
+        case Qt::Key_Left:
+        case Qt::Key_A:
         {
-            case Qt::Key_Left:
-            case Qt::Key_A:
-            {
-              set_left_direction();
-              move();
-              break;
-            }
-            case Qt::Key_Right:
-            case Qt::Key_D:
-            {
-              set_right_direction();
-              move();
-              break;
-            }
-            case Qt::Key_Up:
-            case Qt::Key_W:
-            {
-              set_up_direction();
-              move();
-              break;
-            }
-            case Qt::Key_Down:
-            case Qt::Key_S:
-            {
-              set_down_direction();
-              move();
-              break;
-            }
-            case Qt::Key_Space:
-            {
-              stop();
-              break;
-            }
-         }
+          set_left_direction();
+          move();
+          break;
+        }
+        case Qt::Key_Right:
+        case Qt::Key_D:
+        {
+          set_right_direction();
+          move();
+          break;
+        }
+        case Qt::Key_Up:
+        case Qt::Key_W:
+        {
+          set_up_direction();
+          move();
+          break;
+        }
+        case Qt::Key_Down:
+        case Qt::Key_S:
+        {
+          set_down_direction();
+          move();
+          break;
+        }
+        case Qt::Key_Space:
+        {
+          stop();
+          break;
+        }
+     }
     /*
     if(apKey == Qt::Key_W) {                                               //вверх
         movement.y -=  sign*move_distance;
@@ -297,7 +294,6 @@ sprite_data Player::spriteData_from_json_to_sprite_data(QJsonObject json_sprite_
 }
 
 void Player::next_frame(){
-    //std::cout<<current_frame<<std::endl;
     qreal Dy = 0;
     if(state == AnimateState::Standing){
         if(current_frame % 2 == 0) {
@@ -333,7 +329,6 @@ void Player::next_frame(){
             break;
         }
     }
-    //QGraphicsItem::update();
 }
 
 

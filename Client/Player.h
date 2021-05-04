@@ -44,8 +44,7 @@ public slots:
     void move();
 
 public:
-    explicit Player(QString color_player);
-    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_player_ = "", QObject *parent = 0); // записывание имени
+    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_player_ = ":/pics/sheets/m_DinoSprites - mortBIG.png", QObject *parent = 0); // записывание имени
 
     Player(QJsonObject json_player);
     QJsonDocument to_json();
@@ -71,7 +70,6 @@ public:
 
     ~Player();
 
-
 private slots:
     void next_frame();
 
@@ -87,10 +85,6 @@ public:
     QString color_player = ":/pics/sheets/m_DinoSprites - mortBIG.png";
 
     QGraphicsTextItem *name = new QGraphicsTextItem;
-    //QString player_name = "YOUR_PLAYER_NAME"; // имя игрока
-
-    //double x = 30;
-    //double y = 30;
 
     Message player_message;
     QString client_id;

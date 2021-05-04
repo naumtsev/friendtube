@@ -34,9 +34,9 @@ AnimationView::AnimationView(QWidget *parent) :
         //scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
         this->setScene(&scene);          // Устанавливаем сцену в виджет
         scene.setItemIndexMethod(QGraphicsScene::NoIndex);
-        //timer_update_scene = new QTimer();
-        //connect(timer_update_scene, SIGNAL(timeout()), &scene, SLOT(udpate()));
-        //timer_update_scene->start(20);
+        timer_update_scene = new QTimer();
+        connect(timer_update_scene, SIGNAL(timeout()), &scene, SLOT(update()));
+        timer_update_scene->start(20);
 }
 
 

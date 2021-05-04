@@ -10,7 +10,6 @@
 #include "Room.h"
 #include <QThread>
 #include <QRegExp>
-#include <QMovie>
 
 
 QT_BEGIN_NAMESPACE
@@ -39,7 +38,6 @@ public:
     Client *client;
     QColor circle_color = Qt::red;
     Player *player;
-    QMovie  gif_animation_dino;
 
 private slots:
     void on_nameEdit_textChanged(const QString &arg1);

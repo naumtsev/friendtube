@@ -80,7 +80,6 @@ void Menu::on_RedDino_clicked() {
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeMort.png");
     ui->label_2->setPixmap(picture_character_in_menu);
-    update();
 }
 
 void Menu::on_BlueDino_clicked()
@@ -89,7 +88,6 @@ void Menu::on_BlueDino_clicked()
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeDoux.png");
     ui->label_2->setPixmap(picture_character_in_menu);
-    update();
 }
 
 void Menu::on_YellowDino_clicked()
@@ -98,7 +96,6 @@ void Menu::on_YellowDino_clicked()
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeTard.png");
     ui->label_2->setPixmap(picture_character_in_menu);
-    update();
 }
 
 void Menu::on_GreenDino_clicked()
@@ -107,7 +104,6 @@ void Menu::on_GreenDino_clicked()
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeVita.png");
     ui->label_2->setPixmap(picture_character_in_menu);
-    update();
 }
 
 /*
