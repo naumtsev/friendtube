@@ -40,7 +40,6 @@ PlayerView::PlayerView(const PlayerView& player_view){
 }
 
 void PlayerView::update_player(){
-    qDebug() << "update_player3333333333333333333333333333333333333333333333333333333333333333333";
 }
 
 QRectF PlayerView::boundingRect() const{
@@ -48,7 +47,6 @@ QRectF PlayerView::boundingRect() const{
 }
 
 void PlayerView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){ // почему-то не работает ж(
-    qDebug() << "PlayerView::paint2222222222222222222222222222222222222222222222222222222222" << "\n";
     painter->drawPixmap(0,0,Pixmaps[static_cast<int>(state)].first,(csd().offset*current_frame + csd().border),0,csd().width,csd().height);
 }
 

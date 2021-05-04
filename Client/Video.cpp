@@ -20,7 +20,6 @@ QJsonDocument Video::to_json() {
     QJsonObject json_video;
     json_video.insert("stream_url", QJsonValue::fromVariant(stream_url));
     json_video.insert("sender_name", QJsonValue::fromVariant(sender_name));
-
     QJsonDocument doc(json_video);
     return doc;
 }

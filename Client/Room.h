@@ -3,7 +3,9 @@
 
 #include "Player.h"
 #include "PlayerView.h"
-#include "AnimationView.h"
+#include "RoomView.h"
+#include "VideoPlayer.h"
+
 #include <QWidget>
 #include <QIcon>
 #include <QPainter>
@@ -46,14 +48,17 @@ signals:
 
 public:
     Ui::Room          *ui;
-    AnimationView     *animation_scene;
+
     Player            *local_player;
     QTimer            *update_draw_timer;
     int                FPS = 60;
     QMutex player_mutex;
-    //QVector<PlayerView> players;
     QVector<PlayerView *> players;
     Client *client;
+
+    RoomView *room_view;
+  //  VideoPlayer *video_player;
+
     bool is_got_scene = false;
     bool is_updated_data = false;
 };

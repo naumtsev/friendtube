@@ -7,68 +7,65 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     QWidget(parent),
     ui(new Ui::Room), client(client_) {
     ui->setupUi(this);
-    animation_scene = new AnimationView();
-    ui->gridLayout->addWidget(animation_scene);
+
+
+    qDebug() << "Room THREAD " << QThread::currentThreadId();
+
+    room_view = new RoomView(this);
+
+    ui->gridLayout->addWidget(room_view);
     ui->gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    //animation_scene->show();
 
     this->resize(1280,720);
     this->setFixedSize(1280,720);
-    //this->showFullScreen();
+
     this->setWindowTitle("FriendTube");
+
     QPixmap icon;
     icon.load(":/images/icon.png");
     this->setWindowIcon(QIcon(icon));
 
-    local_player =  player_;
+    // need add many connections
+    //video_player = new VideoPlayer(room_view->video_widget);
 
+    local_player =  player_;
     players.clear();
     players = players_;
 
     QTimer *update_draw_timer = new QTimer();
     connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
     update_draw_timer->start(1000 / FPS);
-
-
 }
 
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
-    std::cout<<"is_got_scene: "<<is_got_scene<<std::endl;
     if(!is_got_scene) {
         emit request_get_scene_on_the_server();
-        qDebug() << "GET SCENE";
         is_got_scene = true;
     }
 }
 
 void Room::draw_scene(){ // event сам и не нужен
-    qDebug() << "ROOM DRAW";
     update_local_player_position(); // обновляем позицию игрока
     QMutexLocker locker {&player_mutex};
     players.push_back(new PlayerView(*local_player));               // добавляем в конец локального игрока
-    animation_scene->add_players(players, local_player->client_id);
+    room_view->update_players(players, local_player->client_id);
     players.clear();
 
     local_player->chat();
 }
 
 void Room::update_local_player_position(){
-    qDebug() << "test";
-    qDebug() << local_player->direction;
-
     if(!is_updated_data) {
         auto data = local_player->to_json();
         emit update_state_on_the_server(data);
         is_updated_data = true;
-        qDebug() << "UPDATE SCENE";
     }
 }
 
 
 //TODO: тут нужно поменять состояние игрока пока он пишет, чтобы он просто остановился или на конкретном кадре, типа в полёте.
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
-    //qDebug() << "KeyPressEvent";
     if(apKeyEvent->key() == Qt::Key_Escape) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
@@ -107,8 +104,10 @@ void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
     local_player->keyReleaseEvent(apKeyEvent);
 }
 
-Room::~Room()
-{
+Room::~Room() {
     delete ui;
+
+    //video_player->~VideoPlayer();
+    //room_view->~RoomView();
 }
 

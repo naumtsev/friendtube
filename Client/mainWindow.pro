@@ -1,9 +1,11 @@
-QT       += core
-QT       += network
-QT       += gui
-QT       += websockets
-QT       += widgets
-QT       += multimedia
+QT      += core
+QT      += network
+QT      += gui
+QT      += websockets
+QT      += widgets
+QT      += multimedia
+QT      += multimediawidgets
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,7 +16,6 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    AnimationView.cpp \
     Client.cpp \
     HSL.cpp \
     Menu.cpp \
@@ -23,11 +24,11 @@ SOURCES += \
     Player.cpp \
     PlayerView.cpp \
     Room.cpp \
+    RoomView.cpp \
     Video.cpp \
     VideoPlayer.cpp \
     main.cpp
 HEADERS += \
-    AnimationView.h \
     Client.h \
     HSL.h \
     Menu.h \
@@ -36,6 +37,7 @@ HEADERS += \
     Player.h \
     PlayerView.h \
     Room.h \
+    RoomView.h \
     Video.h \
     VideoPlayer.h
 FORMS += \

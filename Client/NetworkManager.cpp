@@ -51,16 +51,15 @@ void NetworkManager::socketReady(const QByteArray &data) {
 
     QJsonParseError json_data_error;
     QJsonObject json_data = QJsonDocument::fromJson(data, &json_data_error).object();
-    qDebug() << "_______________\n" << json_data << "\n______________\n";
+    //qDebug() << "_______________\n" << json_data << "\n______________\n";
 
     if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
         QString event_type = json_data.value("type").toString();
-        qDebug() << event_type;
 
         if(event_type == "first_connection") {
            client_id = json_data.value("client_id").toString();
            client->menu->player->client_id = client_id;
-           qDebug() << "OK";
+         //  qDebug() << "OK";
            QJsonObject req;
            req.insert("type", "connect");
            req.insert("person_data", client->menu->player->to_json().object());
@@ -68,7 +67,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
 
            sendData(doc.toJson());
 
-           qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+          // qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
            return;
         } else if(event_type == "connected") {
             QJsonObject scene = json_data.value("scene_data").toObject();
@@ -84,7 +83,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
             return;
         } else if(event_type == "updated_successfully"){
              client->room->is_updated_data = false;
-             qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+            // qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
             return;
             // server update our state successfully
         } else if(event_type == "scene_data") {
@@ -97,7 +96,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
               }
               QMutexLocker player_locker{&client->room->player_mutex}; // То, что Женя подсказал
               client->room->players = std::move(players_);
-             qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+             //qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
             return;
         }
     }

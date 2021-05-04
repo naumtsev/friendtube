@@ -1,6 +1,6 @@
-#include "AnimationView.h"
+#include "RoomView.h"
 
-AnimationView::AnimationView(QWidget *parent) :
+RoomView::RoomView(QWidget *parent) :
     QGraphicsView(parent)
 {
     setRenderHint(QPainter::Antialiasing);
@@ -31,31 +31,42 @@ AnimationView::AnimationView(QWidget *parent) :
 //        this->setMaximumHeight(720);
 //        this->setMaximumHeight(1280);
 
-        //scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
-        this->setScene(&scene);          // Устанавливаем сцену в виджет
-        scene.setItemIndexMethod(QGraphicsScene::NoIndex);
-        //timer_update_scene = new QTimer();
-        //connect(timer_update_scene, SIGNAL(timeout()), &scene, SLOT(udpate()));
-        //timer_update_scene->start(20);
+        scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
+        this->setScene(scene);          // Устанавливаем сцену в виджет
+        scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+
+        video_widget = new QVideoWidget(this);
+        video_widget->resize(960 / 1.5, 576 / 1.5);
+        video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
+
+        qDebug() << "Video widget was created";
+
+        timer_update_scene = new QTimer();
+        connect(timer_update_scene, SIGNAL(timeout()), scene, SLOT(update()));
+        timer_update_scene->start(20);
 }
 
 
-void AnimationView::add_players(QVector<PlayerView *> &players_, QString local_id){
-    qDebug() << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\";
-    scene.clear();
+void RoomView::update_players(QVector<PlayerView *> &players_, QString local_id){
+   // scene->clear();
     bool draw_local_player = false;
     QBrush whiteBrush(Qt::white);
     QPen blackPen(Qt::black);
-    std::cout<<players_.size()<<std::endl;
     for(int i = 0; i < players_.size(); i++){
         if(players_[i]->client_id != local_id || draw_local_player){
-            std::cout<<"11111111111111111111111111111111111111111111111111111111111111111111"<<std::endl;
             players_[i]->update_state();
-            scene.addItem(players_[i]);
-            scene.addItem(players_[i]->name);
+            scene->addItem(players_[i]);
+            scene->addItem(players_[i]->name);
         } else {
             draw_local_player = true;
         }
     }
+}
 
+
+
+RoomView::~RoomView() {
+    scene->~QGraphicsScene();
+    timer_update_scene->stop();
+    timer_update_scene->~QTimer();
 }
