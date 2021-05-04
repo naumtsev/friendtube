@@ -61,6 +61,7 @@ void Client::return_to_menu(const QString &reason) {
         room = nullptr;
     }
 
-    emit menu->make_advert(reason);
+    if(!reason.isEmpty())
+        emit menu->make_advert(reason);
     menu->setVisible(true);
 }

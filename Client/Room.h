@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "PlayerView.h"
 #include "AnimationView.h"
+#include "Client.h"
 #include <QWidget>
 #include <QIcon>
 #include <QPainter>

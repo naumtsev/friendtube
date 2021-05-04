@@ -1,8 +1,7 @@
 #include "AnimationView.h"
 
 AnimationView::AnimationView(QWidget *parent) :
-    QGraphicsView(parent)
-{
+    QGraphicsView(parent) {
     setRenderHint(QPainter::Antialiasing);
 
     setCacheMode(QGraphicsView::CacheNone);
@@ -41,14 +40,12 @@ AnimationView::AnimationView(QWidget *parent) :
 
 
 void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<PlayerView *> &next_frame, QString local_id){
-    qDebug() << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\";
     //scene.clear();
     bool draw_local_player = false;
     QBrush whiteBrush(Qt::white);
     QPen blackPen(Qt::black);
     for(int i = 0; i < next_frame.size(); i++){
         if(next_frame[i]->client_id != local_id || draw_local_player){
-            std::cout<<"11111111111111111111111111111111111111111111111111111111111111111111"<<std::endl;
             next_frame[i]->update_state();
             scene.addItem(next_frame[i]);
             scene.addItem(next_frame[i]->name);

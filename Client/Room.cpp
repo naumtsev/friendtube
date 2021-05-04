@@ -38,16 +38,16 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
-    std::cout<<"is_got_scene: "<<is_got_scene<<std::endl;
+    //std::cout<<"is_got_scene: "<<is_got_scene<<std::endl;
     if(!is_got_scene) {
         emit request_get_scene_on_the_server();
-        qDebug() << "GET SCENE";
+        //qDebug() << "GET SCENE";
         is_got_scene = true;
     }
 }
 
 void Room::draw_scene(){ // event сам и не нужен
-    qDebug() << "ROOM DRAW";
+    //qDebug() << "ROOM DRAW";
     update_local_player_position(); // обновляем позицию игрока
     QMutexLocker locker {&player_mutex};
     next_frame.push_back(new PlayerView(*local_player));               // добавляем в конец локального игрока
@@ -57,14 +57,14 @@ void Room::draw_scene(){ // event сам и не нужен
 }
 
 void Room::update_local_player_position(){
-    qDebug() << "test";
-    qDebug() << local_player->direction;
+    //qDebug() << "test";
+    //qDebug() << local_player->direction;
 
     if(!is_updated_data) {
         auto data = local_player->to_json();
         emit update_state_on_the_server(data);
         is_updated_data = true;
-        qDebug() << "UPDATE SCENE";
+      //  qDebug() << "UPDATE SCENE";
     }
 }
 
@@ -76,8 +76,8 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
-            //CreateMainWidget(local_player->player_name);
-            this->close();
+            client->return_to_menu("");
+            return;
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
         local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
