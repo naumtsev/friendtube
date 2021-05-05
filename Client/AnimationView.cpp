@@ -44,8 +44,8 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
         }
         clear_vector(last_frame, local_id);
         last_frame = next_frame;
-        next_frame.clear();
     }
+    next_frame.clear();
 }
 
 void AnimationView::clear_vector(QVector<PlayerView *> &last_frame, QString local_id){
