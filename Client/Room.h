@@ -43,6 +43,8 @@ public slots:
 signals:
     void request_get_scene_on_the_server();
     void update_state_on_the_server(QJsonDocument);
+    void return_to_menu(const QString &reason);
+
 
 public:
     Ui::Room          *ui;

@@ -36,6 +36,8 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 
 }
 
+// может быть проблема в том, что не успевает запрос прийти с сервака и поэтому в массиве last_frame
+// содержутся те же элементы, поэтому мы удаляем их и не можем новые создать!!!
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
     std::cout<<"is_got_scene: "<<is_got_scene<<std::endl;
@@ -57,8 +59,8 @@ void Room::draw_scene(){ // event сам и не нужен
 }
 
 void Room::update_local_player_position(){
-    qDebug() << "test";
-    qDebug() << local_player->direction;
+    //qDebug() << "test";
+    //qDebug() << local_player->direction;
 
     if(!is_updated_data) {
         auto data = local_player->to_json();

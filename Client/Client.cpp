@@ -16,6 +16,8 @@ void Client::connect_to_server(const QString &ip, int port) {
 
 
     n_manager = new NetworkManager(this, ip, port);
+
+    connect(room, SIGNAL(return_to_menu(const QString &)), this, SLOT(return_to_menu(const QString &)));
     connect(n_manager, SIGNAL(disconnect(const QString &)), this, SLOT(return_to_menu(const QString &)));
 
     n_thread = new QThread();

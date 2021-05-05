@@ -13,7 +13,6 @@ public:
     PlayerView(Player& player);
     PlayerView(Player&& player);
     PlayerView(const PlayerView& player_view);
-    void update_player();
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
