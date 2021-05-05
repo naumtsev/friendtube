@@ -7,6 +7,7 @@
 #include <QJsonParseError>
 #include <QFile>
 #include <QTextStream>
+#include <QGraphicsTextItem>
 
 struct Message{
     QString send_message = "";          // сообщение

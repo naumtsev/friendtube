@@ -42,6 +42,7 @@ public:
     QVector<QPair<QPixmap, sprite_data>> Pixmaps;
 
     QGraphicsTextItem *name = new QGraphicsTextItem;
+    QGraphicsTextItem *message = new QGraphicsTextItem;
 };
 
 #endif // PLAYERVIEW_H

@@ -2,6 +2,7 @@
 
 PlayerView::PlayerView(Player& player){
     name->setPlainText(player.name->toPlainText());
+    message->setPlainText(player.message->toPlainText());
     setPos(player.pos().x(), player.pos().y());
     color_player = player.color_player;
     client_id = player.client_id;
@@ -16,6 +17,7 @@ PlayerView::PlayerView(Player& player){
 PlayerView::PlayerView(Player&& player){
     name->setPlainText(player.name->toPlainText());
     setPos(player.pos().x(), player.pos().y());
+    message->setPlainText(player.message->toPlainText());
     color_player = std::move(player.color_player);
     client_id = std::move(player.client_id);
     player_message = std::move(player.player_message);
@@ -29,6 +31,7 @@ PlayerView::PlayerView(Player&& player){
 PlayerView::PlayerView(const PlayerView& player_view){
     name = player_view.name;
     setPos(player_view.pos().x(), player_view.pos().y());
+    message = player_view.message;
     color_player = player_view.color_player;
     client_id = player_view.client_id;
     player_message = player_view.player_message;
@@ -60,9 +63,11 @@ void PlayerView::update_position_name(){
     if(direction == "left"){
         int left_x = 24;                        // не знаю костыль ли это или нормальное решение.
         name->setPos(pos().x() + left_x  - name->boundingRect().width()/2, pos().y() - 15);     // чтобы не было глюков при замене direction нужно,
+        message->setPos(pos().x() + left_x  - name->boundingRect().width()/2, pos().y() - 30);
     }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
         int right_x = 24;
         name->setPos(pos().x() - right_x - name->boundingRect().width()/2, pos().y() - 15); // -  boundingRect().height()/2
+        message->setPos(pos().x() - right_x - name->boundingRect().width()/2, pos().y() - 30);
     }
 }
 

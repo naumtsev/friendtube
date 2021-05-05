@@ -84,6 +84,7 @@ public:
     QString color_player = ":/pics/sheets/m_DinoSprites - mortBIG.png";
 
     QGraphicsTextItem *name = new QGraphicsTextItem;
+    QGraphicsTextItem *message = new QGraphicsTextItem;
 
     Message player_message;
     QString client_id;

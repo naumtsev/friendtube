@@ -24,9 +24,9 @@ AnimationView::AnimationView(QWidget *parent) :
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);    // Растягиваем содержимое по виджету
 
     this->setScene(&scene);
-   // timer_update_scene = new QTimer();
-   // connect(timer_update_scene, SIGNAL(timeout()), this, SLOT(update()));
-   // timer_update_scene->start(3);
+    timer_update_scene = new QTimer();
+    connect(timer_update_scene, SIGNAL(timeout()), this, SLOT(update()));
+    timer_update_scene->start(3);
 }
 
 
@@ -38,6 +38,7 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
                 next_frame[i]->update_state();
                 scene.addItem(next_frame[i]);
                 scene.addItem(next_frame[i]->name);
+                scene.addItem(next_frame[i]->message);
             } else {
                 draw_local_player = true;
             }
@@ -54,6 +55,7 @@ void AnimationView::clear_vector(QVector<PlayerView *> &last_frame, QString loca
         if(last_frame[i]->client_id != local_id || clear_local_player){
             scene.removeItem(last_frame[i]);
             scene.removeItem(last_frame[i]->name);
+            scene.removeItem(last_frame[i]->message);
         } else {
             clear_local_player = true;
         }

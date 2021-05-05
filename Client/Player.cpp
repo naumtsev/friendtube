@@ -19,7 +19,10 @@ Player::Player(QJsonObject json_player){
     name->setPlainText(json_player["name"].toString());
     client_id =json_player["id"].toString();
     setPos(json_player["x"].toDouble(), json_player["y"].toDouble());
+
     player_message = from_json_to_message(json_player["message"].toObject());// передаём сообщение
+    message->setPlainText(player_message.send_message);
+
     color_player = json_player["color_player"].toString();
     current_frame = json_player["current_frame"].toInt();
     direction = json_player["direction"].toString();
@@ -183,6 +186,7 @@ void Player::no_message(){
     player_message.metka_message = false;
     player_message.metka_message_painter = false;
     player_message.send_message = "";
+    message->setPlainText(player_message.send_message);
 }
 
 QJsonDocument Player::to_json(){

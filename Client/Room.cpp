@@ -96,6 +96,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
             } else {
                 if(0 < str.size() && str.size() < 17) {
                    local_player->player_message.send_message = str;
+                   local_player->message->setPlainText(local_player->player_message.send_message);
                    local_player->player_message.metka_message = true;
                    local_player->player_message.metka_message_painter = false;
                     break;
