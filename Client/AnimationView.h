@@ -5,6 +5,8 @@
 #include "PlayerView.h"
 #include <QTimer>
 #include <QTime>
+#include <QPushButton>
+
 class AnimationView : public QGraphicsView
 {
     Q_OBJECT
@@ -16,11 +18,13 @@ public:
 public slots:
     void clear_vector(QVector<PlayerView *> &last_frame, QString local_id);
 
+
 private:
      QGraphicsScene scene;
      int x = 1, y = 1;
      int distance = 1;
      QTimer *timer_update_scene;
+
 };
 
 #endif // ANIMATIONVIEW_H

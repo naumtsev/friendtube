@@ -22,6 +22,7 @@ public:
     friend Menu;
     friend Room;
     friend NetworkManager;
+
 signals:
 
 public slots:

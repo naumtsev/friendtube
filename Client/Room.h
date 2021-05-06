@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "PlayerView.h"
 #include "AnimationView.h"
+#include "Client.h"
 #include <QWidget>
 #include <QIcon>
 #include <QPainter>
@@ -17,6 +18,7 @@
 #include <QThreadPool>
 #include <QGraphicsView>
 #include <QMutex>
+#include <QPushButton>
 
 struct Menu;
 struct Client;
@@ -39,6 +41,7 @@ public:
 
 public slots:
     void update_local_player_position();
+    void close_room();
 
 signals:
     void request_get_scene_on_the_server();
@@ -58,6 +61,7 @@ public:
     Client *client;
     bool is_got_scene = false;
     bool is_updated_data = false;
+    QPushButton *push_button_exit_in_menu;
 };
 
 #endif // ROOM_H

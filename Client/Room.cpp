@@ -33,7 +33,13 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
     update_draw_timer->start(1000 / FPS);
 
-
+    // добавляем кнопки для выхода из комнаты
+    push_button_exit_in_menu = new QPushButton("Return to menu", this);
+    push_button_exit_in_menu->setGeometry({this->width() - push_button_exit_in_menu->geometry().width() - 15,
+                                   10,
+                                   push_button_exit_in_menu->geometry().width(),
+                                   push_button_exit_in_menu->geometry().height()});
+    connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
 }
 
 // может быть проблема в том, что не успевает запрос прийти с сервака и поэтому в массиве last_frame
@@ -79,7 +85,9 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
                               QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
             //CreateMainWidget(local_player->player_name);
-            this->close();
+            //this->close();
+            client->return_to_menu("");
+            return;
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
         local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
@@ -111,6 +119,12 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
     //qDebug() << "KeyReleaseEvent";
     local_player->keyReleaseEvent(apKeyEvent);
+}
+
+void Room::close_room() {
+    qDebug() << "||||||||||||close_room||||||||||||||";
+    client->return_to_menu("");
+    return;
 }
 
 Room::~Room()
