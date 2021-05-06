@@ -72,7 +72,8 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
                               QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
             //CreateMainWidget(local_player->player_name);
-            this->close();
+            client->return_to_menu("");
+            return ;
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
         local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
