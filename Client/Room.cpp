@@ -46,16 +46,15 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 // содержутся те же элементы, поэтому мы удаляем их и не можем новые создать!!!
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
-    std::cout<<"is_got_scene: "<<is_got_scene<<std::endl;
     if(!is_got_scene) {
         emit request_get_scene_on_the_server();
-        qDebug() << "GET SCENE";
+       // qDebug() << "GET SCENE";
         is_got_scene = true;
     }
 }
 
 void Room::draw_scene(){ // event сам и не нужен
-    qDebug() << "ROOM DRAW";
+   // qDebug() << "ROOM DRAW";
     update_local_player_position(); // обновляем позицию игрока
     QMutexLocker locker {&player_mutex};
     next_frame.push_back(new PlayerView(*local_player));               // добавляем в конец локального игрока
@@ -65,21 +64,17 @@ void Room::draw_scene(){ // event сам и не нужен
 }
 
 void Room::update_local_player_position(){
-    //qDebug() << "test";
     //qDebug() << local_player->direction;
 
     if(!is_updated_data) {
         auto data = local_player->to_json();
         emit update_state_on_the_server(data);
-        is_updated_data = true;
-        qDebug() << "UPDATE SCENE";
-    }
+        is_updated_data = true;    }
 }
 
 
 //TODO: тут нужно поменять состояние игрока пока он пишет, чтобы он просто остановился или на конкретном кадре, типа в полёте.
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
-    //qDebug() << "KeyPressEvent";
     if(apKeyEvent->key() == Qt::Key_Escape) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
@@ -117,12 +112,10 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
 }
 
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
-    //qDebug() << "KeyReleaseEvent";
     local_player->keyReleaseEvent(apKeyEvent);
 }
 
 void Room::close_room() {
-    qDebug() << "||||||||||||close_room||||||||||||||";
     client->return_to_menu("");
     return;
 }
