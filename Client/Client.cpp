@@ -17,7 +17,6 @@ void Client::connect_to_server(const QString &ip, int port) {
 
     n_manager = new NetworkManager(this, ip, port);
 
-    connect(room, SIGNAL(return_to_menu(const QString &)), this, SLOT(return_to_menu(const QString &)));
     connect(n_manager, SIGNAL(disconnect(const QString &)), this, SLOT(return_to_menu(const QString &)));
 
     n_thread = new QThread();
@@ -37,6 +36,7 @@ void Client::createRoom(Player *player, QVector<PlayerView *> players_) {
     qDebug() << QThread::currentThreadId() << "CREATE ROOM";
 
     room = new Room(this, player, players_);
+    connect(room, SIGNAL(return_to_menu(const QString &)), n_manager, SLOT(return_to_menu(const QString &)));
     connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager, SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager, SLOT(update_state_on_the_server(QJsonDocument)));
 

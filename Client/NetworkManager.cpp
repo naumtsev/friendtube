@@ -38,8 +38,9 @@ void NetworkManager::onConnected() {
 void NetworkManager::socketDisconnect() {
 
    qDebug() << "Disconnect";
-   socket->close();
-//   emit disconnect("Socket error: server closed connection");
+  // socket->close();
+  // client->return_to_menu("");
+   //emit disconnect("Socket error: server closed connection");
 }
 
 
@@ -51,7 +52,6 @@ void NetworkManager::socketReady(const QByteArray &data) {
 
     QJsonParseError json_data_error;
     QJsonObject json_data = QJsonDocument::fromJson(data, &json_data_error).object();
-    //qDebug() << "_______________\n" << json_data << "\n______________\n";
 
     if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
         QString event_type = json_data.value("type").toString();
@@ -129,10 +129,25 @@ void NetworkManager::request_get_scene_on_the_server(){
 }
 
 
+void NetworkManager::return_to_menu(const QString &reason){
+    QMutexLocker locker(socket_mutex);
+
+    QJsonObject req;
+    req.insert("type", "return_to_menu");
+    req.insert("reason", reason);
+    req.insert("client_id", client_id);
+    QJsonDocument doc(req);
+
+    sendData(doc.toJson());
+}
+
+
+
 void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
     switch (error) {
     case QAbstractSocket::SocketError::RemoteHostClosedError:
-        emit disconnect("Socket error: server closed connection");
+        //emit disconnect("Socket error: server closed connection");
+        emit disconnect(""); // фича, надо будет как-нибудь пофиксить
         break;
     case QAbstractSocket::SocketError::HostNotFoundError:
         emit disconnect("Socket error: host was not found");
@@ -144,7 +159,7 @@ void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
         emit disconnect("Socket error: the socket operation timed out");
         break;
     default:
-        emit disconnect("??? Socket error");
+        emit disconnect("Socket error: unknown error");
         break;
     }
 }

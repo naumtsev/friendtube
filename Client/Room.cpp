@@ -34,11 +34,17 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     update_draw_timer->start(1000 / FPS);
 
     // добавляем кнопки для выхода из комнаты
-    push_button_exit_in_menu = new QPushButton("Return to menu", this);
-    push_button_exit_in_menu->setGeometry({this->width() - push_button_exit_in_menu->geometry().width() - 15,
-                                   10,
+    push_button_exit_in_menu = new QPushButton("Leave the room", this);
+
+    push_button_exit_in_menu->setFixedSize(120, 25);
+
+    push_button_exit_in_menu->setStyleSheet("QPushButton { border: 1px solid #8f8f91; border-radius: 3px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #f6f7fa); min-width: 80px; } QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #a0cd58, stop: 1 #bff774);}QPushButton:flat {border: none; }QPushButton:default {border-color: navy; /* делаем кнопку по умолчанию выпуклой */ }");
+
+    push_button_exit_in_menu->setGeometry({this->width() - push_button_exit_in_menu->geometry().width() - 10,
+                                   25,
                                    push_button_exit_in_menu->geometry().width(),
                                    push_button_exit_in_menu->geometry().height()});
+
     connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
 }
 
@@ -79,9 +85,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                               QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
-            //CreateMainWidget(local_player->player_name);
-            //this->close();
-            client->return_to_menu("");
+            emit return_to_menu("");
             return;
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
@@ -116,12 +120,12 @@ void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
 }
 
 void Room::close_room() {
-    client->return_to_menu("");
+    emit return_to_menu("");
     return;
 }
 
-Room::~Room()
-{
+Room::~Room() {
+
     delete ui;
 }
 

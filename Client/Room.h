@@ -48,7 +48,6 @@ signals:
     void update_state_on_the_server(QJsonDocument);
     void return_to_menu(const QString &reason);
 
-
 public:
     Ui::Room          *ui;
     AnimationView     *animation_scene;
