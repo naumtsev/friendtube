@@ -56,6 +56,7 @@ void Client::return_to_menu(const QString &reason) {
         room = nullptr;
     }
 
+    qDebug() << "Destroy ~Room";
 
     if(n_manager != nullptr) {
         n_manager->~NetworkManager();
