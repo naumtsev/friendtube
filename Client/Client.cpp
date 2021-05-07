@@ -49,22 +49,25 @@ void Client::createRoom(Player *player, QVector<PlayerView *> players_) {
 void Client::return_to_menu(const QString &reason) {
 
     qDebug() << "return to menu. Reason: " << reason;
-    if(n_manager != nullptr) {
 
-        n_manager->~NetworkManager();
-
-        n_thread->terminate();
-        n_thread->~QThread();
-        n_thread = nullptr;
-    }
 
     if(room != nullptr) {
         room->~Room();
         room = nullptr;
     }
 
+
+    if(n_manager != nullptr) {
+        n_manager->~NetworkManager();
+        n_thread->terminate();
+        n_thread->~QThread();
+        n_thread = nullptr;
+    }
+
+
+
     if(!reason.isEmpty()){
-           emit menu->make_advert(reason);
+        emit menu->make_advert(reason);
     }
     menu->setVisible(true);
 }

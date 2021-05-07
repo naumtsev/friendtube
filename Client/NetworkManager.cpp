@@ -8,6 +8,9 @@ NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_) :
 }
 
 NetworkManager::~NetworkManager(){
+    qDebug() << "~NetworkManager";
+    socket->close();
+    socket->~QWebSocket();
     socket_mutex->~QMutex();
 }
 
@@ -16,7 +19,7 @@ void NetworkManager::run() {
     socket = new QWebSocket();
 
    connect(socket, &QWebSocket::connected, this, &NetworkManager::onConnected);
-   connect(socket, &QWebSocket::disconnected, this, &NetworkManager::socketDisconnect);
+   //connect(socket, &QWebSocket::disconnected, this, &NetworkManager::socketDisconnect);
    connect(socket, &QWebSocket::binaryMessageReceived, this, &NetworkManager::socketReady);
    connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView *>)), client, SLOT(createRoom(Player*, QVector<PlayerView *>)));
 
@@ -24,9 +27,7 @@ void NetworkManager::run() {
     QString adress = "ws://" + ip + ":" + QString::number(port);
     qDebug() << "Try connect to " + adress;
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebSocketError(QAbstractSocket::SocketError)));
-
     socket->open(QUrl(adress));
-   //socket->open(QUrl("ws://localhost:" + QString::number(port)));
 }
 
 
@@ -159,7 +160,8 @@ void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
         emit disconnect("Socket error: the socket operation timed out");
         break;
     default:
-        emit disconnect("Socket error: unknown error");
+        emit disconnect(""); // фича, надо будет как-нибудь пофиксить
+        //emit disconnect("Socket error: unknown error");
         break;
     }
 }
