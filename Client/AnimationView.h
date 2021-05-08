@@ -14,6 +14,7 @@ class AnimationView : public QGraphicsView
 public:
     explicit AnimationView(QWidget *parent = 0);
     void add_players(QVector<PlayerView *> &last_frame, QVector<PlayerView *> &next_frame, QString local_id);
+    void display_message(PlayerView *player);
 
 public slots:
     void clear_vector(QVector<PlayerView *> &last_frame, QString local_id);

@@ -11,6 +11,7 @@
 #include <QLineEdit>
 #include <QWidget>
 #include <QDebug>
+#include <QDirIterator>
 #include "Player.h"
 
 class ChatWindow : public QWidget
@@ -18,7 +19,16 @@ class ChatWindow : public QWidget
     Q_OBJECT
 
 public:
+    ChatWindow();
     ChatWindow(Player &local_player, bool& close);
+
+    void init_parameters();
+
+    void init_buttons();
+    void init_close_window_buttons();
+    void init_black_white_emoji_buttons();
+    void init_multicolor_emoji_buttons();
+
     ~ChatWindow();
 
 public slots:
@@ -33,7 +43,9 @@ private:
     QPushButton *cancel;
     QPushButton *enter_message;
     QToolButton *show_emoji_list_button;
+    QToolButton *show_multicolor_emoji_list_button;
     QListWidget *show_emoji_list_widget;
+    QListWidget *show_multicolor_emoji_list_widget;
 
     std::unordered_map<QString, QString> map_emoji = {
         {"1", "\U0001F600"},

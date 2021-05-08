@@ -97,8 +97,10 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
             bool close = false;
 
             while (!close && i == 1){
-                chat_window = new ChatWindow(*local_player, close); // тут могут быть утечки памяти
-                chat_window->show();
+                if(!chat_window->isVisible()){
+                    chat_window = new ChatWindow(*local_player, close); // тут могут быть утечки памяти
+                    chat_window->show();
+                }
 //                connect(chat_window, &QWidget::close, [=](){
 //                    //local_player->player_message.send_message = str;
 //                    local_player->message->setPlainText(local_player->player_message.send_message);

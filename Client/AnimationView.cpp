@@ -38,7 +38,7 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
                 next_frame[i]->update_state();
                 scene.addItem(next_frame[i]);
                 scene.addItem(next_frame[i]->name);
-                scene.addItem(next_frame[i]->message);
+                display_message(next_frame[i]);
             } else {
                 draw_local_player = true;
             }
@@ -49,15 +49,39 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
     next_frame.clear();
 }
 
+void AnimationView::display_message(PlayerView *player){
+    if(player->player_message.send_message != ""){
+        if(player->player_message.type == "text"){
+            scene.addItem(player->message);
+        } else {
+            QPixmap emoji(player->player_message.send_message); // подкорректировать расположение изображения, чтобы прям над персонажем
+            emoji = emoji.scaled(25,25,Qt::KeepAspectRatio);
+            player->player_message.emoji = new QGraphicsPixmapItem(emoji);
+            player->player_message.emoji->setPos(player->message->pos());
+            scene.addItem(player->player_message.emoji);
+        }
+    }
+}
+
 void AnimationView::clear_vector(QVector<PlayerView *> &last_frame, QString local_id){
     bool clear_local_player = false;
     for(int i = 0; i < last_frame.size(); i++){
         if(last_frame[i]->client_id != local_id || clear_local_player){
-            scene.removeItem(last_frame[i]);
-            scene.removeItem(last_frame[i]->name);
-            scene.removeItem(last_frame[i]->message);
+            scene.removeItem(last_frame[i]); // тут скорее всего нужно удалять элемент
+            scene.removeItem(last_frame[i]->name); // тут скорее всего нужно удалять элемент
+            if(last_frame[i]->player_message.send_message != ""){
+                if(last_frame[i]->player_message.type == "text"){
+                    scene.removeItem(last_frame[i]->message); // тут скорее всего нужно удалять элемент
+                } else {
+                    scene.removeItem(last_frame[i]->player_message.emoji); // тут скорее всего нужно удалять элемент
+                    delete last_frame[i]->player_message.emoji;
+                }
+            }
         } else {
             clear_local_player = true;
         }
     }
 }
+
+
+

@@ -54,7 +54,7 @@ public:
     AnimationView     *animation_scene;
     Player            *local_player;
     QTimer            *update_draw_timer;
-    ChatWindow        *chat_window;
+    ChatWindow        *chat_window = new ChatWindow;
     int                FPS = 60;
     QMutex player_mutex;
     QVector<PlayerView *> last_frame;
