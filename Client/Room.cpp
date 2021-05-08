@@ -2,7 +2,6 @@
 #include "PlayerView.h"
 #include "ui_Room.h"
 
-
 Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Room), client(client_) {
@@ -90,11 +89,31 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
         }
     }else if(apKeyEvent->key() == Qt::Key_Q){
         local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
-
-        while(true){
+        int i = 1;
+        //while(true){
             bool click = false;
             QString message = "Your message....";
-            QString str = QInputDialog::getText(0, "Enter message!", message, QLineEdit::Normal, "", &click);
+            //QString str;
+            bool close = false;
+
+            while (!close && i == 1){
+                chat_window = new ChatWindow(*local_player, close); // тут могут быть утечки памяти
+                chat_window->show();
+//                connect(chat_window, &QWidget::close, [=](){
+//                    //local_player->player_message.send_message = str;
+//                    local_player->message->setPlainText(local_player->player_message.send_message);
+//                    local_player->player_message.metka_message = true;
+//                    local_player->player_message.metka_message_painter = false;
+//                });
+                i = 2;
+            }
+
+            //qDebug() << "ChatWindow";
+            //while(!close){
+            //}
+
+            //qDebug() << "ChatWindow";
+            /*QString str = QInputDialog::getText(0, "Enter message!", message, QLineEdit::Normal, "", &click);
             if(!click){ // была нажата кнопка Cancel
                 break;
             }
@@ -109,7 +128,8 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
                     break;
                 }
             }// TODO: эксперименты с размером сообщения и если нужно, то отредактировать
-        }
+            */
+        //}
     }else {
         local_player->keyPressEvent(apKeyEvent);
     }

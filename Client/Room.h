@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "PlayerView.h"
 #include "AnimationView.h"
+#include "ChatWindow.h"
 #include "Client.h"
 #include <QWidget>
 #include <QIcon>
@@ -53,6 +54,7 @@ public:
     AnimationView     *animation_scene;
     Player            *local_player;
     QTimer            *update_draw_timer;
+    ChatWindow        *chat_window;
     int                FPS = 60;
     QMutex player_mutex;
     QVector<PlayerView *> last_frame;

@@ -15,6 +15,7 @@ CONFIG += c++11
 
 SOURCES += \
     AnimationView.cpp \
+    ChatWindow.cpp \
     Client.cpp \
     HSL.cpp \
     Menu.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     main.cpp
 HEADERS += \
     AnimationView.h \
+    ChatWindow.h \
     Client.h \
     HSL.h \
     Menu.h \
