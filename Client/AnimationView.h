@@ -21,7 +21,7 @@ public slots:
 
 
 private:
-     QGraphicsScene scene;
+     QGraphicsScene *scene;
      int x = 1, y = 1;
      int distance = 1;
      QTimer *timer_update_scene;

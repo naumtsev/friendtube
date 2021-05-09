@@ -24,6 +24,7 @@ SOURCES += \
     Player.cpp \
     PlayerView.cpp \
     Room.cpp \
+    ToolManyItem.cpp \
     Video.cpp \
     VideoPlayer.cpp \
     main.cpp
@@ -38,6 +39,7 @@ HEADERS += \
     Player.h \
     PlayerView.h \
     Room.h \
+    ToolManyItem.h \
     Video.h \
     VideoPlayer.h
 FORMS += \

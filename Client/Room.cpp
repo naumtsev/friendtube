@@ -7,7 +7,7 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     ui(new Ui::Room), client(client_) {
     this->setFocus();
     ui->setupUi(this);
-    animation_scene = new AnimationView();
+    animation_scene = new AnimationView(this);
     ui->gridLayout->addWidget(animation_scene);
     ui->gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
@@ -26,6 +26,8 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 
     bool close = false;
     chat_window = new ChatWindow(this, *local_player, close); // тут могут быть утечки памяти
+    tool_item_right = new ToolManyItem(this, *local_player);
+
 
     next_frame.clear();
     next_frame = players_;
@@ -35,6 +37,7 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     update_draw_timer->start(1000 / FPS);
 
     connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
+    connect(tool_item_right, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     // добавляем кнопки для выхода из комнаты
     push_button_exit_in_menu = new QPushButton("Leave the room", this);
 
@@ -48,6 +51,27 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
                                    push_button_exit_in_menu->geometry().height()});
 
     connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
+
+
+
+
+
+
+//    connect(new QShortcut(QKeySequence(Qt::Key_A), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x() - 2, local_player->pos().y());});
+//    connect(new QShortcut(QKeySequence(Qt::Key_D), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x() + 2, local_player->pos().y());});
+//    connect(new QShortcut(QKeySequence(Qt::Key_W), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x(), local_player->pos().y() - 2);});
+//    connect(new QShortcut(QKeySequence(Qt::Key_S), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x(), local_player->pos().y() + 2);});
+//    connect(new QShortcut(QKeySequence(Qt::Key_A + Qt::Key_D), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x(), local_player->pos().y());});
+//    //connect(new QShortcut(QKeySequence(Qt::Key_D), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x() + 2, local_player->pos().y());});
+//    connect(new QShortcut(QKeySequence(Qt::Key_W + Qt::Key_S), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x(), local_player->pos().y());});
+//    //connect(new QShortcut(QKeySequence(Qt::Key_S), this), &QShortcut::activated, [=](){local_player->setPos(local_player->pos().x(), local_player->pos().y() + 2);});
+    QTimer *tim = new QTimer();
+    connect(tim, &QTimer::timeout, [=](){
+        if(!this->hasFocus()){
+            local_player->movement = {0,0};
+        }
+    });
+    tim->start(50);
 }
 
 // может быть проблема в том, что не успевает запрос прийти с сервака и поэтому в массиве last_frame
@@ -83,6 +107,7 @@ void Room::update_local_player_position(){
 
 //TODO: тут нужно поменять состояние игрока пока он пишет, чтобы он просто остановился или на конкретном кадре, типа в полёте.
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
+
     if(this->hasFocus()){
         if(apKeyEvent->key() == Qt::Key_Escape) {
             QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
