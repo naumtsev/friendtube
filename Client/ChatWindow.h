@@ -19,8 +19,8 @@ class ChatWindow : public QWidget
     Q_OBJECT
 
 public:
-    ChatWindow();
-    ChatWindow(Player &local_player, bool& close);
+    ChatWindow(QWidget* parent = 0);
+    ChatWindow(QWidget* parent, Player &local_player, bool& close);
 
     void init_parameters();
 
@@ -33,6 +33,9 @@ public:
 
 public slots:
     QString GetText();
+
+signals:
+    void set_focus_room();
 
 private:
     Player *player;

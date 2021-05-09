@@ -5,10 +5,12 @@
 Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Room), client(client_) {
+    this->setFocus();
     ui->setupUi(this);
     animation_scene = new AnimationView();
     ui->gridLayout->addWidget(animation_scene);
     ui->gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+
     //animation_scene->show();
 
     this->resize(1280,720);
@@ -22,8 +24,8 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 
     local_player =  player_;
 
-    //players.clear();
-    //players = players_;
+    bool close = false;
+    chat_window = new ChatWindow(this, *local_player, close); // тут могут быть утечки памяти
 
     next_frame.clear();
     next_frame = players_;
@@ -32,6 +34,7 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
     update_draw_timer->start(1000 / FPS);
 
+    connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     // добавляем кнопки для выхода из комнаты
     push_button_exit_in_menu = new QPushButton("Leave the room", this);
 
@@ -80,67 +83,81 @@ void Room::update_local_player_position(){
 
 //TODO: тут нужно поменять состояние игрока пока он пишет, чтобы он просто остановился или на конкретном кадре, типа в полёте.
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
-    if(apKeyEvent->key() == Qt::Key_Escape) {
-        QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
-                              QMessageBox::Yes | QMessageBox::No);
-        if(reply == QMessageBox::Yes){
-            emit return_to_menu("");
-            return;
+    if(this->hasFocus()){
+        if(apKeyEvent->key() == Qt::Key_Escape) {
+            QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
+                                  QMessageBox::Yes | QMessageBox::No);
+            if(reply == QMessageBox::Yes){
+                emit return_to_menu("");
+                return;
+            }
+        }else if(apKeyEvent->key() == Qt::Key_Q){ // это уже вообще не нужно
+            if(false){
+                local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
+                int i = 1;
+                //while(true){
+                    bool click = false;
+                    QString message = "Your message....";
+                    //QString str;
+                    bool close = false;
+
+                    while (!close && i == 1){
+                        if(!chat_window->isVisible()){
+                            chat_window = new ChatWindow(this, *local_player, close); // тут могут быть утечки памяти
+                            chat_window->show();
+                        }
+        //                connect(chat_window, &QWidget::close, [=](){
+        //                    //local_player->player_message.send_message = str;
+        //                    local_player->message->setPlainText(local_player->player_message.send_message);
+        //                    local_player->player_message.metka_message = true;
+        //                    local_player->player_message.metka_message_painter = false;
+        //                });
+                        i = 2;
+                    }
+
+                    //qDebug() << "ChatWindow";
+                    //while(!close){
+                    //}
+
+                    //qDebug() << "ChatWindow";
+                    /*QString str = QInputDialog::getText(0, "Enter message!", message, QLineEdit::Normal, "", &click);
+                    if(!click){ // была нажата кнопка Cancel
+                        break;
+                    }
+                    if(str.size() == 0){ // если ничего не ввёл, то ничего непроизошло
+                        break;
+                    } else {
+                        if(0 < str.size() && str.size() < 17) {
+                           local_player->player_message.send_message = str;
+                           local_player->message->setPlainText(local_player->player_message.send_message);
+                           local_player->player_message.metka_message = true;
+                           local_player->player_message.metka_message_painter = false;
+                            break;
+                        }
+                    }// TODO: эксперименты с размером сообщения и если нужно, то отредактировать
+                    */
+                //}
+            }
+        }else {
+            local_player->keyPressEvent(apKeyEvent);
         }
-    }else if(apKeyEvent->key() == Qt::Key_Q){
-        local_player->movement = {0,0};                       // при вводе сообщения игрок останавливается
-        int i = 1;
-        //while(true){
-            bool click = false;
-            QString message = "Your message....";
-            //QString str;
-            bool close = false;
-
-            while (!close && i == 1){
-                if(!chat_window->isVisible()){
-                    chat_window = new ChatWindow(*local_player, close); // тут могут быть утечки памяти
-                    chat_window->show();
-                }
-//                connect(chat_window, &QWidget::close, [=](){
-//                    //local_player->player_message.send_message = str;
-//                    local_player->message->setPlainText(local_player->player_message.send_message);
-//                    local_player->player_message.metka_message = true;
-//                    local_player->player_message.metka_message_painter = false;
-//                });
-                i = 2;
-            }
-
-            //qDebug() << "ChatWindow";
-            //while(!close){
-            //}
-
-            //qDebug() << "ChatWindow";
-            /*QString str = QInputDialog::getText(0, "Enter message!", message, QLineEdit::Normal, "", &click);
-            if(!click){ // была нажата кнопка Cancel
-                break;
-            }
-            if(str.size() == 0){ // если ничего не ввёл, то ничего непроизошло
-                break;
-            } else {
-                if(0 < str.size() && str.size() < 17) {
-                   local_player->player_message.send_message = str;
-                   local_player->message->setPlainText(local_player->player_message.send_message);
-                   local_player->player_message.metka_message = true;
-                   local_player->player_message.metka_message_painter = false;
-                    break;
-                }
-            }// TODO: эксперименты с размером сообщения и если нужно, то отредактировать
-            */
-        //}
-    }else {
-        local_player->keyPressEvent(apKeyEvent);
     }
 }
 
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
-    local_player->keyReleaseEvent(apKeyEvent);
+    if(this->hasFocus()){
+     local_player->keyReleaseEvent(apKeyEvent);
+    }
 }
 
+void Room::mousePressEvent(QMouseEvent *apMouseEvent){
+    //local_player->movement = {0,0};
+    set_focus_room();
+}
+
+void Room::set_focus_room(){
+    this->setFocus();
+}
 void Room::close_room() {
     emit return_to_menu("");
     return;

@@ -36,6 +36,7 @@ public:
     void draw_scene();
     void keyPressEvent  (QKeyEvent *)       override;  // обработка нажатий клавиш
     void keyReleaseEvent(QKeyEvent *)       override;  // обработка отжатия клавиш
+    void mousePressEvent(QMouseEvent *)       override;
     void paintEvent(QPaintEvent *event)      override;
 
     ~Room();
@@ -43,6 +44,7 @@ public:
 public slots:
     void update_local_player_position();
     void close_room();
+    void set_focus_room();
 
 signals:
     void request_get_scene_on_the_server();

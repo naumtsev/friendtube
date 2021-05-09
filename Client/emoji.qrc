@@ -200,5 +200,6 @@
         <file>pics/emoji/svg/197-in-love.svg</file>
         <file>pics/emoji/svg/198-kiss.svg</file>
         <file>pics/emoji/svg/199-angry.svg</file>
+        <file>pics/emoji/sending_message/send.png</file>
     </qresource>
 </RCC>
