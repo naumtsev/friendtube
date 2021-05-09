@@ -14,15 +14,12 @@ ChatWindow::ChatWindow(QWidget *parent, Player &local_player, bool &close)
 
     main_layout = new QHBoxLayout();
 
-    text_edit = new QTextEdit(this);
+    text_edit = new QLineEdit(this);
     text_edit->setFixedSize(310,30);
     text_edit->setGeometry(0,0,310,30);
-    connect(text_edit, &QTextEdit::textChanged, [=](){ player->movement = {0,0};}); // чтобы не происходило никаких движений
 
 
     init_buttons();
-
-    local_player.movement = {0,0};                       // при вводе сообщения игрок останавливается
 
 }
 
@@ -61,15 +58,8 @@ void ChatWindow::init_black_white_emoji_buttons(){
                     show_multicolor_emoji_list_widget->hide();
                 }
                 show_emoji_list_widget->show();
-                //QPoint point = QPoint(10, 10);
-                //QPoint pos = show_emoji_list_button->mapFromGlobal(point);
-                //show_emoji_list_widget->move(pos);
-                //            пока ругается QApplication::setActiveWindow(show_emoji_list_widget);
-                show_emoji_list_widget->setFocus();
             }
         });
-
-    //show_emoji_list_button->setFlat(true);
 
     show_emoji_list_widget = new QListWidget(this);
     show_emoji_list_widget->hide(); // делаем невидимым
@@ -94,7 +84,7 @@ void ChatWindow::init_black_white_emoji_buttons(){
         emoji->resize(icon_size);
         emoji->setStyleSheet("QToolButton { border: none; padding: 0px; background-color: rgba(0,0,0,0)}"); // если нужно удалить границу и убить эффект нажатия, то можно раскомментировать
         connect(emoji, &QToolButton::clicked, [=](){
-            text_edit->insertPlainText(map_emoji[QString::number(i)]);
+            //text_edit->insertPlainText(map_emoji[QString::number(i)]);
         });
         QListWidgetItem *emoji_item = new QListWidgetItem;
         emoji_item->setSizeHint(emoji->sizeHint());
@@ -111,35 +101,26 @@ void ChatWindow::init_multicolor_emoji_buttons(){
     show_multicolor_emoji_list_button->setIconSize(QSize(30, 30));
     show_multicolor_emoji_list_button->setFixedSize(show_multicolor_emoji_list_button->iconSize());
     show_multicolor_emoji_list_button->setGeometry(show_emoji_list_button->pos().x() + show_emoji_list_button->width(),0, show_multicolor_emoji_list_button->width(), show_multicolor_emoji_list_button->height());
-    //show_multicolor_emoji_list_button->setStyleSheet("background-color: rgba(0,0,0,0)"); разобраться почему не работает
+    //show_multicolor_emoji_list_button->setStyleSheet("background-color: rgba(0,0,0,0)"); //разобраться почему не работает
     //show_multicolor_emoji_list_button->setWindowOpacity(0.3);
 
     connect(show_multicolor_emoji_list_button, &QToolButton::clicked, [=]() {
             if (show_multicolor_emoji_list_widget->isVisible()) {
                 show_multicolor_emoji_list_widget->hide();
-                this->setFocus();
-                //            пока ругается QApplication::setActiveWindow(this);
+                emit set_focus_room();
             }
             else {
                 if(show_emoji_list_widget->isVisible()){ // если открыты другие emoji, то закрываем
                     show_emoji_list_widget->hide();
                 }
                 show_multicolor_emoji_list_widget->show();
-                //QPoint point = QPoint(10, 10);
-                //QPoint pos = show_emoji_list_button->mapFromGlobal(point);
-                //show_emoji_list_widget->move(pos);
-                //            пока ругается QApplication::setActiveWindow(show_emoji_list_widget);
-                show_multicolor_emoji_list_widget->setFocus();
             }
         });
-
-    //show_emoji_list_button->setFlat(true);
 
     show_multicolor_emoji_list_widget = new QListWidget(this);
     show_multicolor_emoji_list_widget->hide(); // делаем невидимым
     show_multicolor_emoji_list_widget->setFixedSize(200, 150);
     show_multicolor_emoji_list_widget->setGeometry(this->width() - show_emoji_list_widget->width(), show_emoji_list_button->height(), show_emoji_list_widget->width(), show_emoji_list_widget->height());
-//    show_emoji_list_widget->setWindowFlags(Qt::ToolTip);
     show_multicolor_emoji_list_widget->setLayoutMode(QListView::Batched);
     show_multicolor_emoji_list_widget->setViewMode(QListView::IconMode);
     show_multicolor_emoji_list_widget->setGridSize(QSize(32,32));
@@ -166,14 +147,11 @@ void ChatWindow::init_multicolor_emoji_buttons(){
             show_multicolor_emoji_list_widget->hide();   // закрываем qlistwidget
             text_edit->clear();            // стираем всё, что было в строке
             player->player_message.type = "emoji";
-            qDebug() << icon_path;
             player->player_message.send_message = icon_path;
             player->message->setPlainText(icon_path);
             player->player_message.metka_message = true;
             player->player_message.metka_message_painter = false;
             *close_window = true;
-            qDebug() << s;
-            player->movement = {0,0};
             text_edit->clear();
             // тут нужно фокус на Room делать
             emit set_focus_room();
@@ -218,7 +196,7 @@ void ChatWindow::init_close_window_buttons(){
             show_multicolor_emoji_list_widget->hide();
         }
         player->player_message.type = "text";
-        player->player_message.send_message = text_edit->toPlainText();
+        player->player_message.send_message = text_edit->text();
         player->message->setPlainText(player->player_message.send_message);
         player->player_message.metka_message = true;
         player->player_message.metka_message_painter = false;

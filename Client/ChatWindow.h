@@ -37,12 +37,12 @@ public slots:
 signals:
     void set_focus_room();
 
-private:
+public:
     Player *player;
     QString *s;
     bool *close_window;
     QHBoxLayout *main_layout;
-    QTextEdit *text_edit;
+    QLineEdit *text_edit;
     QPushButton *cancel;
     QPushButton *enter_message;
     QToolButton *show_emoji_list_button;
@@ -56,6 +56,7 @@ private:
     };
 
     QVBoxLayout *lyt = new QVBoxLayout;
+    player_move movement_player = {0,0};
 
 };
 #endif // CHATWINDOW_H
