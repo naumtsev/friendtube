@@ -19,7 +19,10 @@ Player::Player(QJsonObject json_player){
     name->setPlainText(json_player["name"].toString());
     client_id =json_player["id"].toString();
     setPos(json_player["x"].toDouble(), json_player["y"].toDouble());
+
     player_message = from_json_to_message(json_player["message"].toObject());// передаём сообщение
+    message->setPlainText(player_message.send_message);
+
     color_player = json_player["color_player"].toString();
     current_frame = json_player["current_frame"].toInt();
     direction = json_player["direction"].toString();
@@ -64,17 +67,16 @@ void Player::download_pixmap(){
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
     const int FPS = 100;
 
-    update_movement(apKeyEvent);
+    update_movement(1, apKeyEvent);
     if(!timer_move->isActive()){
         timer_move->start(1000/FPS); // проблема, что 2 раза вызывается, для первого клика + второго!!!
     }
-    to_json();
 }
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
    //qDebug() << "KeyPress";
-   update_movement(apKeyEvent);
+   update_movement(-1, apKeyEvent);
    if (timer_move->isActive()) {
        timer_move->stop();
    }
@@ -83,9 +85,6 @@ void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 void Player::move(){
     setPos(pos().x() + movement.x, pos().y() + movement.y);
     state = AnimateState::Moving;
-    //qDebug() << "-----------!!!!!!!!!!!!!!!!------------------------------------!!!!!!!!!";
-    //x += movement.x; // перемещение игрока в зависимости от нажатых кнопок
-    //y += movement.y;
 
     // Проверка на выход за границы поля
     if(this->pos().x() < spriteData.width){
@@ -103,80 +102,35 @@ void Player::move(){
 }
 
 
-void Player::update_movement(QKeyEvent *apKeyEvent){
-    //int apKey = apKeyEvent->key();
-    switch(apKeyEvent->key())
-    {
-        case Qt::Key_Left:
-        case Qt::Key_A:
-        {
-          set_left_direction();
-          move();
-          break;
-        }
-        case Qt::Key_Right:
-        case Qt::Key_D:
-        {
-          set_right_direction();
-          move();
-          break;
-        }
-        case Qt::Key_Up:
-        case Qt::Key_W:
-        {
-          set_up_direction();
-          move();
-          break;
-        }
-        case Qt::Key_Down:
-        case Qt::Key_S:
-        {
-          set_down_direction();
-          move();
-          break;
-        }
-        case Qt::Key_Space:
-        {
-          stop();
-          break;
-        }
-     }
-    /*
-    if(apKey == Qt::Key_W) {                                               //вверх
+void Player::update_movement(int sign, QKeyEvent *apKeyEvent){
+    int apKey = apKeyEvent->key();
+
+    if(apKey == Qt::Key_W || apKey == Qt::Key_Up) {                                               //вверх
         movement.y -=  sign*move_distance;
-    } else if (apKey == Qt::Key_S) {                                       //вниз
+    } else if (apKey == Qt::Key_S || apKey == Qt::Key_Down) {                                       //вниз
         movement.y +=  sign*move_distance;
-    } else if (apKey == Qt::Key_A) {                                       //влево
+    } else if (apKey == Qt::Key_A || apKey == Qt::Key_Left) {                                       //влево
         movement.x -=  sign*move_distance;
-    } else if (apKey == Qt::Key_D) {                                       //вправо
+    } else if (apKey == Qt::Key_D || apKey == Qt::Key_Right) {                                       //вправо
         movement.x +=  sign*move_distance;
     }
-    */
+
 }
 
 
-// скорее всего нужно будет сделать это в PlayerView и вызывать при добавлении игрока на поле!!!
-void Player::set_left_direction(){
-    if(direction == "left"){
-        this->change_direction(); // скорее всего не понадобиться
-    }
-    movement.x = -2;
-    direction = "right";
-}
-
-void Player::set_right_direction(){
-    if(direction == "right"){
-        this->change_direction(); // скорее всего не понадобиться
-    }
-    movement.x = 2;
+void Player::left_direction(){
     direction = "left";
 }
 
-void Player::set_up_direction(){
+void Player::right_direction(){
+    direction = "right";
+}
+
+void Player::up_direction(){
     movement.y = -2;
 }
 
-void Player::set_down_direction(){
+void Player::down_direction(){
     movement.y =  2;
 }
 
@@ -232,6 +186,7 @@ void Player::no_message(){
     player_message.metka_message = false;
     player_message.metka_message_painter = false;
     player_message.send_message = "";
+    message->setPlainText(player_message.send_message);
 }
 
 QJsonDocument Player::to_json(){
@@ -294,6 +249,17 @@ sprite_data Player::spriteData_from_json_to_sprite_data(QJsonObject json_sprite_
 }
 
 void Player::next_frame(){
+    if(movement.x == 0 && movement.y == 0){
+        state = AnimateState::Standing;
+        if(current_frame > 1){
+            current_frame = 0;
+        }
+    }
+    if(movement.x == 2){
+        left_direction();
+    } else if(movement.x == -2){
+        right_direction();
+    }
     qreal Dy = 0;
     if(state == AnimateState::Standing){
         if(current_frame % 2 == 0) {

@@ -168,8 +168,7 @@
  QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
      position: relative;
      top: 2px; left: 2px; /* сдвигаем стрелку на 2 px */
- }
-У кнопк</string>
+ }</string>
         </property>
         <property name="text">
          <string>Подключиться</string>
@@ -445,7 +444,7 @@ QSlider::handle:horizontal {
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

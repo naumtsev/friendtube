@@ -37,6 +37,7 @@ public slots:
     void socketDisconnect();
     void request_get_scene_on_the_server();
     void update_state_on_the_server(const QJsonDocument &state);
+    void return_to_menu(const QString &);
     void onConnected();
     void onWebSocketError(QAbstractSocket::SocketError);
 

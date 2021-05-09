@@ -8,6 +8,9 @@ NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_) :
 }
 
 NetworkManager::~NetworkManager(){
+    qDebug() << "~NetworkManager";
+    socket->close();
+    socket->~QWebSocket();
     socket_mutex->~QMutex();
 }
 
@@ -16,7 +19,7 @@ void NetworkManager::run() {
     socket = new QWebSocket();
 
    connect(socket, &QWebSocket::connected, this, &NetworkManager::onConnected);
-   connect(socket, &QWebSocket::disconnected, this, &NetworkManager::socketDisconnect);
+   //connect(socket, &QWebSocket::disconnected, this, &NetworkManager::socketDisconnect);
    connect(socket, &QWebSocket::binaryMessageReceived, this, &NetworkManager::socketReady);
    connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView *>)), client, SLOT(createRoom(Player*, QVector<PlayerView *>)));
 
@@ -24,9 +27,7 @@ void NetworkManager::run() {
     QString adress = "ws://" + ip + ":" + QString::number(port);
     qDebug() << "Try connect to " + adress;
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onWebSocketError(QAbstractSocket::SocketError)));
-
     socket->open(QUrl(adress));
-   //socket->open(QUrl("ws://localhost:" + QString::number(port)));
 }
 
 
@@ -38,8 +39,9 @@ void NetworkManager::onConnected() {
 void NetworkManager::socketDisconnect() {
 
    qDebug() << "Disconnect";
-   socket->close();
-//   emit disconnect("Socket error: server closed connection");
+  // socket->close();
+  // client->return_to_menu("");
+   //emit disconnect("Socket error: server closed connection");
 }
 
 
@@ -51,7 +53,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
 
     QJsonParseError json_data_error;
     QJsonObject json_data = QJsonDocument::fromJson(data, &json_data_error).object();
-    //qDebug() << "_______________\n" << json_data << "\n______________\n";
+    qDebug() << "_______________\n" << json_data << "\n______________\n";
 
     if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
         QString event_type = json_data.value("type").toString();
@@ -60,7 +62,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
         if(event_type == "first_connection") {
            client_id = json_data.value("client_id").toString();
            client->menu->player->client_id = client_id;
-           //qDebug() << "OK";
+           qDebug() << "OK";
            QJsonObject req;
            req.insert("type", "connect");
            req.insert("person_data", client->menu->player->to_json().object());
@@ -68,7 +70,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
 
            sendData(doc.toJson());
 
-           //qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+           qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
            return;
         } else if(event_type == "connected") {
             QJsonObject scene = json_data.value("scene_data").toObject();
@@ -84,8 +86,8 @@ void NetworkManager::socketReady(const QByteArray &data) {
             return;
         } else if(event_type == "updated_successfully"){
              client->room->is_updated_data = false;
-             //qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
-             return;
+             qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+            return;
             // server update our state successfully
         } else if(event_type == "scene_data") {
               client->room->is_got_scene = false;
@@ -97,7 +99,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
               }
               QMutexLocker player_locker{&client->room->player_mutex}; // То, что Женя подсказал
               client->room->next_frame = std::move(players_);
-             //qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
+             qDebug() << "MUTEX UNLOCK" << QThread::currentThreadId();
             return;
         }
     }
@@ -136,10 +138,25 @@ void NetworkManager::request_get_scene_on_the_server(){
 }
 
 
+void NetworkManager::return_to_menu(const QString &reason){
+    QMutexLocker locker(socket_mutex);
+
+    QJsonObject req;
+    req.insert("type", "return_to_menu");
+    req.insert("reason", reason);
+    req.insert("client_id", client_id);
+    QJsonDocument doc(req);
+
+    sendData(doc.toJson());
+}
+
+
+
 void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
     switch (error) {
     case QAbstractSocket::SocketError::RemoteHostClosedError:
-        emit disconnect("Socket error: server closed connection");
+        //emit disconnect("Socket error: server closed connection");
+        emit disconnect(""); // фича, надо будет как-нибудь пофиксить
         break;
     case QAbstractSocket::SocketError::HostNotFoundError:
         emit disconnect("Socket error: host was not found");
@@ -151,7 +168,8 @@ void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
         emit disconnect("Socket error: the socket operation timed out");
         break;
     default:
-        emit disconnect("Socket error");
+        emit disconnect(""); // фича, надо будет как-нибудь пофиксить
+        //emit disconnect("Socket error: unknown error");
         break;
     }
 }

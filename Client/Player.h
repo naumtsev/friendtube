@@ -55,16 +55,15 @@ public:
     void keyPressEvent(QKeyEvent *)   override;  // зажимание клавиши
     void keyReleaseEvent(QKeyEvent *) override;  // отжимание клавиши
 
-    void update_movement(QKeyEvent *apKeyEvent);          // обновление передвижения игрока
+    void update_movement(int sign, QKeyEvent *apKeyEvent);          // обновление передвижения игрока
 
     void chat();
-    //void move();
     void stop();
 
-    void set_left_direction();
-    void set_right_direction();
-    void set_up_direction();
-    void set_down_direction();
+    void left_direction();
+    void right_direction();
+    void up_direction();
+    void down_direction();
     void change_direction();
     void download_pixmap();
 
@@ -85,6 +84,7 @@ public:
     QString color_player = ":/pics/sheets/m_DinoSprites - mortBIG.png";
 
     QGraphicsTextItem *name = new QGraphicsTextItem;
+    QGraphicsTextItem *message = new QGraphicsTextItem;
 
     Message player_message;
     QString client_id;
@@ -93,6 +93,9 @@ public:
     QTimer *timer_message = new QTimer(this);
 
     player_move movement = {0,0};
+
+    int move_distance = 2;
+    bool timer_state_character = false;
 };
 
 #endif // PLAYER_H

@@ -15,6 +15,7 @@ CONFIG += c++11
 
 SOURCES += \
     AnimationView.cpp \
+    ChatWindow.cpp \
     Client.cpp \
     HSL.cpp \
     Menu.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     main.cpp
 HEADERS += \
     AnimationView.h \
+    ChatWindow.h \
     Client.h \
     HSL.h \
     Menu.h \
@@ -49,5 +51,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    emoji.qrc \
     images.qrc \
     sprite.qrc

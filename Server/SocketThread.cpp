@@ -30,7 +30,6 @@ void SocketThread::read_data(const QByteArray &data) {
 
         QJsonParseError json_data_error;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &json_data_error);
-        qDebug() << "____________________________________________________________\n" << data << "\n_________________________________";
 
         if(json_data_error.errorString().toInt() == QJsonParseError::NoError) {
             QString event_type = json_data.object().value("type").toString();
@@ -58,8 +57,6 @@ void SocketThread::read_data(const QByteArray &data) {
                 QJsonObject json = json_data.object();
                 server->data_mutex.unlock();
                 person_data = json.value("person_data").toObject();
-                qDebug () << "SMD REQUIRE UPDATE HIS DATE" << person_data;
-
 
                 QJsonObject jsonResponse;
                 jsonResponse.insert("type", "updated_successfully");
@@ -69,8 +66,10 @@ void SocketThread::read_data(const QByteArray &data) {
 
                 sendData(doc.toJson());
                 return;
+            } else if(event_type == "return_to_menu") {
+                disconnected();
+                return;
             } else if(event_type == "get_scene") {
-                 qDebug() << "smb get scene";
                 QJsonObject jsonResponse;
 
                 jsonResponse.insert("type", "scene_data");
