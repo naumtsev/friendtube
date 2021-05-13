@@ -75,11 +75,13 @@ void AnimationView::clear_vector(QVector<PlayerView *> &last_frame, QString loca
             if(last_frame[i]->player_message.send_message != ""){
                 if(last_frame[i]->player_message.type == "text"){
                     scene->removeItem(last_frame[i]->message); // тут скорее всего нужно удалять элемент
+                    //delete last_frame[i]->message;
                 } else {
                     scene->removeItem(last_frame[i]->player_message.emoji); // тут скорее всего нужно удалять элемент
-                    delete last_frame[i]->player_message.emoji;
+                    //delete last_frame[i]->player_message.emoji;
                 }
             }
+            delete last_frame[i];
         } else {
             clear_local_player = true;
         }

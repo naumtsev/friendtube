@@ -213,9 +213,6 @@ QJsonDocument Player::to_json(){
     json_player.insert("spriteData", spriteData_from_sprite_data_to_json());
     QJsonDocument doc(json_player);
 
-    //QString json_string = doc.toJson(QJsonDocument::Indented);
-    //qDebug() << json_string;
-
     return doc;
 }
 

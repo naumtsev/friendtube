@@ -40,6 +40,13 @@ public:
     void mousePressEvent(QMouseEvent *)       override;
     void paintEvent(QPaintEvent *event)      override;
 
+
+    void init_paramets();
+    void init_variables();
+    void init_buttons();
+    void init_timers();
+
+
     ~Room();
 
 public slots:
