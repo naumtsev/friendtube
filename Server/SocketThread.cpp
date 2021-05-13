@@ -67,6 +67,7 @@ void SocketThread::read_data(const QByteArray &data) {
                 sendData(doc.toJson());
                 return;
             } else if(event_type == "return_to_menu") {
+                //socket->close();
                 disconnected();
                 return;
             } else if(event_type == "get_scene") {

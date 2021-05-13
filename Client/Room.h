@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "PlayerView.h"
+#include "VideoPlayer.h"
 #include "AnimationView.h"
 #include "Client.h"
 #include <QWidget>
@@ -19,6 +20,7 @@
 #include <QGraphicsView>
 #include <QMutex>
 #include <QPushButton>
+#include <QLabel>
 
 struct Menu;
 struct Client;
@@ -54,6 +56,8 @@ public:
     Player            *local_player;
     QTimer            *update_draw_timer;
     int                FPS = 60;
+    QVideoWidget *video_widget;
+    VideoPlayer *video_player;
     QMutex player_mutex;
     QVector<PlayerView *> last_frame;
     QVector<PlayerView *> next_frame;

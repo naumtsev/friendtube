@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QPushButton>
+#include <QVideoWidget>
 
 class AnimationView : public QGraphicsView
 {
@@ -24,6 +25,7 @@ private:
      int x = 1, y = 1;
      int distance = 1;
      QTimer *timer_update_scene;
+     QVideoWidget *video_widget;
 
 };
 

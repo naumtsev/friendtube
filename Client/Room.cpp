@@ -46,6 +46,22 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
                                    push_button_exit_in_menu->geometry().height()});
 
     connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
+
+
+    video_widget = new QVideoWidget(this);
+    video_widget->setFixedSize(960 / 1.5, 576 / 1.5);
+    video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
+    video_player = new VideoPlayer(video_widget);
+    video_widget->setVisible(true);
+
+    QLabel *loading_label = new QLabel(this);
+    //loading_label->setFixedSize(960 / 1.5, 576 / 1.5);
+    //loading_label->move(width() / 2 - loading_label->width() / 2, height() / 2 - loading_label->height( ) / 2);
+    /*
+    QPixmap loading_pixmap( "loading.gif");
+    connect(video_player->m_player, SIGNAL(videoAvailableChanged(bool videoAvailable)), [loading_label](bool flag){if(flag) loading_label->clear();});
+    loading_label->setPixmap(loading_pixmap);
+    */
 }
 
 // может быть проблема в том, что не успевает запрос прийти с сервака и поэтому в массиве last_frame
@@ -125,7 +141,8 @@ void Room::close_room() {
 }
 
 Room::~Room() {
-
+    delete video_widget;
+    delete video_player;
     delete ui;
 }
 

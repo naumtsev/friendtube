@@ -17,6 +17,7 @@ struct Client : QObject {
     Q_OBJECT
 public:
     Client(QObject *parent = nullptr);
+    ~Client();
     void start();
     void connect_to_server(const QString &ip, int port);
     friend Menu;

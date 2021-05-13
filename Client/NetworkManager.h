@@ -29,7 +29,7 @@ public:
 
 signals:
     void createRoom(Player*, QVector<PlayerView *>);
-    void disconnect(const QString &reason);
+    void close_socket(const QString &reason);
 
 public slots:
     void run();

@@ -5,6 +5,14 @@ Client::Client(QObject *parent) : QObject(parent), menu(nullptr), room(nullptr),
 }
 
 
+Client::~Client(){
+    if(room != nullptr) {
+        delete room;
+        delete n_manager;
+    }
+    delete menu;
+}
+
 void Client::start() {
     menu = new Menu(this);
     menu->show();
@@ -14,14 +22,11 @@ void Client::start() {
 void Client::connect_to_server(const QString &ip, int port) {
     qDebug() << "Try connect";
 
-
     n_manager = new NetworkManager(this, ip, port);
-
-    connect(n_manager, SIGNAL(disconnect(const QString &)), this, SLOT(return_to_menu(const QString &)));
-
     n_thread = new QThread();
 
     connect(n_thread, &QThread::started, n_manager, &NetworkManager::run);
+    connect(n_manager, &NetworkManager::close_socket(const QString &), this, &Client::return_to_menu(const QString &));
 
     n_manager->moveToThread(n_thread);
 
@@ -52,16 +57,16 @@ void Client::return_to_menu(const QString &reason) {
 
 
     if(room != nullptr) {
-        room->~Room();
+        delete room;
         room = nullptr;
     }
 
-    qDebug() << "Destroy ~Room";
-
     if(n_manager != nullptr) {
-        n_manager->~NetworkManager();
-        n_thread->terminate();
-        n_thread->~QThread();
+        delete n_manager;
+        n_manager = nullptr;
+        n_thread->quit();
+        n_thread->wait();
+        delete n_thread;
         n_thread = nullptr;
     }
 

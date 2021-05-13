@@ -8,7 +8,6 @@ NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_) :
 }
 
 NetworkManager::~NetworkManager(){
-    qDebug() << "~NetworkManager";
     socket->close();
     socket->~QWebSocket();
     socket_mutex->~QMutex();
@@ -147,21 +146,19 @@ void NetworkManager::return_to_menu(const QString &reason){
 void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
     switch (error) {
     case QAbstractSocket::SocketError::RemoteHostClosedError:
-        //emit disconnect("Socket error: server closed connection");
-        emit disconnect(""); // фича, надо будет как-нибудь пофиксить
+        emit close_socket("Socket error: server closed connection");
         break;
     case QAbstractSocket::SocketError::HostNotFoundError:
-        emit disconnect("Socket error: host was not found");
+        emit close_socket("Socket error: host was not found");
         break;
     case QAbstractSocket::SocketError::SocketAccessError:
-        emit disconnect("Socket error: no access to connect");
+        emit close_socket("Socket error: no access to connect");
         break;
     case QAbstractSocket::SocketTimeoutError:
-        emit disconnect("Socket error: the socket operation timed out");
+        emit close_socket("Socket error: the socket operation timed out");
         break;
     default:
-        emit disconnect(""); // фича, надо будет как-нибудь пофиксить
-        //emit disconnect("Socket error: unknown error");
+        emit close_socket("Socket error: unknown error");
         break;
     }
 }
