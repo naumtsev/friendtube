@@ -20,43 +20,29 @@ class ChatWindow : public QWidget
 
 public:
     ChatWindow(QWidget* parent = 0);
-    ChatWindow(QWidget* parent, Player &local_player, bool& close);
+    ChatWindow(QWidget* parent, Player &local_player);
+
+    void keyPressEvent(QKeyEvent *)       override;  // обработка нажатий клавиш
 
     void init_parameters();
 
     void init_buttons();
+    void init_text_edit();
     void init_close_window_buttons();
-    void init_black_white_emoji_buttons();
-    void init_multicolor_emoji_buttons();
+
+    void get_focus();
+    void lose_focus();
 
     ~ChatWindow();
-
-public slots:
-    QString GetText();
 
 signals:
     void set_focus_room();
 
 public:
-    Player *player;
+    Player *player;    
     QString *s;
-    bool *close_window;
-    QHBoxLayout *main_layout;
     QLineEdit *text_edit;
-    QPushButton *cancel;
     QPushButton *enter_message;
-    QToolButton *show_emoji_list_button;
-    QToolButton *show_multicolor_emoji_list_button;
-    QListWidget *show_emoji_list_widget;
-    QListWidget *show_multicolor_emoji_list_widget;
-
-    std::unordered_map<QString, QString> map_emoji = {
-        {"1", "\U0001F600"},
-        {"2", "\U0001F603"}
-    };
-
-    QVBoxLayout *lyt = new QVBoxLayout;
-    player_move movement_player = {0,0};
 
 };
 #endif // CHATWINDOW_H

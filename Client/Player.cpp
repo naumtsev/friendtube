@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player(const QString& player_name_, const QString& color_player_, QObject *parent) :
     QObject(parent) {
     connect(timer_move, &QTimer::timeout, this, &Player::move);
@@ -76,7 +75,9 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
    //qDebug() << "KeyPress";
-   update_movement(-1, apKeyEvent);
+   if(movement.x != 0 || movement.y != 0){
+     update_movement(-1, apKeyEvent);
+   }
    if (timer_move->isActive()) {
        timer_move->stop();
    }
@@ -87,17 +88,17 @@ void Player::move(){
     state = AnimateState::Moving;
 
     // Проверка на выход за границы поля
-    if(this->pos().x() < spriteData.width){
-        setPos(pos().x() + movement.x, pos().y());
+    if(this->pos().x() < 0){
+        setPos(0, pos().y());
     }
-    if(this->pos().x() > 1280 - spriteData.width){
-        setPos(pos().x() - movement.x, pos().y());
+    if(this->pos().x() > 1280 - 48){
+        setPos(1280 - 48, pos().y());
     }
-    if(this->pos().y() < spriteData.height){
-        setPos(pos().x(), pos().y() + movement.y);
+    if(this->pos().y() < 0){
+        setPos(pos().x(), 0);
     }
-    if(this->pos().y() > 720 - spriteData.height){
-        setPos(pos().x(), pos().y() - movement.y);
+    if(this->pos().y() > 720 - 48){
+        setPos(pos().x(), 720 - 48);
     }
 }
 
@@ -211,9 +212,6 @@ QJsonDocument Player::to_json(){
     json_player.insert("color_player", QJsonValue::fromVariant(color_player));
     json_player.insert("spriteData", spriteData_from_sprite_data_to_json());
     QJsonDocument doc(json_player);
-
-    //QString json_string = doc.toJson(QJsonDocument::Indented);
-    //qDebug() << json_string;
 
     return doc;
 }

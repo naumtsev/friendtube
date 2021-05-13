@@ -6,6 +6,7 @@
 #include "AnimationView.h"
 #include "ChatWindow.h"
 #include "Client.h"
+#include "ToolManyItem.h"
 #include <QWidget>
 #include <QIcon>
 #include <QPainter>
@@ -39,6 +40,13 @@ public:
     void mousePressEvent(QMouseEvent *)       override;
     void paintEvent(QPaintEvent *event)      override;
 
+
+    void init_paramets();
+    void init_variables();
+    void init_buttons();
+    void init_timers();
+
+
     ~Room();
 
 public slots:
@@ -57,6 +65,7 @@ public:
     Player            *local_player;
     QTimer            *update_draw_timer;
     ChatWindow        *chat_window = new ChatWindow;
+    ToolManyItem      *tool_item_right = new ToolManyItem;
     int                FPS = 60;
     QMutex player_mutex;
     QVector<PlayerView *> last_frame;

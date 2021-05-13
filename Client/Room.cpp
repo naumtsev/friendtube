@@ -5,37 +5,39 @@
 
 Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Room), client(client_) {
-    this->setFocus();
-    ui->setupUi(this);
-    animation_scene = new AnimationView();
+    ui(new Ui::Room), client(client_), local_player(player_), next_frame(players_) {
+    ui->setupUi(this); // всегда в начале нужно это делать
+
+    init_variables();
+    init_paramets();
+    init_buttons();
+    init_timers();
+
+    connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
+    connect(tool_item_right, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
+    connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
+}
+
+void Room::init_paramets(){
     ui->gridLayout->addWidget(animation_scene);
     ui->gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-
-    //animation_scene->show();
 
     this->resize(1280,720);
     this->setFixedSize(1280,720);
     //this->showFullScreen();
     this->setWindowTitle("FriendTube");
+    this->setWindowIcon(QIcon(QPixmap(":/images/icon.png")));
 
-    QPixmap icon;
-    icon.load(":/images/icon.png");
-    this->setWindowIcon(QIcon(icon));
+    this->setFocus();
+}
 
-    local_player =  player_;
+void Room::init_variables(){
+    animation_scene = new AnimationView(this);
+    chat_window = new ChatWindow(this, *local_player); // тут могут быть утечки памяти
+    tool_item_right = new ToolManyItem(this, *local_player);
+}
 
-    bool close = false;
-    chat_window = new ChatWindow(this, *local_player, close); // тут могут быть утечки памяти
-
-    next_frame.clear();
-    next_frame = players_;
-
-    QTimer *update_draw_timer = new QTimer();
-    connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
-    update_draw_timer->start(1000 / FPS);
-
-    connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
+void Room::init_buttons(){
     // добавляем кнопки для выхода из комнаты
     push_button_exit_in_menu = new QPushButton("Leave the room", this);
 
@@ -47,12 +49,22 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
                                    25,
                                    push_button_exit_in_menu->geometry().width(),
                                    push_button_exit_in_menu->geometry().height()});
-
-    connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
 }
 
-// может быть проблема в том, что не успевает запрос прийти с сервака и поэтому в массиве last_frame
-// содержутся те же элементы, поэтому мы удаляем их и не можем новые создать!!!
+void Room::init_timers(){
+    QTimer *update_draw_timer = new QTimer();
+    connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
+    update_draw_timer->start(1000 / FPS);
+
+    QTimer *this_window_have_focus_timer = new QTimer();
+    connect(this_window_have_focus_timer, &QTimer::timeout, [&](){
+        if(!this->hasFocus()){
+            local_player->movement = {0,0};
+        }
+    });
+    this_window_have_focus_timer->start(50);
+}
+
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
     if(!is_got_scene) {
@@ -82,8 +94,8 @@ void Room::update_local_player_position(){
 }
 
 
-//TODO: тут нужно поменять состояние игрока пока он пишет, чтобы он просто остановился или на конкретном кадре, типа в полёте.
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
+    //std::cout<< apKeyEvent->key() <<std::endl;
     if(this->hasFocus()){
         if(apKeyEvent->key() == Qt::Key_Escape) {
             QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
@@ -92,6 +104,8 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
                 emit return_to_menu("");
                 return;
             }
+        } else if(apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220){ // походу у меня enter-a нет (
+            chat_window->get_focus();
         } else {
             local_player->keyPressEvent(apKeyEvent);
         }
@@ -108,13 +122,14 @@ void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
 
 void Room::mousePressEvent(QMouseEvent *apMouseEvent){
     set_focus_room();
-    if(chat_window->show_multicolor_emoji_list_widget->isVisible()){
-        chat_window->show_multicolor_emoji_list_widget->hide();
-    }
+    //if(chat_window->show_multicolor_emoji_list_widget->isVisible()){
+    //    chat_window->show_multicolor_emoji_list_widget->hide();
+    //}
 }
 
 void Room::set_focus_room(){
     this->setFocus();
+    chat_window->lose_focus();
 }
 
 void Room::close_room() {
