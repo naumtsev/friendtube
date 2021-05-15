@@ -1,33 +1,37 @@
-#include "SocketThread.h"
+#include "PlayerSocket.h"
 
-SocketThread::SocketThread(qintptr ID, QString client_id_, Server *server_, QObject *parent) :
-    QThread(parent) {
-    server = server_;
-    socketDescriptor = ID;
-    client_id = client_id_;
-}
-
-void SocketThread::run() {
-    qDebug() << "RUN THREAD " << QThread::currentThreadId();
-    connect(socket, SIGNAL(binaryMessageReceived(const QByteArray &)), this, SLOT(read_data(const QByteArray&)));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-
+PlayerSocket::PlayerSocket(qintptr ID, QString client_id_, Server *server_, QObject *parent) : QObject(parent), client_id(client_id_),  server(server_), socketDescriptor(ID){
     qDebug() << client_id + " client connected";
 
+    socket = server->web_socket_server->nextPendingConnection();
+
+    connect(socket, SIGNAL(binaryMessageReceived(const QByteArray &)), this, SLOT(read_data(const QByteArray&)));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     QJsonObject jsonResponse;
     jsonResponse.insert("type", "first_connection");
     jsonResponse.insert("client_id", client_id);
     QJsonDocument doc(jsonResponse);
     sendData(doc.toJson());
-    exec();
 }
 
 
+PlayerSocket::~PlayerSocket() {
+    socket->deleteLater();
+}
 
-void SocketThread::read_data(const QByteArray &data) {
-        qDebug() << "read_data Thread:" << QThread::currentThreadId();
 
+QString PlayerSocket::get_id() {
+    return client_id;
+}
+
+
+QJsonObject PlayerSocket::get_person_data() {
+    return person_data;
+}
+
+
+void PlayerSocket::read_data(const QByteArray &data) {
         QJsonParseError json_data_error;
         QJsonDocument json_data = QJsonDocument::fromJson(data, &json_data_error);
 
@@ -53,9 +57,7 @@ void SocketThread::read_data(const QByteArray &data) {
                 return;
 
             } else if (event_type == "update_my_state") {
-                server->data_mutex.lock();
                 QJsonObject json = json_data.object();
-                server->data_mutex.unlock();
                 person_data = json.value("person_data").toObject();
 
                 QJsonObject jsonResponse;
@@ -67,7 +69,9 @@ void SocketThread::read_data(const QByteArray &data) {
                 sendData(doc.toJson());
                 return;
             } else if(event_type == "return_to_menu") {
-                disconnected();
+                socket->close();
+
+
                 return;
             } else if(event_type == "get_scene") {
                 QJsonObject jsonResponse;
@@ -79,22 +83,20 @@ void SocketThread::read_data(const QByteArray &data) {
                 QJsonDocument doc(jsonResponse);
                 sendData(doc.toJson());
                 return;
-
             }
-
-        } else { // invalid json
+        } else {
+           // get invalid json
            sendData(json_handler::generate_error("Invalid json").toJson());
         }
 }
 
 
-void SocketThread::disconnected() {
-    socket->close();
+void PlayerSocket::disconnected() {
     server->socket_disconnected(this);
 }
 
 
-void SocketThread::sendData(QString data) {
+void PlayerSocket::sendData(QString data) {
     socket->sendBinaryMessage(data.toUtf8());
     socket->flush();
 }

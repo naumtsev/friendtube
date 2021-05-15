@@ -13,14 +13,17 @@ CONFIG   -= app_bundle
 
 HEADERS += \
     JsonHandler.h \
-    Server.h \
-    SocketThread.h
+    PlayerSocket.h \
+    Server.h
 
 SOURCES += \
         JsonHandler.cpp \
+        PlayerSocket.cpp \
         Server.cpp \
-        SocketThread.cpp \
         main.cpp
+
+
+QMAKE_CXXFLAGS += -O2
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

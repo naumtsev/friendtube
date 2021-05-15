@@ -1,5 +1,5 @@
-#ifndef SOCKETTHREAD_H
-#define SOCKETTHREAD_H
+#ifndef PLAYERSOCKET_H
+#define PLAYERSOCKET_H
 
 #include <QTcpSocket>
 #include <QThread>
@@ -13,25 +13,24 @@
 
 class Server;
 
-class SocketThread : public QThread {
+class PlayerSocket : QObject {
     Q_OBJECT
 public:
-    explicit SocketThread(qintptr ID, QString client_id, Server *server_, QObject *parent = 0);
-
-     void run();
-     void sendData(QString data);
-
-
+    explicit PlayerSocket(qintptr ID, QString client_id, Server *server_, QObject *parent = 0);
+    ~PlayerSocket();
+    void sendData(QString data);
+    QString get_id();
+    QJsonObject get_person_data();
 public slots:
     void read_data(const QByteArray &data);
     void disconnected();
-public:
+private:
     QString client_id;
     Server* server;
-    QWebSocket *socket;
     qintptr socketDescriptor;
+    QWebSocket *socket;
     QJsonObject person_data;
 };
 
 
-#endif // SOCKETTHREAD_H
+#endif // PLAYERSOCKET_H

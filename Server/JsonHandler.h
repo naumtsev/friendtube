@@ -11,9 +11,6 @@ QJsonDocument generate_error(QString error);
 
 QJsonDocument json_object_to_json_document(QJsonObject obj);
 
-
-
-
 }
 
 

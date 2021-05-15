@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "SocketThread.h"
+#include "PlayerSocket.h"
 #include "JsonHandler.h"
 #include <QTcpServer>
 #include <QJsonArray>
@@ -11,28 +11,29 @@
 #include "QtWebSockets/QWebSocketServer"
 #include "QtWebSockets/QWebSocket"
 
-class SocketThread;
+class PlayerSocket;
 
 class Server : public QObject {
     Q_OBJECT
 public:
     explicit Server(quint16 port, QObject *parent = nullptr);
-    void startServer();
-    void send_data_to_all_users(QString data);
     ~Server();
-    void socket_disconnected(SocketThread* socket);
+
+    void start_server();
+    void send_data_to_all_users(QString data); 
+    void socket_disconnected(PlayerSocket* socket);
+
     QJsonObject get_scene_data();
 signals:
 
 public slots:
-  void incomingConnection();
+  void incoming_connection();
 
 public:
-    QList<SocketThread*> sockets;
+    QVector<PlayerSocket*> sockets;
     QWebSocketServer *web_socket_server;
     qint16 port;
     const qint16 client_id_size = 10;
-    QMutex data_mutex;
 };
 
 #endif // SERVER_H
