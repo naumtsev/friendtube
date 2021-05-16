@@ -78,10 +78,10 @@ void NetworkManager::socketReady(const QByteArray &data) {
             emit createRoom(client->menu->player, std::move(players_));
             return;
         } else if(event_type == "updated_successfully"){
-            client->room->is_updated_data = false;
+            client->room->updated_data = false;
             return;
         } else if(event_type == "scene_data") {
-            client->room->is_got_scene = false;
+            client->room->got_scene = false;
             QJsonObject scene = json_data.value("data").toObject();
             QJsonArray json_players = scene.value("clients").toArray();
             QVector<PlayerView *> players_;

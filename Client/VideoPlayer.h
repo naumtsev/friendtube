@@ -1,10 +1,12 @@
 #ifndef VIDEOPLAYER_H
 #define VIDEOPLAYER_H
 
+#include "Video.h"
 #include <QObject>
 #include <QMediaPlayer>
-#include <QProcess>
+#include <QThread>
 #include <QCoreApplication>
+#include <QProcess>
 
 
 enum VideoPlayerState {
@@ -15,16 +17,24 @@ enum VideoPlayerState {
 };
 
 
-QString yandex_disk_url_to_stream_url(const QString &url);
-
-
-class VideoPlayer : QObject {
+struct VideoPlayer : QObject {
+    Q_OBJECT
 public:
-    VideoPlayer(QObject *parent = nullptr);
-
+    VideoPlayer(QVideoWidget *output_, QObject *parent = nullptr);
+    ~VideoPlayer();
+public slots:
+    void run();
+public:
     QVideoWidget *output;
     QMediaPlayer *m_player;
     VideoPlayerState state;
+    Video *current_video;
 };
+
+
+
+QString yandex_disk_url_to_stream_url(const QString &url);
+
+
 
 #endif // VIDEOPLAYER_H

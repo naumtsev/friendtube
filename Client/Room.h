@@ -7,6 +7,8 @@
 #include "ChatWindow.h"
 #include "Client.h"
 #include "ToolManyItem.h"
+#include "VideoPlayer.h"
+
 #include <QWidget>
 #include <QIcon>
 #include <QPainter>
@@ -21,6 +23,7 @@
 #include <QGraphicsView>
 #include <QMutex>
 #include <QPushButton>
+
 
 struct Menu;
 struct Client;
@@ -45,7 +48,7 @@ public:
     void init_variables();
     void init_buttons();
     void init_timers();
-
+    void init_video();
 
     ~Room();
 
@@ -71,9 +74,11 @@ public:
     QVector<PlayerView *> last_frame;
     QVector<PlayerView *> next_frame;
     Client *client;
-    bool is_got_scene = false;
-    bool is_updated_data = false;
+    bool got_scene = false;
+    bool updated_data = false;
     QPushButton *push_button_exit_in_menu;
+    QVideoWidget *video_widget;
+    VideoPlayer *video_player;
 };
 
 #endif // ROOM_H

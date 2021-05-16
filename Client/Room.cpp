@@ -11,6 +11,10 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     init_paramets();
     init_buttons();
     init_timers();
+    init_video();
+
+
+
 
     connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     connect(tool_item_right, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
@@ -49,9 +53,18 @@ void Room::init_buttons(){
                                    push_button_exit_in_menu->geometry().width(),
                                    push_button_exit_in_menu->geometry().height()});
     push_button_exit_in_menu->setVisible(false);
-
-
 }
+
+
+void Room::init_video() {
+    video_widget = new QVideoWidget(this);
+    video_widget->resize(960 / 1.5, 576 / 1.5);
+    video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
+    video_player = new VideoPlayer(video_widget);
+    video_player->run();
+}
+
+
 
 void Room::init_timers(){
     QTimer *update_draw_timer = new QTimer();
@@ -74,9 +87,9 @@ void Room::init_timers(){
 
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
-    if(!is_got_scene) {
+    if(!got_scene) {
         emit request_get_scene_on_the_server();
-        is_got_scene = true;
+        got_scene = true;
     }
 }
 
@@ -93,27 +106,27 @@ void Room::draw_scene(){
 }
 
 void Room::update_local_player_position(){
-    //qDebug() << local_player->direction;
-
-    if(!is_updated_data) {
+    if(!updated_data) {
         auto data = local_player->to_json();
         emit update_state_on_the_server(data);
-        is_updated_data = true;
+        updated_data = true;
     }
 }
 
 
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
     if(this->hasFocus()){
+        /*
         if(apKeyEvent->key() == Qt::Key_Escape) {
             QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                                   QMessageBox::Yes | QMessageBox::No);
             if(reply == QMessageBox::Yes){
                 // RETURN TO MENU
-
                 return;
             }
-        } else if(apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220){
+        } else
+        */
+        if (apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220) {
             chat_window->get_focus();
         } else {
             local_player->keyPressEvent(apKeyEvent);

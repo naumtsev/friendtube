@@ -28,6 +28,13 @@ AnimationView::AnimationView(QWidget *parent) :
     scene->setSceneRect(0,0,1280,720);
     this->setScene(scene);
     timer_update_scene = new QTimer();
+
+
+
+
+
+
+
     connect(timer_update_scene, SIGNAL(timeout()), this, SLOT(update()));
     timer_update_scene->start(3);
 }

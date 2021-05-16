@@ -4,6 +4,16 @@ Client::Client(QObject *parent) : QObject(parent), menu(nullptr), room(nullptr),
 
 }
 
+Client::~Client() {
+    delete menu;
+    delete room;
+    delete n_manager;
+
+    n_thread->quit();
+    n_thread->wait();
+    n_thread->deleteLater();
+}
+
 
 void Client::start() {
     menu = new Menu(this);

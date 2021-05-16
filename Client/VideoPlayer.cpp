@@ -1,22 +1,35 @@
 #include "VideoPlayer.h"
 
-
-
-VideoPlayer::VideoPlayer(QObject *parent) : QObject(parent) {
-
-}
-
-
-
 QString yandex_disk_url_to_stream_url(const QString &url) {
-    QString scriptFile =  QCoreApplication::applicationDirPath() + "/get_url.py";
     QStringList pythonCommandArguments;
-    pythonCommandArguments << scriptFile << "--link" << url;
-
+    pythonCommandArguments << "--link" << url;
     QProcess process;
-    process.start ("python", pythonCommandArguments);
+    process.start ("get_url.exe", pythonCommandArguments);
     process.waitForFinished();
     return process.readAllStandardOutput();
 }
+
+
+VideoPlayer::VideoPlayer(QVideoWidget *output_, QObject *parent): QObject(parent) {
+    output = output_;
+    m_player = new QMediaPlayer();
+    m_player->setVideoOutput(output);
+}
+
+
+void VideoPlayer::run(){
+    QString url = yandex_disk_url_to_stream_url("https://disk.yandex.ru/i/maQWX1KvkNJlhQ");
+    m_player->setMedia(QUrl(url));
+    m_player->play();
+    qDebug() << "Video Add";
+}
+
+
+VideoPlayer::~VideoPlayer() {
+    m_player->~QMediaPlayer();
+}
+
+
+
 
 
