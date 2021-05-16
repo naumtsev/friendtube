@@ -36,7 +36,6 @@ void Client::createRoom(Player *player, QVector<PlayerView *> players_) {
     qDebug() << QThread::currentThreadId() << "CREATE ROOM";
 
     room = new Room(this, player, players_);
-    connect(room, SIGNAL(return_to_menu(const QString &)), n_manager, SLOT(return_to_menu(const QString &)));
     connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager, SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager, SLOT(update_state_on_the_server(QJsonDocument)));
 
@@ -52,20 +51,19 @@ void Client::return_to_menu(const QString &reason) {
 
 
     if(room != nullptr) {
-        room->~Room();
+        delete room;
         room = nullptr;
     }
 
     qDebug() << "Destroy ~Room";
 
     if(n_manager != nullptr) {
-        n_manager->~NetworkManager();
-        n_thread->terminate();
-        n_thread->~QThread();
+        n_manager->finish();
+        n_thread->quit();
+        n_thread->wait();
+
         n_thread = nullptr;
     }
-
-
 
     if(!reason.isEmpty()){
         emit menu->make_advert(reason);

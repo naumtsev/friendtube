@@ -1,9 +1,10 @@
-QT       += core
-QT       += network
-QT       += gui
-QT       += websockets
-QT       += widgets
-QT       += multimedia
+QT      += core
+QT      += network
+QT      += gui
+QT      += websockets
+QT      += widgets
+QT      += multimedia
+QT      += xmlpatterns
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

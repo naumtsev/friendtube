@@ -157,6 +157,7 @@ void Menu::on_connectButton_clicked() {
 
 void Menu::make_advert(const QString &advert) {
     qDebug() << "Make advert" << advert;
+
     QTimer *advert_timer = new QTimer();
     ui->advert_frame->setVisible(true);
     ui->advert_label->setStyleSheet("color: red;");

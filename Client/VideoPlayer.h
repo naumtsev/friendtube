@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QMediaPlayer>
+#include <QProcess>
+#include <QCoreApplication>
+
 
 enum VideoPlayerState {
     Pause,
@@ -11,7 +14,10 @@ enum VideoPlayerState {
     Loading
 };
 
-// TODO
+
+QString yandex_disk_url_to_stream_url(const QString &url);
+
+
 class VideoPlayer : QObject {
 public:
     VideoPlayer(QObject *parent = nullptr);

@@ -40,7 +40,7 @@ public slots:
     void return_to_menu(const QString &);
     void onConnected();
     void onWebSocketError(QAbstractSocket::SocketError);
-
+    void finish();
 public:
     void sendData(const QByteArray &data);
     QWebSocket *socket;

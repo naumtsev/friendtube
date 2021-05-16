@@ -4,9 +4,8 @@
 
 
 Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Room), client(client_), local_player(player_), next_frame(players_) {
-    ui->setupUi(this); // всегда в начале нужно это делать
+    QWidget(parent), ui(new Ui::Room), local_player(player_), next_frame(players_), client(client_) {
+    ui->setupUi(this);
 
     init_variables();
     init_paramets();
@@ -49,11 +48,17 @@ void Room::init_buttons(){
                                    25,
                                    push_button_exit_in_menu->geometry().width(),
                                    push_button_exit_in_menu->geometry().height()});
+    push_button_exit_in_menu->setVisible(false);
+
+
 }
 
 void Room::init_timers(){
     QTimer *update_draw_timer = new QTimer();
     connect(update_draw_timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(this, SIGNAL(signal_close_room()), update_draw_timer, SLOT(stop()));
+
+
     update_draw_timer->start(1000 / FPS);
 
     QTimer *this_window_have_focus_timer = new QTimer();
@@ -62,6 +67,8 @@ void Room::init_timers(){
             local_player->movement = {0,0};
         }
     });
+
+    connect(this, SIGNAL(signal_close_room()), this_window_have_focus_timer, SLOT(stop()));
     this_window_have_focus_timer->start(50);
 }
 
@@ -69,16 +76,17 @@ void Room::paintEvent(QPaintEvent *event){
     draw_scene();
     if(!is_got_scene) {
         emit request_get_scene_on_the_server();
-       // qDebug() << "GET SCENE";
         is_got_scene = true;
     }
 }
 
-void Room::draw_scene(){ // event сам и не нужен
-   // qDebug() << "ROOM DRAW";
-    update_local_player_position(); // обновляем позицию игрока
+void Room::draw_scene(){
+    // обновляем позицию игрока
+    update_local_player_position();
+
     QMutexLocker locker {&player_mutex};
-    next_frame.push_back(new PlayerView(*local_player));               // добавляем в конец локального игрока
+    // добавляем в конец локального игрока
+    next_frame.push_back(new PlayerView(*local_player));
     animation_scene->add_players(last_frame, next_frame, local_player->client_id);
 
     local_player->chat();
@@ -90,21 +98,22 @@ void Room::update_local_player_position(){
     if(!is_updated_data) {
         auto data = local_player->to_json();
         emit update_state_on_the_server(data);
-        is_updated_data = true;    }
+        is_updated_data = true;
+    }
 }
 
 
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
-    //std::cout<< apKeyEvent->key() <<std::endl;
     if(this->hasFocus()){
         if(apKeyEvent->key() == Qt::Key_Escape) {
             QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
                                   QMessageBox::Yes | QMessageBox::No);
             if(reply == QMessageBox::Yes){
-                emit return_to_menu("");
+                // RETURN TO MENU
+
                 return;
             }
-        } else if(apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220){ // походу у меня enter-a нет (
+        } else if(apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220){
             chat_window->get_focus();
         } else {
             local_player->keyPressEvent(apKeyEvent);
@@ -133,12 +142,14 @@ void Room::set_focus_room(){
 }
 
 void Room::close_room() {
-    emit return_to_menu("");
+    // RETURN TO MENU
+    emit signal_close_room();
+
+   client->return_to_menu("");
     return;
 }
 
 Room::~Room() {
-
     delete ui;
 }
 
