@@ -2,6 +2,7 @@
 #define VIDEOPLAYER_H
 
 #include "Video.h"
+
 #include <QObject>
 #include <QMediaPlayer>
 #include <QThread>

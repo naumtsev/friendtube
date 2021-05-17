@@ -144,13 +144,10 @@ void Menu::on_connectButton_clicked() {
        } else {
            ui->ip_label->setStyleSheet("color: red;");
            ui->ip_label->setText("Incorrect ip's format");
-           QTimer *incorrect_ip_timer = new QTimer();
-           connect(incorrect_ip_timer, &QTimer::timeout, [=]() {
-               ui->ip_label->clear();
-               incorrect_ip_timer->~QTimer();
-             } );
 
-           incorrect_ip_timer->start(3000);
+           QTimer::singleShot(3000, [this]{
+               ui->ip_label->clear();
+           });
            return;
        }
        client->connect_to_server(ip, s_port.toInt());
