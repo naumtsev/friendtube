@@ -6,23 +6,55 @@ QString yandex_disk_url_to_stream_url(const QString &url) {
     QProcess process;
     process.start ("get_url.exe", pythonCommandArguments);
     process.waitForFinished();
-    return process.readAllStandardOutput();
+    QString out = process.readAllStandardOutput();
+    qDebug() << "URL: " << out;
+    return out;
 }
 
 
 VideoPlayer::VideoPlayer(QVideoWidget *output_, QObject *parent): QObject(parent) {
     output = output_;
+    m_thread = new QThread();
     m_player = new QMediaPlayer();
+    m_player->moveToThread(m_thread);
+    m_thread->start();
     m_player->setVideoOutput(output);
+    state = Empty;
 }
 
+
+void VideoPlayer::pause() {
+    if(state == Playing){
+        m_player->pause();
+        state = Pause;
+    } else if(state == Pause){
+        m_player->play();
+        state = Playing;
+    }
+}
 
 void VideoPlayer::run(){
-    QString url = yandex_disk_url_to_stream_url("https://disk.yandex.ru/i/maQWX1KvkNJlhQ");
-    m_player->setMedia(QUrl(url));
+
     m_player->play();
-    qDebug() << "Video Add";
+
 }
+
+void VideoPlayer::set_video(QString url){
+
+    //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
+    QString strem_url = yandex_disk_url_to_stream_url(url);
+    if(url == "error" || url == "incorrect url") {
+       emit make_advert("Your url is incorrect");
+    } else {
+        qDebug() << url;
+        qDebug() << "Set new video" << strem_url;
+        m_player->stop();
+        m_player->setMedia(QUrl(strem_url));
+        m_player->play();
+        state = Playing;
+    }
+}
+
 
 
 VideoPlayer::~VideoPlayer() {

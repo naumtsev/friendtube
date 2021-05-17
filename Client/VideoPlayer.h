@@ -7,12 +7,12 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QProcess>
-
+#include <QQueue>
 
 enum VideoPlayerState {
     Pause,
     Playing,
-    QueueIsEmpty,
+    Empty,
     Loading
 };
 
@@ -22,13 +22,21 @@ struct VideoPlayer : QObject {
 public:
     VideoPlayer(QVideoWidget *output_, QObject *parent = nullptr);
     ~VideoPlayer();
+
+signals:
+    void make_advert(QString message);
+
 public slots:
     void run();
+    void pause();
+    void set_video(QString url);
 public:
     QVideoWidget *output;
+    QThread *m_thread;
     QMediaPlayer *m_player;
     VideoPlayerState state;
     Video *current_video;
+    QQueue<Video> q_videos;
 };
 
 

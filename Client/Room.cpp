@@ -62,6 +62,53 @@ void Room::init_video() {
     video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
     video_player = new VideoPlayer(video_widget);
     video_player->run();
+
+    push_button_add_video = new QPushButton(" + ", this);
+    push_button_add_video->setFixedSize(video_btn_size, video_btn_size);
+
+    push_button_add_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y(),
+                                   video_btn_size,
+                                   video_btn_size});
+
+   connect(push_button_add_video, SIGNAL(clicked()), this, SLOT(add_video()));
+
+
+
+
+    push_button_pause_video = new QPushButton(" = ", this);
+    push_button_pause_video->setFixedSize(video_btn_size, video_btn_size);
+    push_button_pause_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y() + video_btn_size + video_btn_space_size,
+                                   video_btn_size,
+                                   video_btn_size});
+
+    connect(push_button_pause_video, SIGNAL(clicked()), video_player, SLOT(pause()));
+
+    connect(push_button_pause_video, &QPushButton::clicked, [this]{
+        if(video_player->state == Pause)
+            this->push_button_pause_video->setText("⃤");
+        else if(video_player->state == Playing)
+            this->push_button_pause_video->setText("=");
+    });
+
+
+    /*
+
+    */
+    push_button_skip_video = new QPushButton(" - ", this);
+    push_button_skip_video->setFixedSize(video_btn_size, video_btn_size);
+    push_button_skip_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y() + 2 * video_btn_size + 2 * video_btn_space_size,
+                                   video_btn_size,
+                                   video_btn_size});
+
+
+    push_button_volume_video = new QPushButton(" ♪ ", this);
+    push_button_volume_video->setFixedSize(video_btn_size, video_btn_size);
+    push_button_volume_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y() + 3 * video_btn_size + 3 * video_btn_space_size,
+                                   video_btn_size , video_btn_size});
 }
 
 
@@ -157,10 +204,38 @@ void Room::set_focus_room(){
 void Room::close_room() {
     // RETURN TO MENU
     emit signal_close_room();
-
-   client->return_to_menu("");
+    client->return_to_menu("");
     return;
 }
+
+
+void Room::add_video(){
+   QInputDialog *input_form = new QInputDialog();
+
+   input_form->setWindowTitle("FriendTube");
+   input_form->setWindowIcon(QIcon(QPixmap(":/images/icon.png")));
+   input_form->setFixedSize(350, 108);
+
+   input_form->setInputMode(QInputDialog::InputMode::TextInput);
+   input_form->setLabelText("Введите ссылку на видео, находящееся на yandex.disk");
+   input_form->setOkButtonText("Отправить");
+   input_form->setCancelButtonText("Отмена");
+   input_form->setWindowFlag(Qt::WindowContextHelpButtonHint,false);
+   input_form->setModal(true);
+   input_form->show();
+
+   bool ok = input_form->exec();
+
+   if(ok) {
+     video_player->set_video(input_form->textValue());
+   } else { // user cancel adding video
+    //qDebug() << "Cancel";
+   }
+
+   delete input_form;
+}
+
+
 
 Room::~Room() {
     delete ui;

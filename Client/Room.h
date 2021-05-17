@@ -56,6 +56,7 @@ public slots:
     void update_local_player_position();
     void close_room();
     void set_focus_room();
+    void add_video();
 
 signals:
     void signal_close_room();
@@ -63,22 +64,36 @@ signals:
     void update_state_on_the_server(QJsonDocument);
 
 public:
+    int                FPS = 60;
     Ui::Room          *ui;
     AnimationView     *animation_scene;
     Player            *local_player;
     QTimer            *update_draw_timer;
     ChatWindow        *chat_window = new ChatWindow;
     ToolManyItem      *tool_item_right = new ToolManyItem;
-    int                FPS = 60;
-    QMutex player_mutex;
     QVector<PlayerView *> last_frame;
     QVector<PlayerView *> next_frame;
+    QMutex player_mutex;
+
+
     Client *client;
     bool got_scene = false;
     bool updated_data = false;
+
     QPushButton *push_button_exit_in_menu;
+
+    // video structs
+
     QVideoWidget *video_widget;
     VideoPlayer *video_player;
+    qint16 video_btn_size = 60;
+    qint16 video_btn_space_size = 15;
+    qint16 space_between_video_widget = 10;
+    QPushButton *push_button_add_video;
+    QPushButton *push_button_skip_video;
+    QPushButton *push_button_pause_video;
+    QPushButton *push_button_volume_video;
+
 };
 
 #endif // ROOM_H

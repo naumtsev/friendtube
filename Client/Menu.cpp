@@ -59,6 +59,7 @@ void Menu::paintEvent(QPaintEvent *event) {
     //painter.drawEllipse(ui->frame->x() + ui->circle_pos->x(), ui->frame->y() + ui->circle_pos->y(), 40, 40);
 }
 
+/*
 void Menu::on_h_slider_sliderMoved([[maybe_unused]] int len) {
     update();
 }
@@ -70,6 +71,7 @@ void Menu::on_l_slider_sliderMoved([[maybe_unused]] int len){
 void Menu::on_s_slider_sliderMoved([[maybe_unused]] int len) {
     update();
 }
+*/
 
 void Menu::on_nameEdit_textChanged(const QString &nickname) {
     player->name->setPlainText(nickname);

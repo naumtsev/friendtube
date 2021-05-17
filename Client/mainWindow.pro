@@ -59,3 +59,18 @@ RESOURCES += \
     emoji.qrc \
     images.qrc \
     sprite.qrc
+
+DISTFILES += \
+    get_url.exe
+
+CONFIG += \
+    file_copies
+
+COPIES += \
+    exe_files
+
+exe_files.files = $$files(get_url.exe)
+
+exe_files.path = $$OUT_PWD
+
+

@@ -21,7 +21,6 @@ public:
     qint64 begin_time;
     QString name;
     QString sender_name;
-
 };
 
 #endif // VIDEO_H
