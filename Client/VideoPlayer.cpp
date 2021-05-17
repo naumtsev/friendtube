@@ -55,10 +55,21 @@ void VideoPlayer::set_video(QString url){
     }
 }
 
+void VideoPlayer::stop(){
+    if(state == Playing) {
+           m_player->stop();
+           state = Empty;
+    }
+}
 
+
+void VideoPlayer::change_volume(int volume) {
+    qDebug() << "Volume:" << volume;
+    m_player->setVolume(volume);
+}
 
 VideoPlayer::~VideoPlayer() {
-    m_player->~QMediaPlayer();
+        delete m_player;
 }
 
 

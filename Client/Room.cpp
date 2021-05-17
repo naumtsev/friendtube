@@ -78,10 +78,8 @@ void Room::init_video() {
 
     push_button_pause_video = new QPushButton(" = ", this);
     push_button_pause_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_pause_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y() + video_btn_size + video_btn_space_size,
-                                   video_btn_size,
-                                   video_btn_size});
+    push_button_pause_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y() + video_btn_size + video_btn_space_size);
 
     connect(push_button_pause_video, SIGNAL(clicked()), video_player, SLOT(pause()));
 
@@ -93,22 +91,36 @@ void Room::init_video() {
     });
 
 
-    /*
+    push_button_stop_video = new QPushButton(" - ", this);
+    push_button_stop_video->setFixedSize(video_btn_size, video_btn_size);
+    push_button_stop_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y() + 2 * video_btn_size + 2 * video_btn_space_size);
 
-    */
-    push_button_skip_video = new QPushButton(" - ", this);
-    push_button_skip_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_skip_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y() + 2 * video_btn_size + 2 * video_btn_space_size,
-                                   video_btn_size,
-                                   video_btn_size});
+    connect(push_button_stop_video, SIGNAL(clicked()), video_player, SLOT(stop()));
 
 
     push_button_volume_video = new QPushButton(" ♪ ", this);
     push_button_volume_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_volume_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y() + 3 * video_btn_size + 3 * video_btn_space_size,
-                                   video_btn_size , video_btn_size});
+    push_button_volume_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
+                                   video_widget->y() + 3 * video_btn_size + 3 * video_btn_space_size);
+
+    connect(push_button_volume_video, &QPushButton::clicked, [this](){volume_slider->setVisible(volume_slider->isVisible() ^ true);});
+
+    volume_slider = new QSlider(this);
+    int slider_width = 15;
+    int slider_height = 120;
+
+    volume_slider->setFixedSize(slider_width , slider_height);
+    volume_slider->move(video_widget->x() + video_widget->width() + space_between_video_widget + video_btn_size / 2 - slider_width / 2,
+                        video_widget->y() + 4 * video_btn_size + 4 * video_btn_space_size);
+
+    volume_slider->setVisible(false);
+    volume_slider->setMinimum(0);
+    volume_slider->setMaximum(100);
+    volume_slider->setSingleStep(1);
+    connect(volume_slider, SIGNAL(valueChanged(int)), video_player, SLOT(change_volume(int)));
+    volume_slider->setValue(50);
+
 }
 
 

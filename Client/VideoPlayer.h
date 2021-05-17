@@ -29,7 +29,9 @@ signals:
 public slots:
     void run();
     void pause();
+    void stop();
     void set_video(QString url);
+    void change_volume(int);
 public:
     QVideoWidget *output;
     QThread *m_thread;
