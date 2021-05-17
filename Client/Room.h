@@ -23,7 +23,7 @@
 #include <QGraphicsView>
 #include <QMutex>
 #include <QPushButton>
-
+#include <QLabel>
 
 struct Menu;
 struct Client;
@@ -94,7 +94,7 @@ public:
     QPushButton *push_button_pause_video;
     QPushButton *push_button_volume_video;
     QSlider *volume_slider;
-
+    QLabel *video_advert;
 
 };
 

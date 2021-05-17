@@ -6,9 +6,7 @@ QString yandex_disk_url_to_stream_url(const QString &url) {
     QProcess process;
     process.start ("get_url.exe", pythonCommandArguments);
     process.waitForFinished();
-    QString out = process.readAllStandardOutput();
-    qDebug() << "URL: " << out;
-    return out;
+    return process.readAllStandardOutput();
 }
 
 
@@ -33,21 +31,15 @@ void VideoPlayer::pause() {
     }
 }
 
-void VideoPlayer::run(){
-
-    m_player->play();
-
-}
-
 void VideoPlayer::set_video(QString url){
 
     //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
     QString strem_url = yandex_disk_url_to_stream_url(url);
-    if(url == "error" || url == "incorrect url") {
-       emit make_advert("Your url is incorrect");
+    if(strem_url == "error"){
+        emit make_advert("Вы указали некорректную ссылку на видео");
+    } else if(strem_url == "incorrect url") {
+       emit make_advert("Произошла неизвестная ошибка");
     } else {
-        qDebug() << url;
-        qDebug() << "Set new video" << strem_url;
         m_player->stop();
         m_player->setMedia(QUrl(strem_url));
         m_player->play();
@@ -64,7 +56,6 @@ void VideoPlayer::stop(){
 
 
 void VideoPlayer::change_volume(int volume) {
-    qDebug() << "Volume:" << volume;
     m_player->setVolume(volume);
 }
 

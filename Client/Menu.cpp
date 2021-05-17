@@ -158,19 +158,15 @@ void Menu::on_connectButton_clicked() {
 
 
 void Menu::make_advert(const QString &advert) {
-    qDebug() << "Make advert" << advert;
-
-    QTimer *advert_timer = new QTimer();
     ui->advert_frame->setVisible(true);
     ui->advert_label->setStyleSheet("color: red;");
     ui->advert_label->setText("Attention!\n" + advert);
-    connect(advert_timer, &QTimer::timeout, [=]() {
-        ui->advert_label->clear();
-        advert_timer->~QTimer();
-        ui->advert_frame->setVisible(false);
-      } );
 
-    advert_timer->start(5000);
+    QTimer::singleShot(5000, [this]{
+        ui->advert_label->clear();
+        ui->advert_frame->setVisible(false);
+    });
+
 }
 
 

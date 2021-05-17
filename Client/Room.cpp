@@ -61,7 +61,24 @@ void Room::init_video() {
     video_widget->resize(960 / 1.5, 576 / 1.5);
     video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
     video_player = new VideoPlayer(video_widget);
-    video_player->run();
+
+
+    video_advert = new QLabel(this);
+    static int width_advert = 300;
+    video_advert->setFixedWidth(width_advert);
+    video_advert->setAlignment(Qt::AlignRight);
+    video_advert->setWordWrap(true);
+    video_advert->setVisible(false);
+
+    connect(video_player, &VideoPlayer::make_advert, [this](QString text){
+        QTimer::singleShot(5000, [this](){video_advert->setVisible(false);});
+        video_advert->setText(text);
+        video_advert->setFixedHeight(video_advert->heightForWidth(width_advert));
+        video_advert->move(video_widget->x() + video_widget->width() - video_advert->width(), video_widget->y() - video_advert->heightForWidth(width_advert));
+        video_advert->show();
+
+    });
+
 
     push_button_add_video = new QPushButton(" + ", this);
     push_button_add_video->setFixedSize(video_btn_size, video_btn_size);

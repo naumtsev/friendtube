@@ -27,7 +27,6 @@ signals:
     void make_advert(QString message);
 
 public slots:
-    void run();
     void pause();
     void stop();
     void set_video(QString url);
