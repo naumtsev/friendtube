@@ -44,7 +44,7 @@ public slots:
     void move();
 
 public:
-    explicit Player(const QString& player_name_ = "YOUR_NAME_PLAYER", const QString& color_player_ = ":/pics/sheets/m_DinoSprites - mortBIG.png", QObject *parent = 0); // записывание имени
+    explicit Player(const QString& player_name_ = "", const QString& color_player_ = ":/pics/sheets/m_DinoSprites - mortBIG.png", QObject *parent = 0); // записывание имени
 
     Player(QJsonObject json_player);
     QJsonDocument to_json();

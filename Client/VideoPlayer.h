@@ -43,7 +43,7 @@ public:
 
 
 
-QString yandex_disk_url_to_stream_url(const QString &url);
+QJsonObject yandex_disk_url_to_json_video(const QString &url);
 
 
 
