@@ -37,8 +37,6 @@ Player::Player(QJsonObject json_player){
 }
 
 
-// нужно менять цвет в tmp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 void Player::download_pixmap(){
     Pixmaps.clear();
     Pixmaps.reserve((int)AnimateState::StateEnd);
@@ -61,6 +59,7 @@ void Player::download_pixmap(){
     tmp.second.offset = 48;
     tmp.second.border = 0;
     Pixmaps.push_back(tmp);
+
 }
 
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
@@ -84,6 +83,9 @@ void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 }
 
 void Player::move(){
+    position_movement_last_frame.push_back({pos().x(), pos().y()});
+    position_name_movement_last_frame.push_back({name->pos().x(), name->pos().y()});
+
     setPos(pos().x() + movement.x, pos().y() + movement.y);
     state = AnimateState::Moving;
 
@@ -106,13 +108,17 @@ void Player::move(){
 void Player::update_movement(int sign, QKeyEvent *apKeyEvent){
     int apKey = apKeyEvent->key();
 
-    if(apKey == Qt::Key_W || apKey == Qt::Key_Up) {                                               //вверх
+    std::cout<<apKey<<std::endl;
+
+    // цифры = это русская клавиатура
+
+    if(apKey == Qt::Key_W || apKey == Qt::Key_Up || apKey == 1062) {                                               //вверх
         movement.y -=  sign*move_distance;
-    } else if (apKey == Qt::Key_S || apKey == Qt::Key_Down) {                                       //вниз
+    } else if (apKey == Qt::Key_S || apKey == Qt::Key_Down || apKey == 1067) {                                       //вниз
         movement.y +=  sign*move_distance;
-    } else if (apKey == Qt::Key_A || apKey == Qt::Key_Left) {                                       //влево
+    } else if (apKey == Qt::Key_A || apKey == Qt::Key_Left || apKey == 1060) {                                       //влево
         movement.x -=  sign*move_distance;
-    } else if (apKey == Qt::Key_D || apKey == Qt::Key_Right) {                                       //вправо
+    } else if (apKey == Qt::Key_D || apKey == Qt::Key_Right || apKey == 1042) {                                       //вправо
         movement.x +=  sign*move_distance;
     }
 
@@ -266,15 +272,16 @@ void Player::next_frame(){
             Dy =-0.5;
         }
     }
-    if(direction == "left"){
+    //if(direction == "left"){
         int left_x = 24;                        // не знаю костыль ли это или нормальное решение.
         name->setPos(pos().x() + movement.x + left_x  - name->boundingRect().width()/2, pos().y() + movement.y + Dy - 15);     // чтобы не было глюков при замене direction нужно,
         //name->setPos(pos().x() + Dx + left_x, pos().y() + Dy - 10);
-    }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
-        int right_x = 24;
-        name->setPos(pos().x() + movement.y - right_x - name->boundingRect().width()/2, pos().y() + movement.y + Dy - 15); // -  boundingRect().height()/2
-        //name->setPos(pos().x() + Dx - right_x, pos().y() + Dy - 10);
-    }
+//    }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
+//        int right_x = 24;
+//        name->setPos(pos().x() + movement.y - right_x - name->boundingRect().width()/2, pos().y() + movement.y + Dy - 15); // -  boundingRect().height()/2
+//        //name->setPos(pos().x() + Dx - right_x, pos().y() + Dy - 10);
+//    }
+
     switch(state){
         case AnimateState::Moving : {
             move();

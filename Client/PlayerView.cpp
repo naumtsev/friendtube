@@ -35,7 +35,7 @@ PlayerView::PlayerView(const PlayerView& player_view){
     color_player = player_view.color_player;
     client_id = player_view.client_id;
     player_message = player_view.player_message;
-    direction = player_view.direction; // create enum class
+    direction = player_view.direction;
     state = player_view.state;
     current_frame = player_view.current_frame;
     spriteData = player_view.spriteData;
@@ -47,30 +47,41 @@ QRectF PlayerView::boundingRect() const{
 }
 
 void PlayerView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){ // почему-то не работает ж(
-    painter->drawPixmap(0,0,Pixmaps[static_cast<int>(state)].first,(csd().offset*current_frame + csd().border),0,csd().width,csd().height);
+    if(this->direction == "right"){
+        QPixmap icon = Pixmaps[static_cast<int>(state)].first.copy((csd().offset*current_frame + csd().border),0,csd().width,csd().height);
+        icon = icon.transformed(QTransform().scale(-1,1).translate(icon.width(), 0));
+        painter->drawPixmap(0,0,icon);
+    } else {
+        painter->drawPixmap(0,0,Pixmaps[static_cast<int>(state)].first,(csd().offset*current_frame + csd().border),0,csd().width,csd().height);
+    }
 }
-
-
 
 const sprite_data& PlayerView::csd() const {
     return Pixmaps[static_cast<int>(state)].second;
 }
 
+QPainterPath PlayerView::shape() const
+{
+    QPainterPath path;
+    path.addEllipse(boundingRect());
+    return path;
+}
+
 void PlayerView::update_state(){
-    this->update_direction();
+    //this->update_direction();
     this->update_position_name();
 }
 
 void PlayerView::update_position_name(){
-    if(direction == "left"){
+    //if(direction == "left"){
         int left_x = 24;                        // не знаю костыль ли это или нормальное решение.
         name->setPos(pos().x() + left_x  - name->boundingRect().width()/2, pos().y() - 15);     // чтобы не было глюков при замене direction нужно,
         message->setPos(pos().x() + left_x  - name->boundingRect().width()/2, pos().y() - 30);
-    }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
-        int right_x = 24;
-        name->setPos(pos().x() - right_x - name->boundingRect().width()/2, pos().y() - 15); // -  boundingRect().height()/2
-        message->setPos(pos().x() - right_x - name->boundingRect().width()/2, pos().y() - 30);
-    }
+//    }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
+//        int right_x = 24;
+//        name->setPos(pos().x() - right_x - name->boundingRect().width()/2, pos().y() - 15); // -  boundingRect().height()/2
+//        message->setPos(pos().x() - right_x - name->boundingRect().width()/2, pos().y() - 30);
+//    }
 }
 
 void PlayerView::update_direction(){

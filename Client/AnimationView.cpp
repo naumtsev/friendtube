@@ -1,4 +1,10 @@
 #include "AnimationView.h"
+#include <typeinfo>
+
+GraphicsTree::GraphicsTree(QRect rect, QObject *parent)
+  : QGraphicsEllipseItem(rect), QObject(parent) {
+  this->setBrush(QColor(0, 255, 0));
+}
 
 AnimationView::AnimationView(QWidget *parent) :
     QGraphicsView(parent)
@@ -30,9 +36,9 @@ AnimationView::AnimationView(QWidget *parent) :
     timer_update_scene = new QTimer();
 
 
-
-
-
+    scene->addItem(new GraphicsTree(QRect(50, 80, 100, 100)));
+    scene->addItem(new GraphicsTree(QRect(250, 60, 150, 150)));
+    scene->addItem(new GraphicsTree(QRect(200, 50, 50, 50)));
 
 
     connect(timer_update_scene, SIGNAL(timeout()), this, SLOT(update()));
@@ -42,21 +48,78 @@ AnimationView::AnimationView(QWidget *parent) :
 
 void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<PlayerView *> &next_frame, QString local_id){
     if(next_frame.size() > 1){
+
         bool draw_local_player = false;
+        int id = -1;
+
         for(int i = 0; i < next_frame.size(); i++){
             if(next_frame[i]->client_id != local_id || draw_local_player){
                 next_frame[i]->update_state();
                 scene->addItem(next_frame[i]);
-                scene->addItem(next_frame[i]->name);
-                display_message(next_frame[i]);
+                    if(i != next_frame.size() - 1){
+                        scene->addItem(next_frame[i]->name);
+                        display_message(next_frame[i]);
+                    }
             } else {
+                id = i;
                 draw_local_player = true;
             }
         }
+
         clear_vector(last_frame, local_id);
+
+        int i = 0;
+
+        while(colliding_with_player(next_frame) > 0){
+            next_frame[next_frame.size() - 1]->setPos(local_player->position_movement_last_frame[i].first,
+                                                      local_player->position_movement_last_frame[i].second);
+            next_frame[next_frame.size() - 1]->name->setPos(local_player->position_name_movement_last_frame[i].first,
+                                                            local_player->position_name_movement_last_frame[i].second);
+
+            local_player->setPos(local_player->position_movement_last_frame[i].first,
+                                 local_player->position_movement_last_frame[i].second);
+
+            local_player->name->setPos(local_player->position_name_movement_last_frame[i].first,
+                                       local_player->position_name_movement_last_frame[i].second);
+            i++;
+
+        }
+        next_frame[i]->update_state();
+        scene->addItem(next_frame[next_frame.size() - 1]->name);
+        display_message(next_frame[next_frame.size() - 1]);
+
+        local_player->position_movement_last_frame.clear();
+        local_player->position_name_movement_last_frame.clear();
+
         last_frame = next_frame;
+
     }
     next_frame.clear();
+}
+
+int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
+    int id = next_frame.size() - 1;
+    int count = 0;
+    QList<QGraphicsItem *> colliding = scene->collidingItems(next_frame[id]);
+    for(QGraphicsItem* item: colliding){
+        int count_i = 1;
+        for(int i = 0; i <= id; i++){
+            if(item == next_frame[i]){
+                count_i = 0;
+            }
+            if(item == next_frame[i]->name){
+                count_i = 0;
+            }
+            if(next_frame[i]->player_message.type == "emoji" && item == next_frame[i]->player_message.emoji){
+                count_i = 0;
+            }
+            if(count_i == 0){
+                break;
+            }
+        }
+        count += count_i;
+    }
+    return count;
 }
 
 void AnimationView::display_message(PlayerView *player){
@@ -88,10 +151,10 @@ void AnimationView::clear_vector(QVector<PlayerView *> &last_frame, QString loca
                     //delete last_frame[i]->player_message.emoji;
                 }
             }
-            delete last_frame[i];
         } else {
             clear_local_player = true;
         }
+        delete last_frame[i];
     }
 }
 

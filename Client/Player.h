@@ -96,6 +96,9 @@ public:
 
     int move_distance = 2;
     bool timer_state_character = false;
+    QVector<std::pair<int,int>> position_movement_last_frame;
+    QVector<std::pair<int,int>> position_name_movement_last_frame;
+
 };
 
 #endif // PLAYER_H
