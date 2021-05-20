@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
+from flask import Flask
 import requests
 from bs4 import BeautifulSoup
 import json
-import argparse
+from flask import request
+
+app = Flask(__name__)
 
 def getStreamUrl(short_url):
     try:
@@ -24,11 +28,9 @@ def getStreamUrl(short_url):
         return {"status": "Error"}
 
 
+@app.route('/get_url', methods=['POST'])
+def index():
+    data = json.loads(request.data)
+    return getStreamUrl(data['url'])
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--link')
-args = parser.parse_args()
-print(getStreamUrl(args.link), end='')
-
-# example
-# print(getStreamUrl('https://disk.yandex.ru/i/maQWX1KvkNJlhQ'))
+app.run(port=1234)

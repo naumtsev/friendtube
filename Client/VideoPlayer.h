@@ -10,6 +10,15 @@
 #include <QCoreApplication>
 #include <QProcess>
 #include <QQueue>
+#include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QNetworkReply>
+#include <QEventLoop>
+
+
 
 struct Room;
 
@@ -41,6 +50,13 @@ public:
 };
 
 QJsonObject yandex_disk_url_to_stream_url(const QString &url);
+
+
+struct UrlHandler : public QObject {
+    QJsonObject get_url(QString url);
+};
+
+
 
 
 

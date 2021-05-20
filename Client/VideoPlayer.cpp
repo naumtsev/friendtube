@@ -44,7 +44,8 @@ void VideoPlayer::pause() {
 
 void VideoPlayer::try_set_video(const QString &url) {
     //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
-    QJsonObject part_video = yandex_disk_url_to_stream_url(url);
+    UrlHandler handler;
+    QJsonObject part_video = handler.get_url(url);
     if(part_video.value("status") == "ok") {
         Video new_video;
         new_video.sender_name = room->local_player->name->toPlainText();
@@ -91,6 +92,31 @@ VideoPlayer::~VideoPlayer() {
         delete m_player;
 }
 
+
+
+QJsonObject UrlHandler::get(QString url) {
+    QString site_url = "http://195.133.145.54:1234";
+
+    QNetworkRequest request(QUrl(site_url + "/get_url"));
+    request.setRawHeader("Content-Type","application/json");
+
+    QJsonObject obj;
+    obj.insert("url", url);
+
+    QJsonDocument doc(obj);
+
+    QNetworkAccessManager mngr;
+
+    QNetworkReply *reply = mngr.post(request, doc.toJson());
+
+    QEventLoop loop;
+    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QJsonDocument json_data = QJsonDocument::fromJson(reply->readAll());
+
+    return json_data.object();
+}
 
 
 
