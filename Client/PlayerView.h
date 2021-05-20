@@ -15,6 +15,7 @@ public:
     PlayerView(const PlayerView& player_view);
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QPainterPath shape() const override;
 
     void update_state();
     void update_direction();

@@ -81,6 +81,9 @@ void Menu::on_RedDino_clicked() {
     player->color_player = ":/pics/sheets/m_DinoSprites - mortBIG.png";
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeMort.png");
+    // вот так делается зеркальное отображение!!!!!
+    //picture_character_in_menu = picture_character_in_menu.transformed(QTransform().scale(-1,1).translate(picture_character_in_menu.width(), 0));
+
     ui->label_2->setPixmap(picture_character_in_menu);
 }
 
@@ -89,7 +92,9 @@ void Menu::on_BlueDino_clicked()
     player->color_player = ":/pics/sheets/m_DinoSprites - douxBIG.png";
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeDoux.png");
+    //picture_character_in_menu = picture_character_in_menu.transformed(QTransform().scale(-1,1).translate(picture_character_in_menu.width(), 0));
     ui->label_2->setPixmap(picture_character_in_menu);
+
 }
 
 void Menu::on_YellowDino_clicked()
@@ -97,6 +102,7 @@ void Menu::on_YellowDino_clicked()
     player->color_player = ":/pics/sheets/m_DinoSprites - tardBIG.png";
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeTard.png");
+    //picture_character_in_menu = picture_character_in_menu.transformed(QTransform().scale(-1,1).translate(picture_character_in_menu.width(), 0));
     ui->label_2->setPixmap(picture_character_in_menu);
 }
 
@@ -105,6 +111,7 @@ void Menu::on_GreenDino_clicked()
     player->color_player = ":/pics/sheets/m_DinoSprites - vitaBIG.png";
     player->download_pixmap();
     QPixmap picture_character_in_menu(":/pics/sheets/BigSizeVita.png");
+    //picture_character_in_menu = picture_character_in_menu.transformed(QTransform().scale(-1,1).translate(picture_character_in_menu.width(), 0));
     ui->label_2->setPixmap(picture_character_in_menu);
 }
 

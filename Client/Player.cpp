@@ -4,7 +4,7 @@ Player::Player(const QString& player_name_, const QString& color_player_, QObjec
     QObject(parent) {
     connect(timer_move, &QTimer::timeout, this, &Player::move);
 
-    setPos(30, 30);
+    setPos(800, 90);
 
     download_pixmap();
 
@@ -37,8 +37,6 @@ Player::Player(QJsonObject json_player){
 }
 
 
-// нужно менять цвет в tmp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 void Player::download_pixmap(){
     Pixmaps.clear();
     Pixmaps.reserve((int)AnimateState::StateEnd);
@@ -61,6 +59,7 @@ void Player::download_pixmap(){
     tmp.second.offset = 48;
     tmp.second.border = 0;
     Pixmaps.push_back(tmp);
+
 }
 
 void Player::keyPressEvent(QKeyEvent *apKeyEvent){
@@ -84,6 +83,9 @@ void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 }
 
 void Player::move(){
+    position_movement_last_frame.push_back({pos().x(), pos().y()});
+    position_name_movement_last_frame.push_back({name->pos().x(), name->pos().y()});
+
     setPos(pos().x() + movement.x, pos().y() + movement.y);
     state = AnimateState::Moving;
 
@@ -106,13 +108,14 @@ void Player::move(){
 void Player::update_movement(int sign, QKeyEvent *apKeyEvent){
     int apKey = apKeyEvent->key();
 
-    if(apKey == Qt::Key_W || apKey == Qt::Key_Up) {                                               //вверх
+    // цифры = это русская клавиатура
+    if(apKey == Qt::Key_W || apKey == Qt::Key_Up || apKey == 1062) {                                               //вверх
         movement.y -=  sign*move_distance;
-    } else if (apKey == Qt::Key_S || apKey == Qt::Key_Down) {                                       //вниз
+    } else if (apKey == Qt::Key_S || apKey == Qt::Key_Down || apKey == 1067) {                                       //вниз
         movement.y +=  sign*move_distance;
-    } else if (apKey == Qt::Key_A || apKey == Qt::Key_Left) {                                       //влево
+    } else if (apKey == Qt::Key_A || apKey == Qt::Key_Left || apKey == 1060) {                                       //влево
         movement.x -=  sign*move_distance;
-    } else if (apKey == Qt::Key_D || apKey == Qt::Key_Right) {                                       //вправо
+    } else if (apKey == Qt::Key_D || apKey == Qt::Key_Right || apKey == 1042) {                                       //вправо
         movement.x +=  sign*move_distance;
     }
 
@@ -139,39 +142,6 @@ void Player::stop(){
     state = AnimateState::Standing;
     current_frame = 0;
     movement = {0,0};
-}
-
-void Player::change_direction(){
-    // Get the current position
-    QRectF itemRectOld = this->sceneBoundingRect();
-
-    // Get the current transform
-    QTransform transform(this->transform());
-    qreal m11 = transform.m11(); // Horizontal scaling
-    qreal m12 = transform.m12(); // Vertical shearing
-    qreal m13 = transform.m13(); // Horizontal Projection
-    qreal m21 = transform.m21(); // Horizontal shearing
-    qreal m22 = transform.m22(); // vertical scaling
-    qreal m23 = transform.m23(); // Vertical Projection
-    qreal m31 = transform.m31(); // Horizontal Position (DX)
-    qreal m32 = transform.m32(); // Vertical Position (DY)
-    qreal m33 = transform.m33(); // Addtional Projection Factor
-
-    // Horizontal flip
-    m11 = -m11;
-
-    // Write back to the matrix
-    transform.setMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
-
-    // Set the items transformation
-    setTransform(transform);
-
-    // Re-position back to origin
-    QRectF itemRectNew = this->sceneBoundingRect();
-    qreal dx = itemRectOld.center().x()-itemRectNew.center().x();
-    qreal dy = itemRectOld.center().y()-itemRectNew.center().y();
-    this->moveBy(dx, dy);
-
 }
 
 void Player::chat(){
@@ -253,28 +223,16 @@ void Player::next_frame(){
             current_frame = 0;
         }
     }
+
     if(movement.x == 2){
         left_direction();
     } else if(movement.x == -2){
         right_direction();
     }
-    qreal Dy = 0;
-    if(state == AnimateState::Standing){
-        if(current_frame % 2 == 0) {
-            Dy = 0.5;
-        }else{
-            Dy =-0.5;
-        }
-    }
-    if(direction == "left"){
-        int left_x = 24;                        // не знаю костыль ли это или нормальное решение.
-        name->setPos(pos().x() + movement.x + left_x  - name->boundingRect().width()/2, pos().y() + movement.y + Dy - 15);     // чтобы не было глюков при замене direction нужно,
-        //name->setPos(pos().x() + Dx + left_x, pos().y() + Dy - 10);
-    }else{                                                              // чтобы left_x + right_x = 48 (размеру перснонажа)
-        int right_x = 24;
-        name->setPos(pos().x() + movement.y - right_x - name->boundingRect().width()/2, pos().y() + movement.y + Dy - 15); // -  boundingRect().height()/2
-        //name->setPos(pos().x() + Dx - right_x, pos().y() + Dy - 10);
-    }
+
+    int left_x = 24;                        // не знаю костыль ли это или нормальное решение.
+    name->setPos(pos().x() + movement.x + left_x  - name->boundingRect().width()/2, pos().y() + movement.y - 15);     // чтобы не было глюков при замене direction нужно,
+
     switch(state){
         case AnimateState::Moving : {
             move();

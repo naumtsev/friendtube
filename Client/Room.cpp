@@ -14,8 +14,6 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     init_video();
 
 
-
-
     connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     connect(tool_item_right, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
@@ -36,6 +34,9 @@ void Room::init_paramets(){
 
 void Room::init_variables(){
     animation_scene = new AnimationView(this);
+
+    animation_scene->local_player = local_player;
+
     chat_window = new ChatWindow(this, *local_player); // тут могут быть утечки памяти
     tool_item_right = new ToolManyItem(this, *local_player);
 }
@@ -54,7 +55,6 @@ void Room::init_buttons(){
                                    push_button_exit_in_menu->geometry().height()});
     push_button_exit_in_menu->setVisible(false);
 }
-
 
 void Room::init_video() {
     video_widget = new QVideoWidget(this);
@@ -77,7 +77,6 @@ void Room::init_video() {
         video_advert->setFixedHeight(video_advert->heightForWidth(width_advert));
         video_advert->move(video_widget->x() + video_widget->width() - video_advert->width(), video_widget->y() - video_advert->heightForWidth(width_advert));
         video_advert->show();
-
     });
 
 
@@ -89,7 +88,7 @@ void Room::init_video() {
                                    video_btn_size,
                                    video_btn_size});
 
-   connect(push_button_add_video, SIGNAL(clicked()), this, SLOT(add_video()));
+   connect(push_button_add_video, SIGNAL(clicked()) , this, SLOT(add_video()));
 
 
 
@@ -174,8 +173,8 @@ void Room::draw_scene(){
     // добавляем в конец локального игрока
     next_frame.push_back(new PlayerView(*local_player));
     animation_scene->add_players(last_frame, next_frame, local_player->client_id);
-
     local_player->chat();
+
 }
 
 void Room::update_local_player_position(){
@@ -188,23 +187,9 @@ void Room::update_local_player_position(){
 
 
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
-    if(this->hasFocus()){
-        /*
-        if(apKeyEvent->key() == Qt::Key_Escape) {
-            QMessageBox::StandardButton reply = QMessageBox::question(this, "", "Do you want to leave?",
-                                  QMessageBox::Yes | QMessageBox::No);
-            if(reply == QMessageBox::Yes){
-                // RETURN TO MENU
-                return;
-            }
-        } else
-        */
-        if (apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220) {
-            chat_window->get_focus();
-        } else {
-            local_player->keyPressEvent(apKeyEvent);
-        }
-    }else {
+    if (this->hasFocus() && (apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220)) {
+        chat_window->get_focus();
+    } else {
         local_player->keyPressEvent(apKeyEvent);
     }
 }
@@ -217,9 +202,9 @@ void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
 
 void Room::mousePressEvent(QMouseEvent *apMouseEvent){
     set_focus_room();
-    //if(chat_window->show_multicolor_emoji_list_widget->isVisible()){
-    //    chat_window->show_multicolor_emoji_list_widget->hide();
-    //}
+    if(tool_item_right->show_multicolor_emoji_list_widget->isVisible()){
+        tool_item_right->show_multicolor_emoji_list_widget->hide();
+    }
 }
 
 void Room::set_focus_room(){

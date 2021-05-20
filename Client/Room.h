@@ -69,6 +69,7 @@ public:
     Ui::Room          *ui;
     AnimationView     *animation_scene;
     Player            *local_player;
+    bool              move_player_or_no = true;
     QTimer            *update_draw_timer;
     ChatWindow        *chat_window = new ChatWindow;
     ToolManyItem      *tool_item_right = new ToolManyItem;
