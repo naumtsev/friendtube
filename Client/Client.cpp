@@ -69,7 +69,6 @@ void Client::return_to_menu(const QString &reason) {
         n_manager->finish();
         n_thread->quit();
         n_thread->wait();
-
         n_thread = nullptr;
     }
 

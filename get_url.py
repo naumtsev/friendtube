@@ -31,4 +31,4 @@ args = parser.parse_args()
 print(getStreamUrl(args.link), end='')
 
 # example
-#print(getStreamUrl('https://disk.yandex.ru/i/maQWX1KvkNJlhQ'))
+# print(getStreamUrl('https://disk.yandex.ru/i/maQWX1KvkNJlhQ'))

@@ -6,7 +6,6 @@ QJsonObject yandex_disk_url_to_stream_url(const QString &url) {
     QProcess process;
     process.start ("get_url.exe", pythonCommandArguments);
     process.waitForFinished();
-
     QByteArray data = process.readAllStandardOutput();
     QJsonObject json_data = QJsonDocument::fromJson(data).object();
     return json_data;

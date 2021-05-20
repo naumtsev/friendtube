@@ -40,8 +40,6 @@ public:
     Room *room;
 };
 
-
-
 QJsonObject yandex_disk_url_to_stream_url(const QString &url);
 
 
