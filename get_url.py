@@ -17,10 +17,11 @@ def getStreamUrl(short_url):
         for v in videos:
             if v['dimension'] == 'adaptive':
                 res['stream_url'] = v['url']
+                res['status'] = 'ok'
                 return json.dumps(res)
-        return 'adaptive video was not found'
+        return {"status": "Adaptive video was not found"}
     except:
-        return "error"
+        return {"status": "Error"}
 
 
 

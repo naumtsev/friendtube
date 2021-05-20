@@ -31,13 +31,17 @@ signals:
     void createRoom(Player*, QVector<PlayerView *>);
     void disconnect(const QString &reason);
 
+    void video_set_video();
+    void video_stop();
+    void video_pause();
+
 public slots:
     void run();
     void socketReady(const QByteArray &data);
+    void video_request(QJsonObject);
     void socketDisconnect();
     void request_get_scene_on_the_server();
     void update_state_on_the_server(const QJsonDocument &state);
-    void return_to_menu(const QString &);
     void onConnected();
     void onWebSocketError(QAbstractSocket::SocketError);
     void finish();

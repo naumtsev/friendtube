@@ -14,7 +14,7 @@ namespace {
 Server::Server(quint16 port_, QObject *parent) : QObject(parent),
     web_socket_server(new QWebSocketServer(QStringLiteral("Server friendTube"),
                                            QWebSocketServer::NonSecureMode, this)),
-    port(port_) {
+    port(port_), video_m(new VideoManager(this)){
 }
 
 
@@ -43,9 +43,9 @@ Server::~Server(){
 }
 
 
-void Server::send_data_to_all_users(QString data){ //
+void Server::send_data_to_all_users(QByteArray data){ //
     for(auto &socket: sockets) {
-        socket->sendData(data.toUtf8());
+        socket->sendData(data);
     }
 }
 
@@ -63,7 +63,7 @@ void Server::socket_disconnected(PlayerSocket* socket){
 }
 
 
-QJsonObject Server::get_scene_data(){
+QJsonObject Server::get_scene_data() {
     QJsonArray clients_data;
 
     for(auto &socket: sockets) {
@@ -72,5 +72,6 @@ QJsonObject Server::get_scene_data(){
 
     QJsonObject res;
     res.insert("clients", clients_data);
+    res.insert("video", video_m->current_video.to_json());
     return res;
 }

@@ -23,8 +23,6 @@ void Client::start() {
 
 void Client::connect_to_server(const QString &ip, int port) {
     qDebug() << "Try connect";
-
-
     n_manager = new NetworkManager(this, ip, port);
 
     connect(n_manager, SIGNAL(disconnect(const QString &)), this, SLOT(return_to_menu(const QString &)));

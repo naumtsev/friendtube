@@ -14,12 +14,16 @@ CONFIG   -= app_bundle
 HEADERS += \
     JsonHandler.h \
     PlayerSocket.h \
-    Server.h
+    Server.h \
+    Video.h \
+    VideoManager.h
 
 SOURCES += \
         JsonHandler.cpp \
         PlayerSocket.cpp \
         Server.cpp \
+        Video.cpp \
+        VideoManager.cpp \
         main.cpp
 
 

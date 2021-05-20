@@ -2,6 +2,7 @@
 #define VIDEOPLAYER_H
 
 #include "Video.h"
+#include "Room.h"
 
 #include <QObject>
 #include <QMediaPlayer>
@@ -10,40 +11,38 @@
 #include <QProcess>
 #include <QQueue>
 
-enum VideoPlayerState {
-    Pause,
-    Playing,
-    Empty,
-    Loading
-};
-
+struct Room;
 
 struct VideoPlayer : QObject {
     Q_OBJECT
 public:
-    VideoPlayer(QVideoWidget *output_, QObject *parent = nullptr);
+    VideoPlayer(Room *room, QVideoWidget *output_, QObject *parent = nullptr);
     ~VideoPlayer();
 
 signals:
     void make_advert(QString message);
+    void video_request(QJsonObject);
 
 public slots:
+    void try_pause();
     void pause();
+    void try_stop();
     void stop();
-    void set_video(QString url);
+    void try_set_video(const QString &url);
+    void set_video();
     void change_volume(int);
 public:
     QVideoWidget *output;
     QThread *m_thread;
+    Video current_video;
+
     QMediaPlayer *m_player;
-    VideoPlayerState state;
-    Video *current_video;
-    QQueue<Video> q_videos;
+    Room *room;
 };
 
 
 
-QString yandex_disk_url_to_stream_url(const QString &url);
+QJsonObject yandex_disk_url_to_stream_url(const QString &url);
 
 
 

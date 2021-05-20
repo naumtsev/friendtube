@@ -60,8 +60,9 @@ void Room::init_video() {
     video_widget = new QVideoWidget(this);
     video_widget->resize(960 / 1.5, 576 / 1.5);
     video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
-    video_player = new VideoPlayer(video_widget);
+    video_player = new VideoPlayer(this, video_widget);
 
+    connect(video_player, SIGNAL(video_request(QJsonObject)), client->n_manager, SLOT(video_request(QJsonObject)));
 
     video_advert = new QLabel(this);
     static int width_advert = 300;
@@ -98,14 +99,7 @@ void Room::init_video() {
     push_button_pause_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
                                    video_widget->y() + video_btn_size + video_btn_space_size);
 
-    connect(push_button_pause_video, SIGNAL(clicked()), video_player, SLOT(pause()));
-
-    connect(push_button_pause_video, &QPushButton::clicked, [this]{
-        if(video_player->state == Pause)
-            this->push_button_pause_video->setText("⃤");
-        else if(video_player->state == Playing)
-            this->push_button_pause_video->setText("=");
-    });
+    connect(push_button_pause_video, SIGNAL(clicked()), video_player, SLOT(try_pause()));
 
 
     push_button_stop_video = new QPushButton(" - ", this);
@@ -113,7 +107,7 @@ void Room::init_video() {
     push_button_stop_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
                                    video_widget->y() + 2 * video_btn_size + 2 * video_btn_space_size);
 
-    connect(push_button_stop_video, SIGNAL(clicked()), video_player, SLOT(stop()));
+    connect(push_button_stop_video, SIGNAL(clicked()), video_player, SLOT(try_stop()));
 
 
     push_button_volume_video = new QPushButton(" ♪ ", this);
@@ -137,6 +131,9 @@ void Room::init_video() {
     volume_slider->setSingleStep(1);
     connect(volume_slider, SIGNAL(valueChanged(int)), video_player, SLOT(change_volume(int)));
     volume_slider->setValue(50);
+    connect(client->n_manager, SIGNAL(video_set_video()), video_player, SLOT(set_video()));
+    connect(client->n_manager, SIGNAL(video_stop()), video_player, SLOT(stop()));
+    connect(client->n_manager, SIGNAL(video_pause()), video_player, SLOT(pause()));
 
 }
 
@@ -256,9 +253,7 @@ void Room::add_video(){
    bool ok = input_form->exec();
 
    if(ok) {
-     video_player->set_video(input_form->textValue());
-   } else { // user cancel adding video
-    //qDebug() << "Cancel";
+     video_player->try_set_video(input_form->textValue());
    }
 
    delete input_form;

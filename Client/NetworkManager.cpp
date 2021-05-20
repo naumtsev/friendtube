@@ -75,7 +75,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
                 players_.push_back(new PlayerView{{json_player.toObject()}});
             }
             qRegisterMetaType<QVector<PlayerView*> >("QVector<PlayerView*>");
-            emit createRoom(client->menu->player, std::move(players_));
+            emit createRoom(client->menu->player, players_);
             return;
         } else if(event_type == "updated_successfully"){
             client->room->updated_data = false;
@@ -91,6 +91,19 @@ void NetworkManager::socketReady(const QByteArray &data) {
             QMutexLocker player_locker{&client->room->player_mutex};
             client->room->next_frame = std::move(players_);
             return;
+        } else if(event_type == "video_event") {
+            qDebug() << json_data;
+            client->room->video_player->current_video = json_data.value("video").toObject();
+            if(json_data.value("event_type") == "set_video") {
+                emit video_set_video();
+            } else if(json_data.value("event_type") == "pause") {
+                qDebug() << "PAUSE";
+                emit video_pause();
+            } else if(json_data.value("event_type") == "stop") {
+                emit video_stop();
+            }
+
+
         }
     }
 }
@@ -128,20 +141,6 @@ void NetworkManager::request_get_scene_on_the_server(){
 }
 
 
-void NetworkManager::return_to_menu(const QString &reason){
-    QMutexLocker locker(socket_mutex);
-
-    QJsonObject req;
-    req.insert("type", "return_to_menu");
-    req.insert("reason", reason);
-    req.insert("client_id", client_id);
-    QJsonDocument doc(req);
-
-    sendData(doc.toJson());
-}
-
-
-
 void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
     switch (error) {
     case QAbstractSocket::SocketError::RemoteHostClosedError:
@@ -161,3 +160,11 @@ void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error){
         break;
     }
 }
+
+
+void NetworkManager::video_request(QJsonObject req) {
+    req.insert("client_id", client_id);
+    QJsonDocument doc(req);
+    sendData(doc.toJson());
+}
+

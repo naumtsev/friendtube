@@ -27,6 +27,7 @@
 
 struct Menu;
 struct Client;
+struct VideoPlayer;
 
 namespace Ui {
 struct Room;
@@ -95,6 +96,8 @@ public:
     QPushButton *push_button_volume_video;
     QSlider *volume_slider;
     QLabel *video_advert;
+    QLabel *video_description;
+
 
 };
 

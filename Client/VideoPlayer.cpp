@@ -1,66 +1,86 @@
 #include "VideoPlayer.h"
 
-QString yandex_disk_url_to_stream_url(const QString &url) {
+QJsonObject yandex_disk_url_to_stream_url(const QString &url) {
     QStringList pythonCommandArguments;
     pythonCommandArguments << "--link" << url;
     QProcess process;
     process.start ("get_url.exe", pythonCommandArguments);
     process.waitForFinished();
-    return process.readAllStandardOutput();
+
+    QByteArray data = process.readAllStandardOutput();
+    QJsonObject json_data = QJsonDocument::fromJson(data).object();
+    return json_data;
 }
 
 
-VideoPlayer::VideoPlayer(QVideoWidget *output_, QObject *parent): QObject(parent) {
+VideoPlayer::VideoPlayer(Room *room_, QVideoWidget *output_, QObject *parent): QObject(parent) {
+    room = room_;
     output = output_;
     m_thread = new QThread();
     m_player = new QMediaPlayer();
     m_player->moveToThread(m_thread);
     m_thread->start();
     m_player->setVideoOutput(output);
-    state = Empty;
+    current_video.state = Empty;
 }
 
+
+void VideoPlayer::try_pause() {
+    qDebug() << "try pause";
+    QJsonObject req;
+    req.insert("type", "video_event");
+    req.insert("event_type", "pause");
+    emit video_request(req);
+}
 
 void VideoPlayer::pause() {
-    if(state == Playing){
+    if(current_video.state == Pause){
         m_player->pause();
-        state = Pause;
-    } else if(state == Pause){
-        m_player->play();
-        state = Playing;
+    } else if(current_video.state == Playing) {
+         m_player->play();
     }
 }
 
-void VideoPlayer::set_video(QString url){
 
+
+void VideoPlayer::try_set_video(const QString &url) {
     //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
-    QString video_data = yandex_disk_url_to_stream_url(url);
-    if(video_data == "error"){
-        emit make_advert("Вы указали некорректную ссылку на видео");
-    } else if(video_data == "adaptive video was not found") {
-       emit make_advert("Не было найдено видео в подходящем для вас разрешении");
+    QJsonObject part_video = yandex_disk_url_to_stream_url(url);
+    if(part_video.value("status") == "ok") {
+        Video new_video;
+        new_video.sender_name = room->local_player->name->toPlainText();
+        new_video.stream_url = part_video.value("stream_url").toString();
+        new_video.duration = part_video.value("duration").toString().toLongLong();
+
+        QJsonObject req;
+        req.insert("type", "video_event");
+        req.insert("event_type", "set_new_video");
+        req.insert("video", new_video.to_json());
+        emit video_request(req);
     } else {
-        /*
-        QUrl stream_url; +
-        qint64 duration; +
-        qint64 begin_time;
-        QString name; +
-        QString sender_name;
-        */
-        QJsonObject json_data = QJsonDocument::fromJson(video_data.toUtf8()).object();
-    //    json_data.insert("sender_name", room->local_player->);
-        m_player->stop();
-        m_player->setMedia(QUrl(json_data.value("stream_url").toString()));
-        m_player->play();
-        state = Playing;
+        emit make_advert("Вы указали некорректную ссылку на видео");
     }
 }
+
+void VideoPlayer::set_video(){
+    m_player->stop();
+    qDebug() << current_video.state;
+    m_player->setMedia(QUrl(current_video.stream_url));
+    m_player->play();
+}
+
+
+
+void VideoPlayer::try_stop(){
+    QJsonObject req;
+    req.insert("type", "video_event");
+    req.insert("event_type", "stop");
+    emit video_request(req);
+}
+
 
 void VideoPlayer::stop(){
-    if(state == Playing) {
-           m_player->stop();
-           state = Empty;
-    }
+    m_player->stop();
 }
 
 

@@ -83,7 +83,18 @@ void PlayerSocket::read_data(const QByteArray &data) {
                 QJsonDocument doc(jsonResponse);
                 sendData(doc.toJson());
                 return;
+
+            } else if(event_type == "video_event") {
+                if(json_data.object().value("event_type") == "stop") {
+                   server->video_m->stop_video();
+                } else if(json_data.object().value("event_type") == "pause") {
+                    server->video_m->pause_video();
+                } else if(json_data.object().value("event_type") == "set_new_video") {
+                    server->video_m->set_new_video(json_data.object().value("video").toObject());
+                }
+                return;
             }
+
         } else {
            // get invalid json
            sendData(json_handler::generate_error("Invalid json").toJson());
