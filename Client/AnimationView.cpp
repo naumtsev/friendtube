@@ -1,9 +1,37 @@
 #include "AnimationView.h"
 #include <typeinfo>
 
-GraphicsTree::GraphicsTree(QRect rect, QObject *parent)
-  : QGraphicsEllipseItem(rect), QObject(parent) {
-  this->setBrush(QColor(0, 255, 0));
+GraphicsBush::GraphicsBush(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsBush::shape() const {
+    QPainterPath path;
+    path.addEllipse(10,10,10,10);
+    return path;
+}
+
+GraphicsTree::GraphicsTree(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsTree::shape() const {
+    QPainterPath path;
+    path.addEllipse(30,80,20,30);
+    return path;
+}
+
+GraphicsPingvin::GraphicsPingvin(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsPingvin::shape() const {
+    QPainterPath path;
+    path.addEllipse(6,6,12,12);
+    return path;
 }
 
 AnimationView::AnimationView(QWidget *parent) :
@@ -35,16 +63,195 @@ AnimationView::AnimationView(QWidget *parent) :
     this->setScene(scene);
     timer_update_scene = new QTimer();
 
-
-    scene->addItem(new GraphicsTree(QRect(50, 80, 100, 100)));
-    scene->addItem(new GraphicsTree(QRect(250, 60, 150, 150)));
-    scene->addItem(new GraphicsTree(QRect(200, 50, 50, 50)));
-
-
     connect(timer_update_scene, SIGNAL(timeout()), this, SLOT(update()));
     timer_update_scene->start(3);
+
+    init_background_item();
 }
 
+void AnimationView::init_background_item(){
+    if(number_room == 0){
+        QBrush *ibrush = new QBrush;
+        ibrush->setTextureImage(QImage(":/images/background1.png"));
+        scene->setBackgroundBrush(*ibrush);
+        // по бокам ограда
+        for(int i = 0; i < 26; i++){ // сверху
+            QPixmap emoji(":/pics/background_item/green_room/fence_12gorizontal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48 * i + 3, 3);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < 26; i++){ // снизу
+            QPixmap emoji(":/pics/background_item/green_room/fence_12gorizontal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48*i + 3, 720 - 48 + 3);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < 14; i++){ // слева
+            QPixmap emoji(":/pics/background_item/green_room/fence_11vertikal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(0, 48 * i);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < 14; i++){ // справа
+            QPixmap emoji(":/pics/background_item/green_room/fence_11vertikal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(1280 - 24 - 8, 48 * i);
+            scene->addItem(fence_vertical);
+        }
+        // ограда плеера
+        for(int i = 6; i < 20; i++){ // сверху
+            QPixmap emoji(":/pics/background_item/green_room/fence_12gorizontal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48 * i + 3, 48 * 3);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 6; i < 20; i++){ // снизу
+            QPixmap emoji(":/pics/background_item/green_room/fence_12gorizontal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48*i + 3, 720 - 48 * 4);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 3; i < 11; i++){ // слева
+            QPixmap emoji(":/pics/background_item/green_room/fence_11vertikal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48*6, 48 * i - 1);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 3; i < 11; i++){ // справа
+            QPixmap emoji(":/pics/background_item/green_room/fence_11vertikal.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(1280 - 24 - 8 - 48*6, 48 * i - 1);
+            scene->addItem(fence_vertical);
+        }
+        // дополнительные item
+        for(int i = 0; i < 10; i++){
+            QPixmap emoji(":/pics/background_item/green_room/GrassObjects_32_04.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            GraphicsBush *fence_vertical = new GraphicsBush;
+            fence_vertical->setPixmap(emoji);
+            fence_vertical->setZValue(+3);
+            while(!scene->collidingItems(fence_vertical).isEmpty()){
+                fence_vertical->setPos(qrand() % 1280, qrand() % 720);
+            }
+            scene->addItem(fence_vertical);
+        }
+
+        for(int i = 0; i < 10; i++){
+            QPixmap emoji(":/pics/background_item/green_room/Tree.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            GraphicsTree *fence_vertical = new GraphicsTree;
+            fence_vertical->setPixmap(emoji);
+            fence_vertical->setZValue(+4);
+            while(!scene->collidingItems(fence_vertical).isEmpty()){
+                fence_vertical->setPos(qrand() % 1280, qrand() % 720);
+            }
+            scene->addItem(fence_vertical);
+        }
+    } else {
+        QBrush *ibrush = new QBrush;
+        ibrush->setTextureImage(QImage(":/images/background2.png"));
+        scene->setBackgroundBrush(*ibrush);
+        QString path_pixmap = ":/pics/background_item/blue_room/snow_tree3.png";
+        // по бокам ограда
+        for(int i = 0; i < 27; i++){ // сверху
+            QPixmap emoji(":/pics/background_item/blue_room/snow_tree1.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48 * i + 3, 3);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < 27; i++){ // сверху
+            if(qrand()%3 == 0){
+                QPixmap emoji(":/pics/background_item/blue_room/snow_tree2.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+                QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+                fence_vertical->setPos(48 * i + 3, qrand()% 10 + 3);
+                scene->addItem(fence_vertical);
+            }
+        }
+        for(int i = 0; i < 27; i++){ // снизу
+            QPixmap emoji(":/pics/background_item/blue_room/snow_tree1.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48*i + 3, 720 - 48 + 3);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < 14; i++){ // слева
+            QPixmap emoji(":/pics/background_item/blue_room/snow_tree1.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(0, 48 * i);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < 14; i++){ // справа
+            QPixmap emoji(":/pics/background_item/blue_room/snow_tree1.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(1280 - 24 - 8, 48 * i);
+            scene->addItem(fence_vertical);
+        }
+        // ограда плеера
+        for(int i = 12; i < 40; i++){ // сверху
+            QPixmap emoji(path_pixmap); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(24 * i + 3, 48 * 3 - 5);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 12; i < 40; i++){ // снизу
+            QPixmap emoji(path_pixmap); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(24*i + 3, 720 - 24 * 7);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 6; i < 24; i++){ // слева
+            QPixmap emoji(path_pixmap); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(48*6 + 2, 24 * i);
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 6; i < 24; i++){ // справа
+            QPixmap emoji(path_pixmap); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(emoji);
+            fence_vertical->setPos(1280 - 24 - 8 - 48*6, 24 * i - 1);
+            scene->addItem(fence_vertical);
+        }
+
+        for(int i = 0; i < qrand()%10; i++){ // 1 тип пингвина
+            QPixmap emoji(":/pics/background_item/blue_room/pingvin1.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            GraphicsPingvin *fence_vertical = new GraphicsPingvin;
+            fence_vertical->setPixmap(emoji);
+            fence_vertical->setZValue(+4);
+            while(!scene->collidingItems(fence_vertical).isEmpty()){
+                fence_vertical->setPos(qrand() % 1280, qrand() % 720);
+            }
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < qrand()%10; i++){ // 2 тип пингвина
+            QPixmap emoji(":/pics/background_item/blue_room/pingvin2.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            GraphicsPingvin *fence_vertical = new GraphicsPingvin;
+            fence_vertical->setPixmap(emoji);
+            fence_vertical->setZValue(+4);
+            while(!scene->collidingItems(fence_vertical).isEmpty()){
+                fence_vertical->setPos(qrand() % 1280, qrand() % 720);
+            }
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < qrand()%10; i++){ // 3 тип пингвина
+            QPixmap emoji(":/pics/background_item/blue_room/pingvin3.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            GraphicsPingvin *fence_vertical = new GraphicsPingvin;
+            fence_vertical->setPixmap(emoji);
+            fence_vertical->setZValue(+4);
+            while(!scene->collidingItems(fence_vertical).isEmpty()){
+                fence_vertical->setPos(qrand() % 1280, qrand() % 720);
+            }
+            scene->addItem(fence_vertical);
+        }
+        for(int i = 0; i < qrand()%10; i++){ // 4 тип пингвина
+            QPixmap emoji(":/pics/background_item/blue_room/pingvin4.png"); // подкорректировать расположение изображения, чтобы прям над персонажем
+            GraphicsPingvin *fence_vertical = new GraphicsPingvin;
+            fence_vertical->setPixmap(emoji);
+            fence_vertical->setZValue(+4);
+            while(!scene->collidingItems(fence_vertical).isEmpty()){
+                fence_vertical->setPos(qrand() % 1280, qrand() % 720);
+            }
+            scene->addItem(fence_vertical);
+        }
+    }
+}
 
 void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<PlayerView *> &next_frame, QString local_id){
     if(next_frame.size() > 1){
@@ -125,12 +332,13 @@ int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
 void AnimationView::display_message(PlayerView *player){
     if(player->player_message.send_message != ""){
         if(player->player_message.type == "text"){
+            player->message->setPos(player->pos().x() + 24 - player->message->boundingRect().width()/2, player->pos().y() - 30);     // чтобы не было глюков при замене direction нужно,
             scene->addItem(player->message);
         } else {
             QPixmap emoji(player->player_message.send_message); // подкорректировать расположение изображения, чтобы прям над персонажем
-            emoji = emoji.scaled(25,25,Qt::KeepAspectRatio);
+            emoji = emoji.scaled(36,36,Qt::KeepAspectRatio);
             player->player_message.emoji = new QGraphicsPixmapItem(emoji);
-            player->player_message.emoji->setPos(player->message->pos());
+            player->player_message.emoji->setPos(player->pos().x() + 6, player->pos().y() - 48);
             scene->addItem(player->player_message.emoji);
         }
     }
@@ -145,10 +353,10 @@ void AnimationView::clear_vector(QVector<PlayerView *> &last_frame, QString loca
             if(last_frame[i]->player_message.send_message != ""){
                 if(last_frame[i]->player_message.type == "text"){
                     scene->removeItem(last_frame[i]->message); // тут скорее всего нужно удалять элемент
-                    //delete last_frame[i]->message;
+                    delete last_frame[i]->message;
                 } else {
                     scene->removeItem(last_frame[i]->player_message.emoji); // тут скорее всего нужно удалять элемент
-                    //delete last_frame[i]->player_message.emoji;
+                    delete last_frame[i]->player_message.emoji;
                 }
             }
         } else {
