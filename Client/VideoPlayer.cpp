@@ -46,6 +46,8 @@ void VideoPlayer::try_set_video(const QString &url) {
     //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
     UrlHandler handler;
     QJsonObject part_video = handler.get_url(url);
+    qDebug() << part_video;
+
     if(part_video.value("status") == "ok") {
         Video new_video;
         new_video.sender_name = room->local_player->name->toPlainText();
@@ -94,7 +96,7 @@ VideoPlayer::~VideoPlayer() {
 
 
 
-QJsonObject UrlHandler::get(QString url) {
+QJsonObject UrlHandler::get_url(QString url) {
     QString site_url = "http://195.133.145.54:1234";
 
     QNetworkRequest request(QUrl(site_url + "/get_url"));

@@ -33,4 +33,6 @@ def index():
     data = json.loads(request.data)
     return getStreamUrl(data['url'])
 
-app.run(port=1234)
+
+if __name__ == '__main__':
+	app.run(port=1234)
