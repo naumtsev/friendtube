@@ -44,5 +44,13 @@
         <file>pics/background_item/blue_room/pingvin2.png</file>
         <file>pics/background_item/blue_room/pingvin1.png</file>
         <file>pics/background_item/blue_room/tux.png</file>
+        <file>pics/background_item/green_room/tileplanks64.png</file>
+        <file>pics/background_item/green_room/tileplanks32.png</file>
+        <file>pics/background_item/green_room/tileplanks16.png</file>
+        <file>pics/background_item/green_room/tileplanks48.png</file>
+        <file>pics/background_item/green_room/tilestonebricks32.png</file>
+        <file>pics/background_item/green_room/tilestonebricks.png</file>
+        <file>pics/background_item/green_room/GrassObjects_32_29.png</file>
+        <file>pics/background_item/green_room/GrassObject_32_29_1.png</file>
     </qresource>
 </RCC>

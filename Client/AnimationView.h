@@ -28,6 +28,13 @@ public:
   QPainterPath shape() const override;
 };
 
+class GraphicsTreeTwo : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsTreeTwo(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
 class GraphicsPingvin : public QObject, public QGraphicsPixmapItem {
   Q_OBJECT
 public:

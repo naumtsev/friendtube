@@ -16,8 +16,8 @@ ToolManyItem::ToolManyItem(QWidget* parent, Player &local_player) : QWidget(pare
 void ToolManyItem::init_parameters(){
     //setWindowTitle("Chat");
     //setWindowFlags(Qt::FramelessWindowHint); // окно без рамки
-    this->setFixedSize(250, 400);
-    this->setGeometry(1280 - this->width(), 200, 50, 400); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
+    this->setFixedSize(250, 250);
+    //this->setGeometry(1280 - this->width(), 200, 50, 400); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
     //setWindowOpacity( 0.8 );
     //setStyleSheet("background-color: rgba(10,10,10,100)");
     QPalette p = this->palette();
@@ -37,9 +37,11 @@ void ToolManyItem::init_multicolor_emoji_buttons(){
     show_multicolor_emoji_list_button->setIcon(QIcon(":/pics/emoji/svg/001-happy-18.svg"));
     show_multicolor_emoji_list_button->setIconSize(QSize(30, 30));
     show_multicolor_emoji_list_button->setFixedSize(show_multicolor_emoji_list_button->iconSize());
-    show_multicolor_emoji_list_button->setGeometry(this->width() - show_multicolor_emoji_list_button->width(), 0, show_multicolor_emoji_list_button->width(), show_multicolor_emoji_list_button->height());
-    //show_multicolor_emoji_list_button->setStyleSheet("background-color: rgba(0,0,0,0)"); //разобраться почему не работает
-    //show_multicolor_emoji_list_button->setWindowOpacity(0.3);
+    show_multicolor_emoji_list_button->setGeometry(0, 0, show_multicolor_emoji_list_button->width(), show_multicolor_emoji_list_button->height());
+    show_multicolor_emoji_list_button->setStyleSheet("background-color: rgba(0,0,0,0)"); //разобраться почему не работает
+    //show_multicolor_emoji_list_button->setWindowOpacity(0.3); // а может так?
+    //show_multicolor_emoji_list_button->setStyleSheet("QPushButton{background: transparent;}"); // хм, если то не работает, то так?
+    //ой, оказалось, что нихера не работает
 
     connect(show_multicolor_emoji_list_button, &QToolButton::clicked, [=]() {
             if (show_multicolor_emoji_list_widget->isVisible()) {
@@ -54,7 +56,7 @@ void ToolManyItem::init_multicolor_emoji_buttons(){
     show_multicolor_emoji_list_widget = new QListWidget(this);
     show_multicolor_emoji_list_widget->hide(); // делаем невидимым
     show_multicolor_emoji_list_widget->setFixedSize(200, 150);
-    show_multicolor_emoji_list_widget->setGeometry(0, 0, show_multicolor_emoji_list_widget->width(), show_multicolor_emoji_list_widget->height());
+    show_multicolor_emoji_list_widget->setGeometry(show_multicolor_emoji_list_button->x() + show_multicolor_emoji_list_button->width(), 0, show_multicolor_emoji_list_widget->width(), show_multicolor_emoji_list_widget->height());
     show_multicolor_emoji_list_widget->setLayoutMode(QListView::Batched);
     show_multicolor_emoji_list_widget->setViewMode(QListView::IconMode);
     show_multicolor_emoji_list_widget->setGridSize(QSize(32,32));
@@ -62,7 +64,6 @@ void ToolManyItem::init_multicolor_emoji_buttons(){
     show_multicolor_emoji_list_widget->installEventFilter(this);
     //show_multicolor_emoji_list_widget->setWindowOpacity(0.8); // или это
     show_multicolor_emoji_list_widget->setStyleSheet("background-color: rgba(0,0,0,0)"); // или это делает прозрачным
-
 
     QDirIterator it(":/pics/emoji/svg", {"*.svg"});
     QSize icon_size(30, 30);

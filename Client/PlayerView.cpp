@@ -78,5 +78,6 @@ void PlayerView::update_position_name(){
 }
 
 PlayerView::~PlayerView(){
-
+    delete name;
+    delete message;
 }

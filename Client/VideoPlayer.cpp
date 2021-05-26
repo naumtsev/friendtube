@@ -88,6 +88,7 @@ void VideoPlayer::stop(){
 
 void VideoPlayer::change_volume(int volume) {
     m_player->setVolume(volume);
+    emit set_focus_room();
 }
 
 VideoPlayer::~VideoPlayer() {

@@ -90,7 +90,6 @@ public:
     VideoPlayer *video_player;
     qint16 video_btn_size = 30;
     qint16 video_btn_space_size = 15;
-    qint16 space_between_video_widget = 10;
     QPushButton *push_button_add_video;
     QPushButton *push_button_stop_video;
     QPushButton *push_button_pause_video;
@@ -98,8 +97,6 @@ public:
     QSlider *volume_slider;
     QLabel *video_advert;
     QLabel *video_description;
-
-
 };
 
 #endif // ROOM_H

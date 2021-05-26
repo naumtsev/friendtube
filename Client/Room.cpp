@@ -9,12 +9,13 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
 
     init_variables();
     init_paramets();
+    init_video();
     init_buttons();
     init_timers();
-    init_video();
 
 
     connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
+    connect(video_player, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     connect(tool_item_right, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     connect(push_button_exit_in_menu, SIGNAL(clicked()), this, SLOT(close_room()));
 }
@@ -41,29 +42,15 @@ void Room::init_variables(){
     tool_item_right = new ToolManyItem(this, *local_player);
 }
 
-void Room::init_buttons(){
-    // добавляем кнопки для выхода из комнаты
-    push_button_exit_in_menu = new QPushButton("Leave the room", this);
-
-    push_button_exit_in_menu->setFixedSize(120, 25);
-
-    push_button_exit_in_menu->setStyleSheet("QPushButton { border: 1px solid #8f8f91; border-radius: 3px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #f6f7fa); min-width: 80px; } QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #a0cd58, stop: 1 #bff774);}QPushButton:flat {border: none; }QPushButton:default {border-color: navy; /* делаем кнопку по умолчанию выпуклой */ }");
-
-    push_button_exit_in_menu->setGeometry({this->width() - push_button_exit_in_menu->geometry().width() - 10,
-                                   25,
-                                   push_button_exit_in_menu->geometry().width(),
-                                   push_button_exit_in_menu->geometry().height()});
-    push_button_exit_in_menu->setVisible(false);
-}
-
 void Room::init_video() {
+    // video_widget
     video_widget = new QVideoWidget(this);
-    video_widget->resize(960 / 1.5, 576 / 1.5);
+    video_widget->resize(640 , 384);
     video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
     video_player = new VideoPlayer(this, video_widget);
-
     connect(video_player, SIGNAL(video_request(QJsonObject)), client->n_manager, SLOT(video_request(QJsonObject)));
 
+    // QLabel
     video_advert = new QLabel(this);
     static int width_advert = 300;
     video_advert->setFixedWidth(width_advert);
@@ -79,64 +66,90 @@ void Room::init_video() {
         video_advert->show();
     });
 
-
-    push_button_add_video = new QPushButton(" + ", this);
+    // add video
+    push_button_add_video = new QPushButton(this);
+    push_button_add_video->setIcon(QIcon(QPixmap(":/pics/add_new_video_push_button.png")));
+    push_button_add_video->setIconSize(QSize(30, 30));
+    push_button_add_video->setStyleSheet("background-color: rgba(0,0,0,0)");
     push_button_add_video->setFixedSize(video_btn_size, video_btn_size);
 
-    push_button_add_video->setGeometry({video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y(),
+    push_button_add_video->setGeometry(video_widget->x() + video_btn_size,
+                                   video_widget->y() + video_widget->height(),
                                    video_btn_size,
-                                   video_btn_size});
+                                   video_btn_size);
+    connect(push_button_add_video, &QPushButton::clicked, [&](){
+        this->add_video();
+        this->set_focus_room();
+    });
 
-   connect(push_button_add_video, SIGNAL(clicked()) , this, SLOT(add_video()));
-
-
-
-
-    push_button_pause_video = new QPushButton(" = ", this);
+    // pause
+    push_button_pause_video = new QPushButton(this);
+    push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
+    push_button_pause_video->setIconSize(QSize(30, 30));
+    push_button_pause_video->setStyleSheet("background-color: rgba(0,0,0,0)");
     push_button_pause_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_pause_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y() + video_btn_size + video_btn_space_size);
+    push_button_pause_video->setGeometry(push_button_add_video->x() + video_btn_size,
+                                   push_button_add_video->y(), video_btn_size, video_btn_size);
+    connect(push_button_pause_video, &QPushButton::clicked,[&](){
+        video_player->try_pause();
+        this->set_focus_room();
+    });
 
-    connect(push_button_pause_video, SIGNAL(clicked()), video_player, SLOT(try_pause()));
-
-
-    push_button_stop_video = new QPushButton(" - ", this);
+    // stop video
+    push_button_stop_video = new QPushButton(this);
+    push_button_stop_video->setIcon(QIcon(QPixmap(":/pics/delete_video_push_button.png")));
+    push_button_stop_video->setIconSize(QSize(30, 30));
+    push_button_stop_video->setStyleSheet("background-color: rgba(0,0,0,0)");
     push_button_stop_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_stop_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y() + 2 * video_btn_size + 2 * video_btn_space_size);
+    push_button_stop_video->setGeometry(push_button_pause_video->x() + video_btn_size,
+                                   push_button_pause_video->y(), video_btn_size, video_btn_size);
+    connect(push_button_stop_video, &QPushButton::clicked,[&](){
+        video_player->try_stop();
+        this->set_focus_room();
+    });
 
-    connect(push_button_stop_video, SIGNAL(clicked()), video_player, SLOT(try_stop()));
 
-
-    push_button_volume_video = new QPushButton(" ♪ ", this);
-    push_button_volume_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_volume_video->move(video_widget->x() + video_widget->width() + space_between_video_widget,
-                                   video_widget->y() + 3 * video_btn_size + 3 * video_btn_space_size);
-
-    connect(push_button_volume_video, &QPushButton::clicked, [this](){volume_slider->setVisible(volume_slider->isVisible() ^ true);});
-
-    volume_slider = new QSlider(this);
-    int slider_width = 15;
-    int slider_height = 120;
-
+    // Slider
+    volume_slider = new QSlider(Qt::Horizontal, this);
+    int slider_width = 120;
+    int slider_height = 15;
     volume_slider->setFixedSize(slider_width , slider_height);
-    volume_slider->move(video_widget->x() + video_widget->width() + space_between_video_widget + video_btn_size / 2 - slider_width / 2,
-                        video_widget->y() + 4 * video_btn_size + 4 * video_btn_space_size);
-
-    volume_slider->setVisible(false);
+    volume_slider->move(push_button_stop_video->x() + push_button_stop_video->width(),
+                        push_button_stop_video->y() + 6);
+    //volume_slider->setVisible(false);
     volume_slider->setMinimum(0);
     volume_slider->setMaximum(100);
     volume_slider->setSingleStep(1);
-    connect(volume_slider, SIGNAL(valueChanged(int)), video_player, SLOT(change_volume(int)));
+    connect(volume_slider, SIGNAL(valueChanged(int)), video_player, SLOT(change_volume(int))); // фокус возращаю в change_volume
+
     volume_slider->setValue(50);
+
+    // эмоджи
+    tool_item_right->setGeometry(volume_slider->x() + volume_slider->width(), push_button_stop_video->y(), 200, 100); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
+
+
     connect(client->n_manager, SIGNAL(video_set_video()), video_player, SLOT(set_video()));
     connect(client->n_manager, SIGNAL(video_stop()), video_player, SLOT(stop()));
     connect(client->n_manager, SIGNAL(video_pause()), video_player, SLOT(pause()));
 
 }
 
+void Room::init_buttons(){
+    // добавляем кнопки для выхода из комнаты
+    push_button_exit_in_menu = new QPushButton("Leave the room", this);
 
+    push_button_exit_in_menu->setFixedSize(120, 25);
+
+    push_button_exit_in_menu->setStyleSheet("QPushButton { border: 1px solid #8f8f91; border-radius: 3px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #f6f7fa); min-width: 80px; } QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #a0cd58, stop: 1 #bff774);}QPushButton:flat {border: none; }QPushButton:default {border-color: navy; /* делаем кнопку по умолчанию выпуклой */ }");
+
+    push_button_exit_in_menu->setGeometry({this->width() - push_button_exit_in_menu->geometry().width() - 10,
+                                   25,
+                                   push_button_exit_in_menu->geometry().width(),
+                                   push_button_exit_in_menu->geometry().height()});
+    push_button_exit_in_menu->setVisible(false);
+
+    this->setGeometry(1280 - this->width(), 200, 50, 400); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
+}
 
 void Room::init_timers(){
     QTimer *update_draw_timer = new QTimer();

@@ -255,5 +255,8 @@ void Player::next_frame(){
 
 
 Player::~Player() {
-
+    delete name;
+    delete message;
+    delete timer_move;
+    delete timer_message;
 }

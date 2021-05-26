@@ -17,5 +17,9 @@
         <file>pics/sheets/BigSizeTard.png</file>
         <file>pics/sheets/BigSizeMort.png</file>
         <file>pics/sheets/BigSizeDoux.png</file>
+        <file>pics/resume_video_push_button.png</file>
+        <file>pics/delete_video_push_button.png</file>
+        <file>pics/add_new_video_push_button.png</file>
+        <file>pics/pause_new_video_push_button.png</file>
     </qresource>
 </RCC>

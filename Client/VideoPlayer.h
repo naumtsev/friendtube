@@ -31,6 +31,7 @@ public:
 signals:
     void make_advert(QString message);
     void video_request(QJsonObject);
+    void set_focus_room();
 
 public slots:
     void try_pause();
