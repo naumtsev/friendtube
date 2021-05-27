@@ -86,6 +86,8 @@ void Player::move(){
     position_movement_last_frame.push_back({pos().x(), pos().y()});
     position_name_movement_last_frame.push_back({name->pos().x(), name->pos().y()});
 
+    std::cout<<this->x() << " "<< this->y()<< std::endl;
+
     setPos(pos().x() + movement.x, pos().y() + movement.y);
     state = AnimateState::Moving;
 

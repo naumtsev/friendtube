@@ -70,6 +70,32 @@ public:
   QPainterPath shape() const override;
 };
 
+class GraphicsHouseMan : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsHouseMan(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
+class GraphicsCook : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsCook(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
+class GraphicsSecurity : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsSecurity(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
+struct rectangle{
+    int xl, yl; // левый ВЕРХНИЙ край
+    int xr, yr; // правый НИЖНИЙ край
+};
+
 class AnimationView : public QGraphicsView {
     Q_OBJECT
 
@@ -79,7 +105,8 @@ public:
     void display_message(PlayerView *player);
     int colliding_with_player(QVector<PlayerView *> &next_frame);
     void init_background_item();
-
+    void add_tables(PlayerView *player);
+    void delete_tables(PlayerView *player);
 
 public slots:
     void clear_vector(QVector<PlayerView *> &last_frame, QString local_id);
@@ -91,6 +118,13 @@ private:
      int distance = 1;
      QTimer *timer_update_scene;
 
+     rectangle sleap = {20,180,100,230}, want_or_dont_eat = {1060, 180, 1190, 250}, enter_close_to_taverna = {980, 580, 1020, 630}, first_course_alive = {40, 580, 70, 640};
+     // table
+     QGraphicsPixmapItem *tablet_want_eating;
+     QGraphicsPixmapItem *tablet_want_sleap;
+     QGraphicsPixmapItem *tablet_stop;
+     QGraphicsPixmapItem *table_stop_eating;
+     QGraphicsPixmapItem *tablet_fist_course_alive;
 
 
      // Video

@@ -12,6 +12,7 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QW
     init_video();
     init_buttons();
     init_timers();
+    init_NPC();
 
 
     connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
@@ -58,7 +59,7 @@ void Room::init_video() {
     additional_layer->move(video_widget->x(), video_widget->y());
     QPixmap pix(":/images/empty_screen.png");
     additional_layer->setPixmap(pix);
-    //additional_layer->show();
+    additional_layer->show();
 
     connect(video_player->m_player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(set_additional_layer(QMediaPlayer::State)));
 
@@ -195,6 +196,39 @@ void Room::init_timers(){
     this_window_have_focus_timer->start(50);
 }
 
+void Room::init_NPC(){
+    // хочу поесть!
+    tablet_want_eating = new QLabel(this);
+    tablet_want_eating->move(1130, 150);
+    tablet_want_eating->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_want_eat.png"));
+    tablet_want_eating->setVisible(false);
+
+    // хочу поспать!
+    QLabel *tablet_want_sleap = new QLabel(this);
+    tablet_want_sleap->move(50, 140);
+    tablet_want_sleap->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_want_sleap.png"));
+    tablet_want_sleap->setVisible(false);
+
+    // сюда нельзя!
+    tablet_stop = new QLabel(this);
+    tablet_stop->move(1045, 570);
+    tablet_stop->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_entry_close.png"));
+    tablet_stop->setVisible(false);
+
+    // хватит есть!
+    table_stop_eating = new QLabel(this);
+    table_stop_eating->move(1130, 150);
+    table_stop_eating->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_stor_eating.png"));
+    table_stop_eating->setVisible(false);
+
+    // первый курс жив!
+    tablet_fist_course_alive = new QLabel(this);
+    tablet_fist_course_alive->move(50, 600);
+    tablet_fist_course_alive->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/table_first_course_alive.png"));
+    tablet_fist_course_alive->setVisible(false);
+
+}
+
 void Room::paintEvent(QPaintEvent *event){
     draw_scene();
     if(!got_scene) {
@@ -230,12 +264,14 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
     } else {
         local_player->keyPressEvent(apKeyEvent);
     }
-}
+    update_state_tables();
 
+}
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
     if(this->hasFocus()){
-     local_player->keyReleaseEvent(apKeyEvent);
+        local_player->keyReleaseEvent(apKeyEvent);
     }
+    update_state_tables();
 }
 
 void Room::mousePressEvent(QMouseEvent *apMouseEvent){
@@ -244,6 +280,54 @@ void Room::mousePressEvent(QMouseEvent *apMouseEvent){
         tool_item_right->show_multicolor_emoji_list_widget->hide();
     }
 }
+
+void Room::update_state_tables(){
+//    std::cout<<"hello";
+//    rectangle sleap = {20,180,100,230}, want_or_dont_eat = {1060, 180, 1190, 250}, enter_close_to_taverna = {980, 580, 1020, 230}, first_course_alive = {40, 580, 70, 640};
+//    if(sleap.xl <= local_player->x()&& local_player->x() <= sleap.xr && sleap.yl <= local_player->y()&& local_player->y() <= sleap.yr){
+//        if(!tablet_want_sleap->isVisible()){
+//            tablet_want_sleap->setVisible(true);
+//        }
+//    } else if(want_or_dont_eat.xl <= local_player->x()&& local_player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= local_player->y()&& local_player->y() <= want_or_dont_eat.yr){
+//        if(local_player->saturation > 100){
+//            if(!table_stop_eating->isVisible()){
+//                table_stop_eating->setVisible(true);
+//            }
+//        } else{
+//            if(!tablet_want_eating->isVisible()){
+//                tablet_want_eating->setVisible(true);
+//            }
+//        }
+//    } else if(enter_close_to_taverna.xl <= local_player->x()&& local_player->x() <= enter_close_to_taverna.xr && enter_close_to_taverna.yl <= local_player->y()&& local_player->y() <= enter_close_to_taverna.yr){
+//        if(!tablet_stop->isVisible()){
+//            tablet_stop->setVisible(true);
+//        }
+//    } else if(first_course_alive.xl <= local_player->x()&& local_player->x() <= first_course_alive.xr && first_course_alive.yl <= local_player->y()&& local_player->y() <= first_course_alive.yr){
+//        if(!tablet_fist_course_alive->isVisible()){
+//            tablet_fist_course_alive->setVisible(true);
+//        }
+//    } else {
+//        if(tablet_want_eating->isVisible()){
+//            tablet_want_eating->setVisible(false);
+//        }
+//        if(tablet_want_sleap->isVisible()){
+//            tablet_want_sleap->setVisible(false);
+//        }
+//        if(tablet_stop->isVisible()){
+//            tablet_stop->setVisible(false);
+//        }
+//        tablet_stop->setVisible(false);
+//        if(table_stop_eating->isVisible()){
+//            table_stop_eating->setVisible(false);
+//        }
+//        if(tablet_fist_course_alive->isVisible()){
+//            tablet_fist_course_alive->setVisible(false);
+//        }
+//        tablet_fist_course_alive->setVisible(false);
+//    }
+//    std::cout<<"endhello";
+}
+
 
 void Room::set_focus_room(){
     this->setFocus();
@@ -288,12 +372,10 @@ void Room::set_additional_layer(QMediaPlayer::State state) {
     if(state == QMediaPlayer::StoppedState) {
         QPixmap pix(":/images/empty_screen.png");
         additional_layer->setPixmap(pix);
-        //additional_layer->setVisible(true);
-        additional_layer->show();
+        additional_layer->setVisible(true);
         video_player->try_stop();
     } else if(state == QMediaPlayer::PlayingState){
-        //additional_layer->setVisible(false);
-        additional_layer->hide();
+        additional_layer->setVisible(false);
      }
 
     /*

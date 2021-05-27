@@ -34,6 +34,11 @@ namespace Ui {
 struct Room;
 }
 
+//struct rectangle{
+//    int xl, yl; // левый ВЕРХНИЙ край
+//    int xr, yr; // правый НИЖНИЙ край
+//};
+
 struct Room : public QWidget {
     Q_OBJECT
 
@@ -51,6 +56,9 @@ public:
     void init_buttons();
     void init_timers();
     void init_video();
+    void init_NPC();
+
+    void update_state_tables();
 
     ~Room();
 
@@ -85,6 +93,14 @@ public:
     bool updated_data = false;
 
     QPushButton *push_button_exit_in_menu;
+
+    // table
+    QLabel *tablet_want_eating;
+    QLabel *tablet_want_sleap;
+    QLabel *tablet_stop;
+    QLabel *table_stop_eating;
+    QLabel *tablet_fist_course_alive;
+
 
     // video structs
 

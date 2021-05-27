@@ -76,6 +76,7 @@ private slots:
 public:
     QString direction = "left"; // create enum class
     AnimateState state{AnimateState::Standing};
+    int saturation = 0;
 
     int current_frame = 0;
     QTimer timer_sprite;

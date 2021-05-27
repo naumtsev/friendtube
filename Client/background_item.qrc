@@ -55,5 +55,29 @@
         <file>pics/background_item/green_room/more_texture/buildings/building1_1.png</file>
         <file>pics/background_item/green_room/more_texture/buildings/building2_1.png</file>
         <file>pics/background_item/green_room/more_texture/buildings/building3_1.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_23_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_26_32.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_24_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_25_32.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_3_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_4_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_5_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land_6_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land12.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land14.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land15.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land17.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land19.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land20.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land21.png</file>
+        <file>pics/background_item/green_room/more_texture/land/land22.png</file>
+        <file>pics/background_item/green_room/cook.png</file>
+        <file>pics/background_item/green_room/house_man.png</file>
+        <file>pics/background_item/green_room/security.png</file>
+        <file>pics/background_item/green_room/more_texture/table_first_course_alive.png</file>
+        <file>pics/background_item/green_room/more_texture/tablet_entry_close.png</file>
+        <file>pics/background_item/green_room/more_texture/tablet_stor_eating.png</file>
+        <file>pics/background_item/green_room/more_texture/tablet_want_eat.png</file>
+        <file>pics/background_item/green_room/more_texture/tablet_want_sleap.png</file>
     </qresource>
 </RCC>

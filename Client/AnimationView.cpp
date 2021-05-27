@@ -65,7 +65,7 @@ GraphicsHouse::GraphicsHouse(QObject *parent)
 
 QPainterPath GraphicsHouse::shape() const {
     QPainterPath path;
-    path.addEllipse(0,100,176,70);
+    path.addEllipse(0,100,166,70);
     return path;
 }
 // house
@@ -78,7 +78,7 @@ GraphicsCafe::GraphicsCafe(QObject *parent)
 
 QPainterPath GraphicsCafe::shape() const {
     QPainterPath path;
-    path.addEllipse(0,175,176,1);
+    path.addEllipse(0,175,166,1);
     return path;
 }
 // cafe
@@ -91,10 +91,49 @@ GraphicsTaverna::GraphicsTaverna(QObject *parent)
 
 QPainterPath GraphicsTaverna::shape() const {
     QPainterPath path;
-    path.addEllipse(0,100,176,70);
+    path.addEllipse(0,100,166,70);
     return path;
 }
 // taverna
+
+// house_man
+GraphicsHouseMan::GraphicsHouseMan(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsHouseMan::shape() const {
+    QPainterPath path;
+    path.addEllipse(30,30,35,45);
+    return path;
+}
+// house_man
+
+// cook
+GraphicsCook::GraphicsCook(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsCook::shape() const {
+    QPainterPath path;
+    path.addEllipse(30,30,35,50);
+    return path;
+}
+// cook
+
+// security
+GraphicsSecurity::GraphicsSecurity(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsSecurity::shape() const {
+    QPainterPath path;
+    path.addEllipse(30,40,35,35);
+    return path;
+}
+// security
 
 AnimationView::AnimationView(QWidget *parent) :
     QGraphicsView(parent)
@@ -133,9 +172,11 @@ AnimationView::AnimationView(QWidget *parent) :
 
 void AnimationView::init_background_item(){
     QBrush *ibrush = new QBrush;
-    ibrush->setTextureImage(QImage(":/images/background1.png"));
+    ibrush->setTextureImage(QImage(":/images/background1.png")); // background scene
     scene->setBackgroundBrush(*ibrush);
+
     // houses
+
     // house
         QPixmap texture_house(":/pics/background_item/green_room/more_texture/buildings/building2_1.png");
         GraphicsHouse *house = new GraphicsHouse;
@@ -143,6 +184,12 @@ void AnimationView::init_background_item(){
         house->setPos(15,10);
         house->setZValue(+7);
         scene->addItem(house);
+
+        GraphicsHouseMan *house_man = new GraphicsHouseMan;
+        house_man->setPixmap(QPixmap(":/pics/background_item/green_room/house_man.png"));
+        house_man->setPos(20,150);
+        house_man->setZValue(+8);
+        scene->addItem(house_man);
     // house
 
     // taverna
@@ -150,8 +197,14 @@ void AnimationView::init_background_item(){
         GraphicsTaverna *taverna = new GraphicsTaverna;
         taverna->setPixmap(texture_taverna);
         taverna->setPos(1080,500);
-        taverna->setZValue(+7);
+        taverna->setZValue(+4);
         scene->addItem(taverna);
+
+        GraphicsSecurity *security = new GraphicsSecurity;
+        security->setPixmap(QPixmap(":/pics/background_item/green_room/security.png"));
+        security->setPos(1020,575);
+        security->setZValue(+4);
+        scene->addItem(security);
     // taverna
 
     // cafe
@@ -161,8 +214,13 @@ void AnimationView::init_background_item(){
         cafe->setPos(1080,10);
         cafe->setZValue(+9);
         scene->addItem(cafe);
-    // cafe
 
+        GraphicsCook *cook = new GraphicsCook;
+        cook->setPixmap(QPixmap(":/pics/background_item/green_room/cook.png"));
+        cook->setPos(1100,160);
+        cook->setZValue(+9);
+        scene->addItem(cook);
+    // cafe
 
     // houses
 
@@ -202,22 +260,50 @@ void AnimationView::init_background_item(){
     // ограда плеера
     QString path_to_texture = ":/pics/background_item/green_room/tilestonebricks32.png";
     for(int i_1 = 0; i_1 < 13; i_1++){
-        for(int i = 9; i < 31; i++){ // сверху
+        for(int i = 9; i < 31; i++){
             QPixmap texture(path_to_texture);
             QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(texture);
             fence_vertical->setPos(32 * i, 48 * 3 + 32*i_1);
             scene->addItem(fence_vertical);
+            if(i_1 == 0){
+                QGraphicsPixmapItem *grass = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/land/land_4_32px.png"));
+                grass->setPos(fence_vertical->x(), fence_vertical->y());
+                scene->addItem(grass);
+            }
+            if(i == 9){
+                QGraphicsPixmapItem *grass_vertical_left = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/land/land_5_32px.png"));
+                grass_vertical_left->setPos(fence_vertical->x(), fence_vertical->y());
+                scene->addItem(grass_vertical_left);
+            }
+            if(i == 30){
+                QGraphicsPixmapItem *grass_vertical_right = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/land/land_6_32px.png"));
+                grass_vertical_right->setPos(fence_vertical->x(), fence_vertical->y());
+                scene->addItem(grass_vertical_right);
+            }
         }
     }
 
-    for(int i = 9; i < 31; i++){ // снизу
+    for(int i = 9; i < 31; i++){
         QPixmap texture(path_to_texture);
-//            if(11 <= i && i <= 17){
-//                texture.fill(Qt::black);
-//            }
         QGraphicsPixmapItem *fence_vertical = new QGraphicsPixmapItem(texture);
         fence_vertical->setPos(32*i, 720 - 48 * 3 - 24);
         scene->addItem(fence_vertical);
+
+        QGraphicsPixmapItem *grass = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/land/land_3_32px.png"));
+        grass->setPos(32*i, 720 - 48 * 3 - 24);
+        scene->addItem(grass);
+
+        if(i == 9){
+            QGraphicsPixmapItem *grass_vertical_left = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/land/land_5_32px.png"));
+            grass_vertical_left->setPos(32*i, 720 - 48 * 3 - 24);
+            scene->addItem(grass_vertical_left);
+        }
+
+        if(i == 30){
+            QGraphicsPixmapItem *grass_vertical_right = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/land/land_6_32px.png"));
+            grass_vertical_right->setPos(32*i, 720 - 48 * 3 - 24);
+            scene->addItem(grass_vertical_right);
+        }
     }
     // ограда плеера
 
@@ -606,7 +692,9 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
             i++;
 
         }
+
         next_frame[i]->update_state();
+        add_tables(next_frame[next_frame.size() - 1]);
         scene->addItem(next_frame[next_frame.size() - 1]->name);
         display_message(next_frame[next_frame.size() - 1]);
 
@@ -616,6 +704,70 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
         last_frame = std::move(next_frame);
     }
     next_frame.clear();
+}
+
+void AnimationView::add_tables(PlayerView *player){
+    //std::cout<<"hello"<<std::endl;
+    if(sleap.xl <= player->x()&& player->x() <= sleap.xr && sleap.yl <= player->y()&& player->y() <= sleap.yr){
+        std::cout<<"hellosleap"<<std::endl;
+        // хочу поспать!
+        tablet_want_sleap = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/tablet_want_sleap.png"));
+        tablet_want_sleap->setPos(50, 140);
+        tablet_want_sleap->setZValue(+15);
+        scene->addItem(tablet_want_sleap);
+    } else if(want_or_dont_eat.xl <= player->x()&& player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= player->y()&& player->y() <= want_or_dont_eat.yr){
+        if(local_player->saturation > 100){
+            // хватит есть!
+            table_stop_eating = new QGraphicsPixmapItem();
+            table_stop_eating->setPos(1130, 150);
+            table_stop_eating->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_stor_eating.png"));
+            table_stop_eating->setZValue(+15);
+            scene->addItem(table_stop_eating);
+        } else{
+            // хочу поесть!
+            tablet_want_eating = new QGraphicsPixmapItem();
+            tablet_want_eating->setPos(1130, 150);
+            tablet_want_eating->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_want_eat.png"));
+            tablet_want_eating->setZValue(+15);
+            scene->addItem(tablet_want_eating);
+        }
+    } else if(enter_close_to_taverna.xl <= player->x()&& player->x() <= enter_close_to_taverna.xr && enter_close_to_taverna.yl <= player->y()&& player->y() <= enter_close_to_taverna.yr){
+        // сюда нельзя!
+        std::cout<<"hellotaverna"<<std::endl;
+        tablet_stop = new QGraphicsPixmapItem();
+        tablet_stop->setPos(1045, 570);
+        tablet_stop->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_entry_close.png"));
+        tablet_stop->setZValue(+15);
+        scene->addItem(tablet_stop);
+    } else if(first_course_alive.xl <= player->x()&& player->x() <= first_course_alive.xr && first_course_alive.yl <= player->y()&& player->y() <= first_course_alive.yr){
+        // первый курс жив!
+        tablet_fist_course_alive = new QGraphicsPixmapItem();
+        tablet_fist_course_alive->setPos(50, 600);
+        tablet_fist_course_alive->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/table_first_course_alive.png"));
+        tablet_fist_course_alive->setZValue(+15);
+        scene->addItem(tablet_fist_course_alive);
+    }
+}
+
+void AnimationView::delete_tables(PlayerView *player){
+    if(sleap.xl <= player->x()&& player->x() <= sleap.xr && sleap.yl <= player->y()&& player->y() <= sleap.yr){
+        scene->removeItem(tablet_want_sleap);
+        delete tablet_want_sleap;
+    } else if(want_or_dont_eat.xl <= player->x()&& player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= player->y()&& player->y() <= want_or_dont_eat.yr){
+        if(local_player->saturation > 100){
+            scene->removeItem(table_stop_eating);
+            delete table_stop_eating;
+        } else{
+            scene->removeItem(tablet_want_eating);
+            delete tablet_want_eating;
+        }
+    } else if(enter_close_to_taverna.xl <= player->x()&& player->x() <= enter_close_to_taverna.xr && enter_close_to_taverna.yl <= player->y()&& player->y() <= enter_close_to_taverna.yr){
+        scene->removeItem(tablet_stop);
+        delete tablet_stop;
+    } else if(first_course_alive.xl <= player->x()&& player->x() <= first_course_alive.xr && first_course_alive.yl <= player->y()&& player->y() <= first_course_alive.yr){
+        scene->removeItem(tablet_fist_course_alive);
+        delete tablet_fist_course_alive;
+    }
 }
 
 int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
@@ -674,6 +826,7 @@ void AnimationView ::clear_vector(QVector<PlayerView *> &last_frame, QString loc
                 }
             }
         } else {
+            delete_tables(last_frame[last_frame.size() - 1]);
             clear_local_player = true;
         }
         delete last_frame[i];
