@@ -14,8 +14,7 @@
 #include <QDirIterator>
 #include "Player.h"
 
-class ChatWindow : public QWidget
-{
+struct ChatWindow : public QWidget {
     Q_OBJECT
 
 public:

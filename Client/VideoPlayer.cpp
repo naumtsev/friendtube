@@ -25,18 +25,21 @@ VideoPlayer::VideoPlayer(Room *room_, QVideoWidget *output_, QObject *parent): Q
 
 
 void VideoPlayer::try_pause() {
-    qDebug() << "try pause";
-    QJsonObject req;
-    req.insert("type", "video_event");
-    req.insert("event_type", "pause");
-    emit video_request(req);
+    if(get_state() == Playing || get_state() == Pause) {
+        QJsonObject req;
+        req.insert("type", "video_event");
+        req.insert("event_type", "pause");
+        emit video_request(req);
+    }
 }
 
 void VideoPlayer::pause() {
     if(current_video.state == Pause){
         m_player->pause();
+        room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
     } else if(current_video.state == Playing) {
          m_player->play();
+         room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/resume_video_push_button.png")));
     }
 }
 
@@ -46,8 +49,6 @@ void VideoPlayer::try_set_video(const QString &url) {
     //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
     UrlHandler handler;
     QJsonObject part_video = handler.get_url(url);
-    qDebug() << part_video;
-
     if(part_video.value("status") == "ok") {
         Video new_video;
         new_video.sender_name = room->local_player->name->toPlainText();
@@ -66,9 +67,9 @@ void VideoPlayer::try_set_video(const QString &url) {
 
 void VideoPlayer::set_video(){
     m_player->stop();
-    qDebug() << current_video.state;
     m_player->setMedia(QUrl(current_video.stream_url));
     m_player->play();
+    room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/resume_video_push_button.png")));
 }
 
 
@@ -83,6 +84,7 @@ void VideoPlayer::try_stop(){
 
 void VideoPlayer::stop(){
     m_player->stop();
+    room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
 }
 
 
@@ -121,6 +123,10 @@ QJsonObject UrlHandler::get_url(QString url) {
     return json_data.object();
 }
 
+
+VideoState VideoPlayer::get_state() {
+    return current_video.state;
+}
 
 
 

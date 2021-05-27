@@ -27,6 +27,7 @@ struct VideoPlayer : QObject {
 public:
     VideoPlayer(Room *room, QVideoWidget *output_, QObject *parent = nullptr);
     ~VideoPlayer();
+    VideoState get_state();
 
 signals:
     void make_advert(QString message);

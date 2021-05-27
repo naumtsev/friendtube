@@ -88,8 +88,9 @@ public:
 
     QVideoWidget *video_widget;
     VideoPlayer *video_player;
-    qint16 video_btn_size = 30;
+    qint16 video_btn_size = 20;
     qint16 video_btn_space_size = 15;
+    qint16 widget_space_size = 5;
     QPushButton *push_button_add_video;
     QPushButton *push_button_stop_video;
     QPushButton *push_button_pause_video;

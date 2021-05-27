@@ -53,30 +53,38 @@ void Room::init_video() {
     // QLabel
     video_advert = new QLabel(this);
     static int width_advert = 300;
+
     video_advert->setFixedWidth(width_advert);
-    video_advert->setAlignment(Qt::AlignRight);
+    video_advert->setAlignment(Qt::AlignCenter);
     video_advert->setWordWrap(true);
     video_advert->setVisible(false);
+    video_advert->setStyleSheet("QLabel { background-color : #C20015; color : white; }");
 
     connect(video_player, &VideoPlayer::make_advert, [this](QString text){
         QTimer::singleShot(5000, [this](){video_advert->setVisible(false);});
         video_advert->setText(text);
         video_advert->setFixedHeight(video_advert->heightForWidth(width_advert));
-        video_advert->move(video_widget->x() + video_widget->width() - video_advert->width(), video_widget->y() - video_advert->heightForWidth(width_advert));
         video_advert->show();
+        video_advert->move(video_widget->x() + video_widget->width() - video_advert->width(), video_widget->y() - video_advert->heightForWidth(width_advert) - 3);
     });
+
+
+
+    // smile
+    tool_item_right->show_multicolor_emoji_list_button->setFixedSize(video_btn_size, video_btn_size);
 
     // add video
     push_button_add_video = new QPushButton(this);
     push_button_add_video->setIcon(QIcon(QPixmap(":/pics/add_new_video_push_button.png")));
-    push_button_add_video->setIconSize(QSize(30, 30));
+    push_button_add_video->setIconSize(QSize(video_btn_size, video_btn_size));
     push_button_add_video->setStyleSheet("background-color: rgba(0,0,0,0)");
     push_button_add_video->setFixedSize(video_btn_size, video_btn_size);
 
-    push_button_add_video->setGeometry(video_widget->x() + video_btn_size,
-                                   video_widget->y() + video_widget->height(),
+    push_button_add_video->setGeometry(video_widget->x(),
+                                   video_widget->y() + video_widget->height() + widget_space_size,
                                    video_btn_size,
                                    video_btn_size);
+
     connect(push_button_add_video, &QPushButton::clicked, [&](){
         this->add_video();
         this->set_focus_room();
@@ -85,10 +93,10 @@ void Room::init_video() {
     // pause
     push_button_pause_video = new QPushButton(this);
     push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
-    push_button_pause_video->setIconSize(QSize(30, 30));
+    push_button_pause_video->setIconSize(QSize(video_btn_size, video_btn_size));
     push_button_pause_video->setStyleSheet("background-color: rgba(0,0,0,0)");
     push_button_pause_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_pause_video->setGeometry(push_button_add_video->x() + video_btn_size,
+    push_button_pause_video->setGeometry(push_button_add_video->x() + video_btn_size + video_btn_space_size,
                                    push_button_add_video->y(), video_btn_size, video_btn_size);
     connect(push_button_pause_video, &QPushButton::clicked,[&](){
         video_player->try_pause();
@@ -98,10 +106,10 @@ void Room::init_video() {
     // stop video
     push_button_stop_video = new QPushButton(this);
     push_button_stop_video->setIcon(QIcon(QPixmap(":/pics/delete_video_push_button.png")));
-    push_button_stop_video->setIconSize(QSize(30, 30));
+    push_button_stop_video->setIconSize(QSize(video_btn_size, video_btn_size));
     push_button_stop_video->setStyleSheet("background-color: rgba(0,0,0,0)");
     push_button_stop_video->setFixedSize(video_btn_size, video_btn_size);
-    push_button_stop_video->setGeometry(push_button_pause_video->x() + video_btn_size,
+    push_button_stop_video->setGeometry(push_button_pause_video->x() + video_btn_size + video_btn_space_size,
                                    push_button_pause_video->y(), video_btn_size, video_btn_size);
     connect(push_button_stop_video, &QPushButton::clicked,[&](){
         video_player->try_stop();
@@ -111,11 +119,15 @@ void Room::init_video() {
 
     // Slider
     volume_slider = new QSlider(Qt::Horizontal, this);
+    volume_slider->setStyleSheet("QSlider::groove:horizontal { border: 1px solid #ffffff; height: 18px; border-radius: 9px; }QSlider::handle:horizontal {width: 18px;}QSlider::add-page:qlineargradient {background: lightgrey;border-top-right-radius: 9px;border-bottom-right-radius: 9px;border-top-left-radius: 0px;border-bottom-left-radius: 0px;}QSlider::sub-page:qlineargradient {background: #42ff42;border-top-right-radius: 0px;border-bottom-right-radius: 0px;border-top-left-radius: 9px;border-bottom-left-radius: 9px;}");
+
+
     int slider_width = 120;
-    int slider_height = 15;
+    int slider_height = 12;
     volume_slider->setFixedSize(slider_width , slider_height);
-    volume_slider->move(push_button_stop_video->x() + push_button_stop_video->width(),
-                        push_button_stop_video->y() + 6);
+    volume_slider->move(push_button_stop_video->x() + push_button_stop_video->width() + video_btn_space_size,
+                        push_button_stop_video->y() + video_btn_size / 2 - volume_slider->height() / 2);
+
     //volume_slider->setVisible(false);
     volume_slider->setMinimum(0);
     volume_slider->setMaximum(100);
@@ -125,7 +137,7 @@ void Room::init_video() {
     volume_slider->setValue(50);
 
     // эмоджи
-    tool_item_right->setGeometry(volume_slider->x() + volume_slider->width(), push_button_stop_video->y(), 200, 100); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
+    tool_item_right->setGeometry(volume_slider->x() + volume_slider->width() + video_btn_space_size, push_button_stop_video->y(), 200, 100); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
 
 
     connect(client->n_manager, SIGNAL(video_set_video()), video_player, SLOT(set_video()));
@@ -140,8 +152,7 @@ void Room::init_buttons(){
 
     push_button_exit_in_menu->setFixedSize(120, 25);
 
-    push_button_exit_in_menu->setStyleSheet("QPushButton { border: 1px solid #8f8f91; border-radius: 3px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #f6f7fa); min-width: 80px; } QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #a0cd58, stop: 1 #bff774);}QPushButton:flat {border: none; }QPushButton:default {border-color: navy; /* делаем кнопку по умолчанию выпуклой */ }");
-
+    push_button_exit_in_menu->setStyleSheet("QSlider::groove:horizontal { border: 1px solid #bbb; background: white; height: 10px; border-radius: 4px; } QSlider::sub-page:horizontal { background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #66e, stop: 1 #bbf); background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1, stop: 0 #bbf, stop: 1 #55f); border: 1px solid #777; height: 10px; border-radius: 4px; } QSlider::add-page:horizontal { background: #fff; border: 1px solid #777; height: 10px; border-radius: 4px; } QSlider::handle:horizontal { background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #eee, stop:1 #ccc); border: 1px solid #777; width: 13px; margin-top: -2px; margin-bottom: -2px; border-radius: 4px; } QSlider::handle:horizontal:hover { background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #fff, stop:1 #ddd); border: 1px solid #444; border-radius: 4px; } QSlider::sub-page:horizontal:disabled { background: #bbb; border-color: #999; } QSlider::add-page:horizontal:disabled { background: #eee; border-color: #999; } QSlider::handle:horizontal:disabled { background: #eee; border: 1px solid #aaa; border-radius: 4px; }");
     push_button_exit_in_menu->setGeometry({this->width() - push_button_exit_in_menu->geometry().width() - 10,
                                    25,
                                    push_button_exit_in_menu->geometry().width(),
