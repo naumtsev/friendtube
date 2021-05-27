@@ -68,11 +68,13 @@ void NetworkManager::socketReady(const QByteArray &data) {
            sendData(doc.toJson());
            return;
         } else if(event_type == "connected") {
+
             QJsonObject scene = json_data.value("scene_data").toObject();
             QJsonArray json_players = scene.value("clients").toArray();
             QJsonObject video = scene.value("video").toObject();
 
             QVector<PlayerView *> players_;
+
             for(const auto &json_player: json_players) {
                 players_.push_back(new PlayerView{{json_player.toObject()}});
             }
@@ -90,9 +92,11 @@ void NetworkManager::socketReady(const QByteArray &data) {
             QJsonObject scene = json_data.value("data").toObject();
             QJsonArray json_players = scene.value("clients").toArray();
             QVector<PlayerView *> players_;
+
             for(const auto &QjsonArray: json_players) {
                 players_.push_back(new PlayerView(Player(QjsonArray.toObject())));
             }
+
             QMutexLocker player_locker{&client->room->player_mutex};
             client->room->next_frame = std::move(players_);
             return;
@@ -101,12 +105,10 @@ void NetworkManager::socketReady(const QByteArray &data) {
             if(json_data.value("event_type") == "set_video") {
                 emit video_set_video();
             } else if(json_data.value("event_type") == "pause") {
-                qDebug() << "PAUSE";
                 emit video_pause();
             } else if(json_data.value("event_type") == "stop") {
                 emit video_stop();
             }
-
 
         }
     }

@@ -24,6 +24,7 @@
 #include <QMutex>
 #include <QPushButton>
 #include <QLabel>
+#include <QMediaPlayer>
 
 struct Menu;
 struct Client;
@@ -58,6 +59,7 @@ public slots:
     void close_room();
     void set_focus_room();
     void add_video();
+    void set_additional_layer(QMediaPlayer::State state);
 
 signals:
     void signal_close_room();
@@ -98,6 +100,7 @@ public:
     QSlider *volume_slider;
     QLabel *video_advert;
     QLabel *video_description;
+    QLabel *additional_layer;
 };
 
 #endif // ROOM_H

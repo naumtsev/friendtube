@@ -5,7 +5,17 @@ VideoManager::VideoManager(Server *server_) : QObject(), server(server_) {
 }
 
 
-
+Video VideoManager::get_current_video(){
+       if(current_video.state == Empty) {
+            return current_video;
+       } else if(current_video.state == Playing) {
+             current_video.progress += QDateTime::currentMSecsSinceEpoch() - last_time_pause;
+             last_time_pause = QDateTime::currentMSecsSinceEpoch();
+             return current_video;
+       } else if(current_video.state == Pause) {
+            return current_video;
+       }
+}
 
 void VideoManager::set_new_video(const QJsonObject &json_video){
     Video video(json_video);

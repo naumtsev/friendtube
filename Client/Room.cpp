@@ -47,10 +47,23 @@ void Room::init_video() {
     video_widget = new QVideoWidget(this);
     video_widget->resize(640 , 384);
     video_widget->move(width() / 2 - video_widget->width() / 2, height() / 2 - video_widget->height( ) / 2);
+    video_widget->setStyleSheet("QVideoWidget{background-color : black;}");
     video_player = new VideoPlayer(this, video_widget);
     connect(video_player, SIGNAL(video_request(QJsonObject)), client->n_manager, SLOT(video_request(QJsonObject)));
 
-    // QLabel
+
+    // additional layer
+    additional_layer = new QLabel(this);
+    additional_layer->setFixedSize(video_widget->width(), video_widget->height());
+    additional_layer->move(video_widget->x(), video_widget->y());
+    QPixmap pix(":/images/empty_screen.png");
+    additional_layer->setPixmap(pix);
+    additional_layer->show();
+
+    connect(video_player->m_player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(set_additional_layer(QMediaPlayer::State)));
+
+
+    // video adver
     video_advert = new QLabel(this);
     static int width_advert = 300;
 
@@ -98,6 +111,7 @@ void Room::init_video() {
     push_button_pause_video->setFixedSize(video_btn_size, video_btn_size);
     push_button_pause_video->setGeometry(push_button_add_video->x() + video_btn_size + video_btn_space_size,
                                    push_button_add_video->y(), video_btn_size, video_btn_size);
+
     connect(push_button_pause_video, &QPushButton::clicked,[&](){
         video_player->try_pause();
         this->set_focus_room();
@@ -245,7 +259,7 @@ void Room::close_room() {
 
 
 void Room::add_video(){
-   QInputDialog *input_form = new QInputDialog();
+   QInputDialog *input_form = new QInputDialog(this);
 
    input_form->setWindowTitle("FriendTube");
    input_form->setWindowIcon(QIcon(QPixmap(":/images/icon.png")));
@@ -268,6 +282,28 @@ void Room::add_video(){
    delete input_form;
 }
 
+
+void Room::set_additional_layer(QMediaPlayer::State state) {
+
+    if(state == QMediaPlayer::StoppedState) {
+        QPixmap pix(":/images/empty_screen.png");
+        additional_layer->setPixmap(pix);
+        additional_layer->setVisible(true);
+        video_player->try_stop();
+    } else if(state == QMediaPlayer::PlayingState){
+        additional_layer->setVisible(false);
+     }
+
+    /*
+    } else if(state == QMediaPlayer::PausedState) {
+        //NEED TO FIX
+        QPixmap pix(additional_layer->width(), additional_layer->height());
+        pix.fill(QColor(255, 255, 255, 30));
+        additional_layer->setPixmap(pix);
+        additional_layer->setVisible(true);
+    }
+    */
+}
 
 
 Room::~Room() {

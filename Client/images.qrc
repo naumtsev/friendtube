@@ -4,5 +4,6 @@
         <file>images/icon.png</file>
         <file>images/background1.png</file>
         <file>images/background2.png</file>
+        <file>images/empty_screen.png</file>
     </qresource>
 </RCC>

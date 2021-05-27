@@ -40,7 +40,7 @@ void VideoPlayer::pause() {
     } else if(current_video.state == Playing) {
         room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/resume_video_push_button.png")));
         m_player->play();
-    }
+    }    
 }
 
 
@@ -71,10 +71,10 @@ void VideoPlayer::set_video(){
     m_player->setPosition(current_video.progress);
     if(current_video.state == Playing){
         m_player->play();
-        room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
+        room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/resume_video_push_button.png")));
     } else if(current_video.state == Pause) {
         m_player->pause();
-        room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/resume_video_push_button.png")));
+        room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
     }
 }
 
@@ -100,7 +100,7 @@ void VideoPlayer::change_volume(int volume) {
 }
 
 VideoPlayer::~VideoPlayer() {
-        delete m_player;
+     delete m_player;
 }
 
 

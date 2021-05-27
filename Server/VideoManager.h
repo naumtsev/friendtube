@@ -19,6 +19,7 @@ public:
     void set_new_video(const QJsonObject &json_video);
     void pause_video();
     void stop_video();
+    Video get_current_video();
 
     Server *server;
     Video current_video;

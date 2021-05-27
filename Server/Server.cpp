@@ -72,6 +72,6 @@ QJsonObject Server::get_scene_data() {
 
     QJsonObject res;
     res.insert("clients", clients_data);
-    res.insert("video", video_m->current_video.to_json());
+    res.insert("video", video_m->get_current_video().to_json());
     return res;
 }
