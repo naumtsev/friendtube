@@ -22,8 +22,8 @@ void ChatWindow::keyPressEvent(QKeyEvent *apKeyEvent){
 void ChatWindow::init_parameters(){
     //setWindowTitle("Chat");
     setWindowFlags(Qt::FramelessWindowHint); // окно без рамки
-    this->setFixedSize(400, 230);
-    this->setGeometry(440, 0, 400, 230); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
+    this->setFixedSize(400, 50);
+    this->setGeometry(440, 0, 400, 30); // лучше этот размер в room выставлять, чтобы ориентироваться на размер виджета room
     setWindowOpacity( 0.8 ); // делаем полупрозрачным
     this->hide();
 }
@@ -45,8 +45,8 @@ void ChatWindow::init_buttons(){
 
 void ChatWindow::init_text_edit(){
     text_edit = new QLineEdit(this);
-    text_edit->setFixedSize(310,30);
-    text_edit->setGeometry(0,0,310,30);
+    text_edit->setFixedSize(370,30);
+    text_edit->setGeometry(0,0,370,30);
 
 }
 void ChatWindow::init_close_window_buttons(){

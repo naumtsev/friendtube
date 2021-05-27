@@ -24,7 +24,8 @@ struct player_move{
 enum class AnimateState{
     Standing = 0,
     Moving,
-    StateEnd
+    StateEnd,
+    InTheHouse
 };
 
 struct sprite_data{

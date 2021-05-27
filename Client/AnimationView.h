@@ -21,6 +21,13 @@ public:
   QPainterPath shape() const override;
 };
 
+class GraphicsThreeBush : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsThreeBush(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
 class GraphicsTree : public QObject, public QGraphicsPixmapItem {
   Q_OBJECT
 public:
@@ -35,10 +42,31 @@ public:
   QPainterPath shape() const override;
 };
 
-class GraphicsPingvin : public QObject, public QGraphicsPixmapItem {
+class GraphicsStone : public QObject, public QGraphicsPixmapItem {
   Q_OBJECT
 public:
-  explicit GraphicsPingvin(QObject *parent = 0);
+  explicit GraphicsStone(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
+class GraphicsHouse : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsHouse(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
+class GraphicsCafe : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsCafe(QObject *parent = 0);
+  QPainterPath shape() const override;
+};
+
+class GraphicsTaverna : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
+public:
+  explicit GraphicsTaverna(QObject *parent = 0);
   QPainterPath shape() const override;
 };
 
@@ -71,7 +99,6 @@ private:
 public:
      bool *move_player_or_no;
      Player   *local_player;
-     int number_room = 0;//qrand()%2;
 };
 
 #endif // ANIMATIONVIEW_H

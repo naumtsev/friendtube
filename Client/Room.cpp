@@ -58,7 +58,7 @@ void Room::init_video() {
     additional_layer->move(video_widget->x(), video_widget->y());
     QPixmap pix(":/images/empty_screen.png");
     additional_layer->setPixmap(pix);
-    additional_layer->show();
+    //additional_layer->show();
 
     connect(video_player->m_player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(set_additional_layer(QMediaPlayer::State)));
 
@@ -288,10 +288,12 @@ void Room::set_additional_layer(QMediaPlayer::State state) {
     if(state == QMediaPlayer::StoppedState) {
         QPixmap pix(":/images/empty_screen.png");
         additional_layer->setPixmap(pix);
-        additional_layer->setVisible(true);
+        //additional_layer->setVisible(true);
+        additional_layer->show();
         video_player->try_stop();
     } else if(state == QMediaPlayer::PlayingState){
-        additional_layer->setVisible(false);
+        //additional_layer->setVisible(false);
+        additional_layer->hide();
      }
 
     /*

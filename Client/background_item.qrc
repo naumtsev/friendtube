@@ -52,5 +52,8 @@
         <file>pics/background_item/green_room/tilestonebricks.png</file>
         <file>pics/background_item/green_room/GrassObjects_32_29.png</file>
         <file>pics/background_item/green_room/GrassObject_32_29_1.png</file>
+        <file>pics/background_item/green_room/more_texture/buildings/building1_1.png</file>
+        <file>pics/background_item/green_room/more_texture/buildings/building2_1.png</file>
+        <file>pics/background_item/green_room/more_texture/buildings/building3_1.png</file>
     </qresource>
 </RCC>
