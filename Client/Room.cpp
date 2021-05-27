@@ -41,6 +41,10 @@ void Room::init_variables(){
 
     chat_window = new ChatWindow(this, *local_player); // тут могут быть утечки памяти
     tool_item_right = new ToolManyItem(this, *local_player);
+
+    food.push_back(":/pics/background_item/green_room/more_texture/apple.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/pig.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/strawberry.png");
 }
 
 void Room::init_video() {
@@ -257,21 +261,54 @@ void Room::update_local_player_position(){
     }
 }
 
-
+// идея: когда человек дома, то может смайлики отсылкать, они будут над домом!!
+// идея: сделать игроку пузико, если он очень много съел
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
     if (this->hasFocus() && (apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220)) {
-        chat_window->get_focus();
+        if(local_player->x() != x_very_far && local_player->y() != y_very_far){ // нельзя писать, когда в домике
+            chat_window->get_focus();
+        }
     } else {
-        local_player->keyPressEvent(apKeyEvent);
+        if(apKeyEvent->key() == Qt::Key_Y && animation_scene->sleap.xl <= local_player->x()&& local_player->x() <= animation_scene->sleap.xr && animation_scene->sleap.yl <= local_player->y()&& local_player->y() <= animation_scene->sleap.yr){
+            local_player->setPos(x_very_far, y_very_far);
+            local_player->saturation -= 100;
+            local_player->state = AnimateState::Standing;
+        }
+        if(apKeyEvent->key() == Qt::Key_Y && animation_scene->want_or_dont_eat.xl <= local_player->x()&& local_player->x() <= animation_scene->want_or_dont_eat.xr && animation_scene->want_or_dont_eat.yl <= local_player->y()&& local_player->y() <= animation_scene->want_or_dont_eat.yr){
+            local_player->saturation += 10;
+            id_food %= 3;
+            QGraphicsPixmapItem *food_ = new QGraphicsPixmapItem(food[id_food]);
+            added_food.push_back(food_);
+            food_->setPos(1090, 175);
+            //food_->setPos(1125 + qrand()%100, 250 + qrand()%100);
+            food_->setZValue(+50);
+            id_food++;
+            animation_scene->scene->addItem(food_);
+            QTimer::singleShot(1000, this, [&](){
+                delete_food();
+            });
+        }
+        if((apKeyEvent->key() == Qt::Key_End || apKeyEvent->key() == 16777216) && local_player->x() == x_very_far && local_player->y() == y_very_far){
+            local_player->setPos(place_to_leave_the_house.first, place_to_leave_the_house.second);
+        }
+        if(local_player->x() != x_very_far && local_player->y() != y_very_far){
+            local_player->keyPressEvent(apKeyEvent);
+        }
     }
-    update_state_tables();
-
 }
+
+void Room::delete_food(){
+    QGraphicsPixmapItem *food_ = added_food.dequeue();
+    animation_scene->scene->removeItem(food_);
+    delete food_;
+}
+
 void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
     if(this->hasFocus()){
-        local_player->keyReleaseEvent(apKeyEvent);
+        if(local_player->x() != x_very_far && local_player->y() != y_very_far){
+            local_player->keyReleaseEvent(apKeyEvent);
+        }
     }
-    update_state_tables();
 }
 
 void Room::mousePressEvent(QMouseEvent *apMouseEvent){
@@ -280,54 +317,6 @@ void Room::mousePressEvent(QMouseEvent *apMouseEvent){
         tool_item_right->show_multicolor_emoji_list_widget->hide();
     }
 }
-
-void Room::update_state_tables(){
-//    std::cout<<"hello";
-//    rectangle sleap = {20,180,100,230}, want_or_dont_eat = {1060, 180, 1190, 250}, enter_close_to_taverna = {980, 580, 1020, 230}, first_course_alive = {40, 580, 70, 640};
-//    if(sleap.xl <= local_player->x()&& local_player->x() <= sleap.xr && sleap.yl <= local_player->y()&& local_player->y() <= sleap.yr){
-//        if(!tablet_want_sleap->isVisible()){
-//            tablet_want_sleap->setVisible(true);
-//        }
-//    } else if(want_or_dont_eat.xl <= local_player->x()&& local_player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= local_player->y()&& local_player->y() <= want_or_dont_eat.yr){
-//        if(local_player->saturation > 100){
-//            if(!table_stop_eating->isVisible()){
-//                table_stop_eating->setVisible(true);
-//            }
-//        } else{
-//            if(!tablet_want_eating->isVisible()){
-//                tablet_want_eating->setVisible(true);
-//            }
-//        }
-//    } else if(enter_close_to_taverna.xl <= local_player->x()&& local_player->x() <= enter_close_to_taverna.xr && enter_close_to_taverna.yl <= local_player->y()&& local_player->y() <= enter_close_to_taverna.yr){
-//        if(!tablet_stop->isVisible()){
-//            tablet_stop->setVisible(true);
-//        }
-//    } else if(first_course_alive.xl <= local_player->x()&& local_player->x() <= first_course_alive.xr && first_course_alive.yl <= local_player->y()&& local_player->y() <= first_course_alive.yr){
-//        if(!tablet_fist_course_alive->isVisible()){
-//            tablet_fist_course_alive->setVisible(true);
-//        }
-//    } else {
-//        if(tablet_want_eating->isVisible()){
-//            tablet_want_eating->setVisible(false);
-//        }
-//        if(tablet_want_sleap->isVisible()){
-//            tablet_want_sleap->setVisible(false);
-//        }
-//        if(tablet_stop->isVisible()){
-//            tablet_stop->setVisible(false);
-//        }
-//        tablet_stop->setVisible(false);
-//        if(table_stop_eating->isVisible()){
-//            table_stop_eating->setVisible(false);
-//        }
-//        if(tablet_fist_course_alive->isVisible()){
-//            tablet_fist_course_alive->setVisible(false);
-//        }
-//        tablet_fist_course_alive->setVisible(false);
-//    }
-//    std::cout<<"endhello";
-}
-
 
 void Room::set_focus_room(){
     this->setFocus();

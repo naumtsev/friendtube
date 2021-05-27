@@ -104,7 +104,7 @@ GraphicsHouseMan::GraphicsHouseMan(QObject *parent)
 
 QPainterPath GraphicsHouseMan::shape() const {
     QPainterPath path;
-    path.addEllipse(30,30,35,45);
+    path.addEllipse(30,30,35,50);
     return path;
 }
 // house_man
@@ -135,6 +135,18 @@ QPainterPath GraphicsSecurity::shape() const {
 }
 // security
 
+// еда
+GraphicsFood::GraphicsFood(QObject *parent)
+  :  QObject(parent) {
+  //this->setBrush(QColor(0, 255, 0));
+}
+
+QPainterPath GraphicsFood::shape() const {
+    QPainterPath path;
+    path.addEllipse(0,0,16,16);
+    return path;
+}
+// еда
 AnimationView::AnimationView(QWidget *parent) :
     QGraphicsView(parent)
 {
@@ -754,7 +766,7 @@ void AnimationView::delete_tables(PlayerView *player){
         scene->removeItem(tablet_want_sleap);
         delete tablet_want_sleap;
     } else if(want_or_dont_eat.xl <= player->x()&& player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= player->y()&& player->y() <= want_or_dont_eat.yr){
-        if(local_player->saturation > 100){
+        if(player->saturation > 100){
             scene->removeItem(table_stop_eating);
             delete table_stop_eating;
         } else{
@@ -776,6 +788,10 @@ int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
     QList<QGraphicsItem *> colliding = scene->collidingItems(next_frame[id]);
     for(QGraphicsItem* item: colliding){
         int count_i = 1;
+//        if(dynamic_cast<GraphicsFood *>(item)){
+//            count_i = 0;
+//            delete item;
+//        }
         for(int i = 0; i <= id; i++){
             if(item == next_frame[i]){
                 count_i = 0;

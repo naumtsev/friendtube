@@ -25,6 +25,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMediaPlayer>
+#include <QQueue>
 
 struct Menu;
 struct Client;
@@ -34,10 +35,6 @@ namespace Ui {
 struct Room;
 }
 
-//struct rectangle{
-//    int xl, yl; // левый ВЕРХНИЙ край
-//    int xr, yr; // правый НИЖНИЙ край
-//};
 
 struct Room : public QWidget {
     Q_OBJECT
@@ -45,8 +42,8 @@ struct Room : public QWidget {
 public:
     Room(Client *client_, Player *player_, QVector<PlayerView *> &players_, QWidget *parent = nullptr);
     void draw_scene();
-    void keyPressEvent  (QKeyEvent *)       override;  // обработка нажатий клавиш
-    void keyReleaseEvent(QKeyEvent *)       override;  // обработка отжатия клавиш
+    void keyPressEvent  (QKeyEvent *)       override;
+    void keyReleaseEvent(QKeyEvent *)       override;
     void mousePressEvent(QMouseEvent *)       override;
     void paintEvent(QPaintEvent *event)      override;
 
@@ -58,7 +55,7 @@ public:
     void init_video();
     void init_NPC();
 
-    void update_state_tables();
+    void delete_food();
 
     ~Room();
 
@@ -76,6 +73,12 @@ signals:
 
 public:
     int                FPS = 60;
+    int x_very_far = -1000, y_very_far = -1000;
+    std::pair<int, int> place_to_leave_the_house = {110, 190};
+    QVector<QString> food;
+    QQueue<QGraphicsPixmapItem *> added_food;
+    int id_food = 0;
+
     Ui::Room          *ui;
     AnimationView     *animation_scene;
     Player            *local_player;

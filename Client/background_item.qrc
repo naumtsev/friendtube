@@ -79,5 +79,8 @@
         <file>pics/background_item/green_room/more_texture/tablet_stor_eating.png</file>
         <file>pics/background_item/green_room/more_texture/tablet_want_eat.png</file>
         <file>pics/background_item/green_room/more_texture/tablet_want_sleap.png</file>
+        <file>pics/background_item/green_room/more_texture/apple.png</file>
+        <file>pics/background_item/green_room/more_texture/pig.png</file>
+        <file>pics/background_item/green_room/more_texture/strawberry.png</file>
     </qresource>
 </RCC>
