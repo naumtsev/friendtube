@@ -3,6 +3,7 @@
 
 #include "Menu.h"
 #include "Room.h"
+#include "Video.h"
 #include "NetworkManager.h"
 
 #include <QObject>
@@ -28,7 +29,7 @@ public:
 signals:
 
 public slots:
-    void createRoom(Player *player, QVector<PlayerView *> players_);
+    void createRoom(Player *player, QVector<PlayerView *> players_, Video video);
     void return_to_menu(const QString &reason);
 
 private:

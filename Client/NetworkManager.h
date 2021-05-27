@@ -28,7 +28,7 @@ public:
 
 
 signals:
-    void createRoom(Player*, QVector<PlayerView *>);
+    void createRoom(Player*, QVector<PlayerView *>, Video);
     void disconnect(const QString &reason);
 
     void video_set_video();

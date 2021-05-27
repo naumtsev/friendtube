@@ -39,7 +39,7 @@ void Client::connect_to_server(const QString &ip, int port) {
 }
 
 
-void Client::createRoom(Player *player, QVector<PlayerView *> players_) {
+void Client::createRoom(Player *player, QVector<PlayerView *> players_, Video video) {
 
     qDebug() << QThread::currentThreadId() << "CREATE ROOM";
 
@@ -47,9 +47,11 @@ void Client::createRoom(Player *player, QVector<PlayerView *> players_) {
     connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager, SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager, SLOT(update_state_on_the_server(QJsonDocument)));
 
-
-    room->show();
     menu->setVisible(false);
+    room->show();
+
+    room->video_player->current_video = video;
+    room->video_player->set_video();
 }
 
 
@@ -63,12 +65,10 @@ void Client::return_to_menu(const QString &reason) {
         room = nullptr;
     }
 
-    qDebug() << "Destroy ~Room";
-
     if(n_manager != nullptr) {
         n_manager->finish();
         n_thread->quit();
-        n_thread->wait();
+
         n_thread = nullptr;
     }
 

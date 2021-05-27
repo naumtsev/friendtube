@@ -20,7 +20,7 @@ void NetworkManager::run() {
    connect(socket, &QWebSocket::connected, this, &NetworkManager::onConnected);
    connect(socket, &QWebSocket::disconnected, this, &NetworkManager::socketDisconnect);
    connect(socket, &QWebSocket::binaryMessageReceived, this, &NetworkManager::socketReady);
-   connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView *>)), client, SLOT(createRoom(Player*, QVector<PlayerView *>)));
+   connect(this, SIGNAL(createRoom(Player*, QVector<PlayerView *>, Video)), client, SLOT(createRoom(Player*, QVector<PlayerView *>, Video)));
 
 
     QString adress = "ws://" + ip + ":" + QString::number(port);
@@ -70,12 +70,17 @@ void NetworkManager::socketReady(const QByteArray &data) {
         } else if(event_type == "connected") {
             QJsonObject scene = json_data.value("scene_data").toObject();
             QJsonArray json_players = scene.value("clients").toArray();
+            QJsonObject video = scene.value("video").toObject();
+
             QVector<PlayerView *> players_;
             for(const auto &json_player: json_players) {
                 players_.push_back(new PlayerView{{json_player.toObject()}});
             }
+
+            qRegisterMetaType<Video>("Video");
+
             qRegisterMetaType<QVector<PlayerView*> >("QVector<PlayerView*>");
-            emit createRoom(client->menu->player, players_);
+            emit createRoom(client->menu->player, players_, video);
             return;
         } else if(event_type == "updated_successfully"){
             client->room->updated_data = false;
@@ -92,7 +97,6 @@ void NetworkManager::socketReady(const QByteArray &data) {
             client->room->next_frame = std::move(players_);
             return;
         } else if(event_type == "video_event") {
-            qDebug() << json_data;
             client->room->video_player->current_video = json_data.value("video").toObject();
             if(json_data.value("event_type") == "set_video") {
                 emit video_set_video();
