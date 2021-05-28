@@ -15,24 +15,24 @@
 #include "Player.h"
 
 class ToolManyItem : public QWidget {
-  Q_OBJECT
+    Q_OBJECT
 
- public:
-  ToolManyItem(QWidget *parent = 0);
-  ToolManyItem(QWidget *parent, Player &local_player);
+public:
+    ToolManyItem(QWidget *parent = 0);
+    ToolManyItem(QWidget *parent, Player &local_player);
 
-  void init_parameters();
+    void init_parameters();
 
-  void init_buttons();
-  void init_multicolor_emoji_buttons();
+    void init_buttons();
+    void init_multicolor_emoji_buttons();
 
-  Player *player;
+    Player *player;
 
-  QToolButton *show_multicolor_emoji_list_button;
-  QListWidget *show_multicolor_emoji_list_widget;
+    QToolButton *show_multicolor_emoji_list_button;
+    QListWidget *show_multicolor_emoji_list_widget;
 
- signals:
-  void set_focus_room();
+signals:
+    void set_focus_room();
 };
 
-#endif  // TOOLMANYITEM_H
+#endif// TOOLMANYITEM_H

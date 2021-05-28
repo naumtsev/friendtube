@@ -3,13 +3,13 @@
 Video::Video() { state = Empty; }
 
 Video::Video(const QJsonObject &json) {
-  stream_url = QUrl(json["stream_url"].toString());
-  duration = json["duration"].toInt();
-  begin_time = json["begin_time"].toInt();
-  progress = json["progress"].toInt();
-  name = json["name"].toString();
-  sender_id = json["sender_id"].toString();
-  state = static_cast<VideoState>(json["state"].toInt());
+    stream_url = QUrl(json["stream_url"].toString());
+    duration = json["duration"].toInt();
+    begin_time = json["begin_time"].toInt();
+    progress = json["progress"].toInt();
+    name = json["name"].toString();
+    sender_id = json["sender_id"].toString();
+    state = static_cast<VideoState>(json["state"].toInt());
 }
 
 Video::Video(const QUrl &stream_url_, qint64 duration_, qint64 begin_time_,
@@ -25,36 +25,36 @@ Video::Video(const QUrl &stream_url_, qint64 duration_, qint64 begin_time_,
       state(static_cast<VideoState>(state_)) {}
 
 Video::Video(const Video &other) {
-  stream_url = other.stream_url;
-  duration = other.duration;
-  begin_time = other.begin_time;
-  progress = other.progress;
-  name = other.name;
-  sender_id = other.sender_id;
-  state = other.state;
+    stream_url = other.stream_url;
+    duration = other.duration;
+    begin_time = other.begin_time;
+    progress = other.progress;
+    name = other.name;
+    sender_id = other.sender_id;
+    state = other.state;
 }
 
 Video &Video::operator=(const Video &other) {
-  stream_url = other.stream_url;
-  duration = other.duration;
-  begin_time = other.begin_time;
-  progress = other.progress;
-  name = other.name;
-  sender_id = other.sender_id;
-  state = other.state;
-  return *this;
+    stream_url = other.stream_url;
+    duration = other.duration;
+    begin_time = other.begin_time;
+    progress = other.progress;
+    name = other.name;
+    sender_id = other.sender_id;
+    state = other.state;
+    return *this;
 }
 
 QJsonObject Video::to_json() {
-  QJsonObject json_video;
-  json_video.insert("stream_url", QJsonValue::fromVariant(stream_url));
-  json_video.insert("duration", QJsonValue::fromVariant(duration));
-  json_video.insert("begin_time", QJsonValue::fromVariant(begin_time));
-  json_video.insert("progress", QJsonValue::fromVariant(progress));
-  json_video.insert("name", QJsonValue::fromVariant(name));
-  json_video.insert("sender_id", QJsonValue::fromVariant(sender_id));
-  json_video.insert("state", QJsonValue::fromVariant(static_cast<int>(state)));
-  return json_video;
+    QJsonObject json_video;
+    json_video.insert("stream_url", QJsonValue::fromVariant(stream_url));
+    json_video.insert("duration", QJsonValue::fromVariant(duration));
+    json_video.insert("begin_time", QJsonValue::fromVariant(begin_time));
+    json_video.insert("progress", QJsonValue::fromVariant(progress));
+    json_video.insert("name", QJsonValue::fromVariant(name));
+    json_video.insert("sender_id", QJsonValue::fromVariant(sender_id));
+    json_video.insert("state", QJsonValue::fromVariant(static_cast<int>(state)));
+    return json_video;
 }
 
 Video::~Video() {}
