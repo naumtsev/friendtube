@@ -128,7 +128,7 @@ public slots:
 private:
      int x = 1, y = 1;
      int distance = 1;
-     QString prefics_owner_name = "[LIVE]";
+     QGraphicsTextItem *item_prefics_owner_name;
      QTimer *timer_update_scene;
      // table
      QGraphicsPixmapItem *tablet_want_eating;

@@ -97,6 +97,7 @@ void Room::init_video() {
         video_advert->setFixedHeight(video_advert->heightForWidth(width_advert));
         video_advert->show();
         video_advert->move(video_widget->x() + video_widget->width() - video_advert->width(), video_widget->y() - video_advert->heightForWidth(width_advert) - 3);
+        this->set_focus_room();
     });
 
 
@@ -143,7 +144,7 @@ void Room::init_video() {
     push_button_stop_video->setFixedSize(video_btn_size, video_btn_size);
     push_button_stop_video->setGeometry(push_button_pause_video->x() + video_btn_size + video_btn_space_size,
                                    push_button_pause_video->y(), video_btn_size, video_btn_size);
-    connect(push_button_stop_video, &QPushButton::clicked,[&](){
+    connect(push_button_stop_video, &QPushButton::clicked, [&](){
         video_player->try_stop();
         this->set_focus_room();
     });
@@ -175,7 +176,6 @@ void Room::init_video() {
     connect(client->n_manager, SIGNAL(video_set_video()), video_player, SLOT(set_video()));
     connect(client->n_manager, SIGNAL(video_stop()), video_player, SLOT(stop()));
     connect(client->n_manager, SIGNAL(video_pause()), video_player, SLOT(pause()));
-
 }
 
 void Room::init_buttons(){

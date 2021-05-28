@@ -1,6 +1,7 @@
 #include "AnimationView.h"
 #include <typeinfo>
 
+// bush
 GraphicsBush::GraphicsBush(QObject *parent)
   :  QObject(parent) {
   //this->setBrush(QColor(0, 255, 0));
@@ -11,7 +12,9 @@ QPainterPath GraphicsBush::shape() const {
     path.addEllipse(15,25,0,0);
     return path;
 }
+// bush
 
+// bush_three
 GraphicsThreeBush::GraphicsThreeBush(QObject *parent)
   :  QObject(parent) {
   //this->setBrush(QColor(0, 255, 0));
@@ -22,7 +25,9 @@ QPainterPath GraphicsThreeBush::shape() const {
     path.addEllipse(20,30,2,1);
     return path;
 }
+// bush_three
 
+// tree
 GraphicsTree::GraphicsTree(QObject *parent)
   :  QObject(parent) {
   //this->setBrush(QColor(0, 255, 0));
@@ -33,7 +38,9 @@ QPainterPath GraphicsTree::shape() const {
     path.addEllipse(32,100,3,3);
     return path;
 }
+// tree
 
+// tree_two
 GraphicsTreeTwo::GraphicsTreeTwo(QObject *parent)
   :  QObject(parent) {
   //this->setBrush(QColor(0, 255, 0));
@@ -44,6 +51,8 @@ QPainterPath GraphicsTreeTwo::shape() const {
     path.addEllipse(53,128,20,4);
     return path;
 }
+// tree_two
+
 // stone
 GraphicsStone::GraphicsStone(QObject *parent)
   :  QObject(parent) {
@@ -135,7 +144,7 @@ QPainterPath GraphicsSecurity::shape() const {
 }
 // security
 
-// еда
+// food
 GraphicsFood::GraphicsFood(QObject *parent)
   :  QObject(parent) {
   //this->setBrush(QColor(0, 255, 0));
@@ -146,7 +155,8 @@ QPainterPath GraphicsFood::shape() const {
     path.addEllipse(0,0,16,16);
     return path;
 }
-// еда
+// food
+
 AnimationView::AnimationView(Room *room_, QWidget *parent) :
     QGraphicsView(parent) {
     room =room_;
@@ -173,6 +183,12 @@ AnimationView::AnimationView(Room *room_, QWidget *parent) :
 
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,1280,720);
+
+    item_prefics_owner_name = new QGraphicsTextItem("[LIVE]");
+    item_prefics_owner_name->setVisible(false);
+    item_prefics_owner_name->setDefaultTextColor(Qt::red);
+    scene->addItem(item_prefics_owner_name);
+
     this->setScene(scene);
     timer_update_scene = new QTimer();
 
@@ -842,16 +858,8 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
                     next_frame[i]->name->setDefaultTextColor(Qt::white);
                     scene->addItem(next_frame[i]->name);
                     if(room->is_owner_video(next_frame[i]->client_id)){
-                        next_frame[i]->prefics_owner_video_name = new QGraphicsTextItem;
-                        next_frame[i]->prefics_owner_video_name->setPlainText(prefics_owner_name);
-                        next_frame[i]->prefics_owner_video_name->setDefaultTextColor(Qt::red);
-                        next_frame[i]->prefics_owner_video_name->setPos(next_frame[i]->name->x() - 40, next_frame[i]->name->y());
-                        scene->addItem(next_frame[i]->prefics_owner_video_name);
-                    }
-
-                    if(room->is_owner_video(next_frame[i]->client_id)) {
-                        scene->removeItem(next_frame[i]->prefics_owner_video_name);
-                        delete next_frame[i]->prefics_owner_video_name;
+                        item_prefics_owner_name->setVisible(true);
+                        item_prefics_owner_name->setPos(next_frame[i]->name->x() - 40, next_frame[i]->name->y());
                     }
                     display_message(next_frame[i]);
                 }
@@ -885,11 +893,8 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
         next_frame[end_player]->name->setDefaultTextColor(Qt::white);
         scene->addItem(next_frame[end_player]->name);
         if(room->is_owner_video(next_frame[end_player]->client_id)){
-            next_frame[end_player]->prefics_owner_video_name = new QGraphicsTextItem;
-            next_frame[end_player]->prefics_owner_video_name->setPlainText(prefics_owner_name);
-            next_frame[end_player]->prefics_owner_video_name->setDefaultTextColor(Qt::red);
-            next_frame[end_player]->prefics_owner_video_name->setPos(next_frame[end_player]->name->x() - 40, next_frame[end_player]->name->y());
-            scene->addItem(next_frame[end_player]->prefics_owner_video_name);
+            item_prefics_owner_name->setVisible(true);
+            item_prefics_owner_name->setPos(next_frame[end_player]->name->x() - 40, next_frame[end_player]->name->y());
         }
         display_message(next_frame[end_player]);
 
@@ -987,6 +992,9 @@ int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
             count_i = 0;
             delete item;
         }
+        if(dynamic_cast<QGraphicsTextItem *>(item)){
+            count_i = 0;
+        }
         for(int i = 0; i <= id; i++){
             if(item == next_frame[i]){
                 count_i = 0;
@@ -1025,13 +1033,13 @@ void AnimationView::display_message(PlayerView *player){
 
 void AnimationView ::clear_vector(QVector<PlayerView *> &last_frame, QString local_id){
     bool clear_local_player = false;
+    bool watch_video = false;
     for(int i = 0; i < last_frame.size(); i++){
         if(last_frame[i]->client_id != local_id || clear_local_player){
             scene->removeItem(last_frame[i]);
             scene->removeItem(last_frame[i]->name);
             if(room->is_owner_video(last_frame[i]->client_id)){
-                scene->removeItem(last_frame[i]->prefics_owner_video_name);
-                delete last_frame[i]->prefics_owner_video_name;
+                watch_video = true;
             }
             if(last_frame[i]->player_message.send_message != ""){
                 if(last_frame[i]->player_message.type == "text"){
@@ -1046,6 +1054,9 @@ void AnimationView ::clear_vector(QVector<PlayerView *> &last_frame, QString loc
             clear_local_player = true;
         }
         delete last_frame[i];
+    }
+    if(!watch_video){
+        item_prefics_owner_name->setVisible(false);
     }
 }
 
