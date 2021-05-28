@@ -1,79 +1,73 @@
 #include "Client.h"
 
-Client::Client(QObject *parent) : QObject(parent), menu(nullptr), room(nullptr), n_manager(nullptr){
-
-}
+Client::Client(QObject *parent)
+    : QObject(parent), menu(nullptr), room(nullptr), n_manager(nullptr) {}
 
 Client::~Client() {
-    delete menu;
-    delete room;
-    delete n_manager;
+  delete menu;
+  delete room;
+  delete n_manager;
 
-    n_thread->quit();
-    n_thread->wait();
-    n_thread->deleteLater();
+  n_thread->quit();
+  n_thread->wait();
+  n_thread->deleteLater();
 }
-
 
 void Client::start() {
-    menu = new Menu(this);
-    menu->show();
+  menu = new Menu(this);
+  menu->show();
 }
-
 
 void Client::connect_to_server(const QString &ip, int port) {
-    qDebug() << "Try connect";
-    n_manager = new NetworkManager(this, ip, port);
+  qDebug() << "Try connect";
+  n_manager = new NetworkManager(this, ip, port);
 
-    connect(n_manager, SIGNAL(disconnect(const QString &)), this, SLOT(return_to_menu(const QString &)));
+  connect(n_manager, SIGNAL(disconnect(const QString &)), this,
+          SLOT(return_to_menu(const QString &)));
 
-    n_thread = new QThread();
+  n_thread = new QThread();
 
-    connect(n_thread, &QThread::started, n_manager, &NetworkManager::run);
+  connect(n_thread, &QThread::started, n_manager, &NetworkManager::run);
 
-    n_manager->moveToThread(n_thread);
+  n_manager->moveToThread(n_thread);
 
-    n_thread->start();
-
-
+  n_thread->start();
 }
 
+void Client::createRoom(Player *player, QVector<PlayerView *> players_,
+                        Video video) {
+  qDebug() << QThread::currentThreadId() << "CREATE ROOM";
 
-void Client::createRoom(Player *player, QVector<PlayerView *> players_, Video video) {
+  room = new Room(this, player, players_);
+  connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager,
+          SLOT(request_get_scene_on_the_server()));
+  connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager,
+          SLOT(update_state_on_the_server(QJsonDocument)));
 
-    qDebug() << QThread::currentThreadId() << "CREATE ROOM";
+  menu->setVisible(false);
+  room->show();
 
-    room = new Room(this, player, players_);
-    connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager, SLOT(request_get_scene_on_the_server()));
-    connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager, SLOT(update_state_on_the_server(QJsonDocument)));
-
-    menu->setVisible(false);
-    room->show();
-
-    room->video_player->current_video = video;
-    room->video_player->set_video();
+  room->video_player->current_video = video;
+  room->video_player->set_video();
 }
-
 
 void Client::return_to_menu(const QString &reason) {
+  qDebug() << "return to menu. Reason: " << reason;
 
-    qDebug() << "return to menu. Reason: " << reason;
+  if (room != nullptr) {
+    delete room;
+    room = nullptr;
+  }
 
+  if (n_manager != nullptr) {
+    n_manager->finish();
+    n_thread->quit();
 
-    if(room != nullptr) {
-        delete room;
-        room = nullptr;
-    }
+    n_thread = nullptr;
+  }
 
-    if(n_manager != nullptr) {
-        n_manager->finish();
-        n_thread->quit();
-
-        n_thread = nullptr;
-    }
-
-    if(!reason.isEmpty()){
-        emit menu->make_advert(reason);
-    }
-    menu->setVisible(true);
+  if (!reason.isEmpty()) {
+    emit menu->make_advert(reason);
+  }
+  menu->setVisible(true);
 }
