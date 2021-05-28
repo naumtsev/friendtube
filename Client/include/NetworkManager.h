@@ -39,10 +39,8 @@ struct NetworkManager : public QObject {
   void run();
   void socketReady(const QByteArray &data);
   void video_request(QJsonObject);
-  void socketDisconnect();
   void request_get_scene_on_the_server();
   void update_state_on_the_server(const QJsonDocument &state);
-  void onConnected();
   void onWebSocketError(QAbstractSocket::SocketError);
   void finish();
 

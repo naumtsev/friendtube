@@ -69,8 +69,7 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent) {
 
   update_movement(1, apKeyEvent);
   if (!timer_move->isActive()) {
-    timer_move->start(1000 / FPS);  // проблема, что 2 раза вызывается, для
-                                    // первого клика + второго!!!
+    timer_move->start(1000 / FPS);
   }
 }
 
@@ -90,21 +89,6 @@ void Player::move() {
 
   setPos(pos().x() + movement.x, pos().y() + movement.y);
   state = AnimateState::Moving;
-
-  // Проверка на выход за границы поля
-  if (this->pos().x() < 0) {
-    setPos(0, pos().y());
-  }
-
-  if (this->pos().x() > 1280 - 48) {
-    setPos(1280 - 48, pos().y());
-  }
-  if (this->pos().y() < 0) {
-    setPos(pos().x(), 0);
-  }
-  if (this->pos().y() > 720 - 48) {
-    setPos(pos().x(), 720 - 48);
-  }
 }
 
 void Player::update_movement(int sign, QKeyEvent *apKeyEvent) {
@@ -128,10 +112,6 @@ void Player::update_movement(int sign, QKeyEvent *apKeyEvent) {
 void Player::left_direction() { direction = "left"; }
 
 void Player::right_direction() { direction = "right"; }
-
-void Player::up_direction() { movement.y = -2; }
-
-void Player::down_direction() { movement.y = 2; }
 
 void Player::stop() {
   state = AnimateState::Standing;
@@ -184,12 +164,8 @@ QJsonDocument Player::to_json() {
 
 QJsonObject Player::spriteData_from_sprite_data_to_json() {
   QJsonObject json_sprite_data;
-  int i;
-  if (state == AnimateState::Standing) {
-    i = 0;
-  } else {
-    i = 1;
-  }
+  int i = static_cast<int>(state);
+
   json_sprite_data.insert("width",
                           QJsonValue::fromVariant(Pixmaps[i].second.width));
   json_sprite_data.insert("height",
@@ -234,11 +210,11 @@ void Player::next_frame() {
     right_direction();
   }
 
-  int left_x = 24;  // не знаю костыль ли это или нормальное решение.
+  int left_x = 24;
   name->setPos(
       pos().x() + movement.x + left_x - name->boundingRect().width() / 2,
       pos().y() + movement.y -
-          15);  // чтобы не было глюков при замене direction нужно,
+          15);
 
   switch (state) {
     case AnimateState::Moving: {

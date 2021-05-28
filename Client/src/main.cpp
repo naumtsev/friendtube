@@ -4,8 +4,6 @@
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
-  qDebug() << "main" << QThread::currentThreadId();
-
   int count_clients = 1;
   QList<Client *> clients;
   for (int i = 0; i < count_clients; i++) {

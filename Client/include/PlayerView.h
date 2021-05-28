@@ -33,7 +33,7 @@ class PlayerView : public QGraphicsPixmapItem {
   QString color_player = ":/dino/pics/sheets/m_DinoSprites - mortBIG.png";
   QString client_id;
   Message player_message;
-  QString direction = "left";  // create enum class
+  QString direction = "left";
   AnimateState state{AnimateState::Standing};
 
   int current_frame = 0;

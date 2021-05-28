@@ -17,28 +17,15 @@ NetworkManager::~NetworkManager() {
 void NetworkManager::run() {
   socket = new QWebSocket();
 
-  connect(socket, &QWebSocket::connected, this, &NetworkManager::onConnected);
-  connect(socket, &QWebSocket::disconnected, this,
-          &NetworkManager::socketDisconnect);
   connect(socket, &QWebSocket::binaryMessageReceived, this,
           &NetworkManager::socketReady);
   connect(this, SIGNAL(createRoom(Player *, QVector<PlayerView *>, Video)),
           client, SLOT(createRoom(Player *, QVector<PlayerView *>, Video)));
 
   QString adress = "ws://" + ip + ":" + QString::number(port);
-  qDebug() << "Try connect to " + adress;
   connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this,
           SLOT(onWebSocketError(QAbstractSocket::SocketError)));
   socket->open(QUrl(adress));
-}
-
-void NetworkManager::onConnected() { qDebug() << "Connection is successful"; }
-
-void NetworkManager::socketDisconnect() {
-  qDebug() << "Disconnect";
-  // socket->close();
-  // client->return_to_menu("");
-  // emit disconnect("Socket error: server closed connection");
 }
 
 void NetworkManager::finish() {

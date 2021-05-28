@@ -48,8 +48,8 @@ PlayerView::PlayerView(const PlayerView& player_view) {
 QRectF PlayerView::boundingRect() const { return QRectF(0, 0, 48, 48); }
 
 void PlayerView::paint(QPainter* painter,
-                       const QStyleOptionGraphicsItem* option,
-                       QWidget* widget) {  // почему-то не работает ж(
+                       [[maybe_unused]] const QStyleOptionGraphicsItem* option,
+                       [[maybe_unused]] QWidget* widget) {  // почему-то не работает ж(
   if (this->direction == "right") {
     QPixmap icon = Pixmaps[static_cast<int>(state)].first.copy(
         (csd().offset * current_frame + csd().border), 0, csd().width,
@@ -77,10 +77,10 @@ QPainterPath PlayerView::shape() const {
 void PlayerView::update_state() { this->update_position_name(); }
 
 void PlayerView::update_position_name() {
-  int left_x = 24;  // не знаю костыль ли это или нормальное решение.
+  int left_x = 24;
   name->setPos(
       pos().x() + left_x - name->boundingRect().width() / 2,
-      pos().y() - 15);  // чтобы не было глюков при замене direction нужно,
+      pos().y() - 15);
   message->setPos(pos().x() + left_x - name->boundingRect().width() / 2,
                   pos().y() - 30);
 }

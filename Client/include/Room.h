@@ -18,6 +18,7 @@
 #include <QTimer>
 #include <QVector>
 #include <QWidget>
+#include <QRandomGenerator>
 
 #include "AnimationView.h"
 #include "ChatWindow.h"
@@ -98,7 +99,7 @@ struct Room : public QWidget {
 
   QPushButton *push_button_exit_in_menu;
 
-  // table
+  // tablets
   QLabel *tablet_want_eating;
   QLabel *tablet_want_sleap;
   QLabel *tablet_stop;
@@ -106,7 +107,6 @@ struct Room : public QWidget {
   QLabel *tablet_fist_course_alive;
 
   // video structs
-
   QVideoWidget *video_widget;
   VideoPlayer *video_player;
   qint16 video_btn_size = 20;

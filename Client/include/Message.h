@@ -10,13 +10,13 @@
 #include <QTime>
 
 struct Message {
-  QString send_message = "";  // сообщение
-  QString type = "text";      // тип сообщения
+  QString send_message = "";
+  QString type = "text";
   QTime sending_time;
   QGraphicsPixmapItem *emoji;
   bool metka_message = false;  // есть ли сообщение
   bool metka_message_painter =
-      false;  // чтобы заново таймер не запускать - скажем нет бесконечности
+      false;  // чтобы заново таймер не запускать
   QJsonObject from_message_to_json();
 };
 

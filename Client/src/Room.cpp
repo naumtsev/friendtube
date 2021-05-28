@@ -33,7 +33,6 @@ void Room::init_paramets() {
 
   this->resize(1280, 720);
   this->setFixedSize(1280, 720);
-  // this->showFullScreen();
   this->setWindowTitle("FriendTube");
   this->setWindowIcon(QIcon(QPixmap(":/images/icon.png")));
 
@@ -188,8 +187,6 @@ void Room::init_video() {
                           video_btn_space_size,
                       push_button_stop_video->y() + video_btn_size / 2 -
                           volume_slider->height() / 2);
-
-  // volume_slider->setVisible(false);
   volume_slider->setMinimum(0);
   volume_slider->setMaximum(100);
   volume_slider->setSingleStep(1);
@@ -202,9 +199,7 @@ void Room::init_video() {
   tool_item_right->setGeometry(
       volume_slider->x() + volume_slider->width() + video_btn_space_size,
       push_button_stop_video->y(), 200,
-      100);  // лучше этот размер в room выставлять, чтобы ориентироваться на
-             // размер виджета room
-
+      100);
   connect(client->n_manager, SIGNAL(video_set_video()), video_player,
           SLOT(set_video()));
   connect(client->n_manager, SIGNAL(video_stop()), video_player, SLOT(stop()));
@@ -243,8 +238,7 @@ void Room::init_buttons() {
   push_button_exit_in_menu->setVisible(false);
 
   this->setGeometry(1280 - this->width(), 200, 50,
-                    400);  // лучше этот размер в room выставлять, чтобы
-                           // ориентироваться на размер виджета room
+                    400);
 }
 
 void Room::init_timers() {
@@ -267,35 +261,30 @@ void Room::init_timers() {
 }
 
 void Room::init_NPC() {
-  // хочу поесть!
   tablet_want_eating = new QLabel(this);
   tablet_want_eating->move(1130, 150);
   tablet_want_eating->setPixmap(QPixmap(
       ":/pics/background_item/green_room/more_texture/tablet_want_eat.png"));
   tablet_want_eating->setVisible(false);
 
-  // хочу поспать!
   QLabel *tablet_want_sleap = new QLabel(this);
   tablet_want_sleap->move(50, 140);
   tablet_want_sleap->setPixmap(QPixmap(
       ":/pics/background_item/green_room/more_texture/tablet_want_sleap.png"));
   tablet_want_sleap->setVisible(false);
 
-  // сюда нельзя!
   tablet_stop = new QLabel(this);
   tablet_stop->move(1045, 570);
   tablet_stop->setPixmap(QPixmap(
       ":/pics/background_item/green_room/more_texture/tablet_entry_close.png"));
   tablet_stop->setVisible(false);
 
-  // хватит есть!
   table_stop_eating = new QLabel(this);
   table_stop_eating->move(1130, 150);
   table_stop_eating->setPixmap(QPixmap(
       ":/pics/background_item/green_room/more_texture/tablet_stor_eating.png"));
   table_stop_eating->setVisible(false);
 
-  // первый курс жив!
   tablet_fist_course_alive = new QLabel(this);
   tablet_fist_course_alive->move(50, 600);
   tablet_fist_course_alive->setPixmap(
@@ -319,7 +308,6 @@ void Room::draw_scene() {
   QMutexLocker locker{&player_mutex};
   // добавляем в конец локального игрока
   next_frame.push_back(new PlayerView(*local_player));
-
   animation_scene->add_players(last_frame, next_frame, local_player->client_id);
   local_player->chat();
 }
@@ -332,8 +320,6 @@ void Room::update_local_player_position() {
   }
 }
 
-// идея: когда человек дома, то может смайлики отсылкать, они будут над домом!!
-// идея: сделать игроку пузико, если он очень много съел
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
   if (this->hasFocus() &&
       (apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220)) {
@@ -361,7 +347,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
       GraphicsFood *food_ = new GraphicsFood();
       food_->setPixmap(food[id_food]);
       added_food.push_back(food_);
-      food_->setPos(1125 + qrand() % 100, 250 + qrand() % 100);
+      food_->setPos(1125 + QRandomGenerator::global()->bounded(100), 250 + QRandomGenerator::global()->bounded(100));
       food_->setZValue(+50);
       id_food++;
       animation_scene->scene->addItem(food_);
@@ -404,7 +390,6 @@ void Room::set_focus_room() {
 }
 
 void Room::close_room() {
-  // RETURN TO MENU
   emit signal_close_room();
   client->return_to_menu("");
   return;

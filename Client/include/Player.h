@@ -12,7 +12,6 @@
 #include <QTextOption>
 #include <QTime>
 #include <QTimer>
-#include <iostream>
 
 #include "HSL.h"
 #include "Message.h"
@@ -48,7 +47,7 @@ class Player : public QObject, public QGraphicsPixmapItem {
   explicit Player(const QString &player_name_ = "",
                   const QString &color_player_ =
                       ":/pics/sheets/m_DinoSprites - mortBIG.png",
-                  QObject *parent = 0);  // записывание имени
+                  QObject *parent = 0);
 
   Player(QJsonObject json_player);
   QJsonDocument to_json();
@@ -56,20 +55,17 @@ class Player : public QObject, public QGraphicsPixmapItem {
   sprite_data spriteData_from_json_to_sprite_data(QJsonObject json_sprite_data);
   QJsonObject spriteData_from_sprite_data_to_json();
 
-  void keyPressEvent(QKeyEvent *) override;  // зажимание клавиши
-  void keyReleaseEvent(QKeyEvent *) override;  // отжимание клавиши
+  void keyPressEvent(QKeyEvent *) override;
+  void keyReleaseEvent(QKeyEvent *) override;
 
   void update_movement(
-      int sign, QKeyEvent *apKeyEvent);  // обновление передвижения игрока
+      int sign, QKeyEvent *apKeyEvent);
 
   void chat();
   void stop();
 
   void left_direction();
   void right_direction();
-  void up_direction();
-  void down_direction();
-  void change_direction();
   void download_pixmap();
 
   ~Player();
@@ -78,7 +74,7 @@ class Player : public QObject, public QGraphicsPixmapItem {
   void next_frame();
 
  public:
-  QString direction = "left";  // create enum class
+  QString direction = "left";
   AnimateState state{AnimateState::Standing};
   int saturation = 0;
   int did_you_eat = 0;

@@ -12,19 +12,17 @@ ChatWindow::ChatWindow(QWidget *parent, Player &local_player)
 
 void ChatWindow::keyPressEvent(QKeyEvent *apKeyEvent) {
   if (apKeyEvent->key() == Qt::Key_Enter ||
-      apKeyEvent->key() == 16777220) {  // походу у меня enter нет (
+      apKeyEvent->key() == 16777220) {
     enter_message->clicked();
   }
 }
 
 void ChatWindow::init_parameters() {
-  // setWindowTitle("Chat");
-  setWindowFlags(Qt::FramelessWindowHint);  // окно без рамки
+  setWindowFlags(Qt::FramelessWindowHint);
   this->setFixedSize(400, 50);
   this->setGeometry(440, 0, 400,
-                    30);  // лучше этот размер в room выставлять, чтобы
-                          // ориентироваться на размер виджета room
-  setWindowOpacity(0.8);  // делаем полупрозрачным
+                    30);
+  setWindowOpacity(0.8);
   this->hide();
 }
 
@@ -60,10 +58,8 @@ void ChatWindow::init_close_window_buttons() {
     player->message->setPlainText(player->player_message.send_message);
     player->player_message.metka_message = true;
     player->player_message.metka_message_painter = false;
-    // qDebug() << s;
     player->movement = {0, 0};
     text_edit->clear();
-    // тут нужно фокус на Room делать
     emit set_focus_room();
   });
 }

@@ -3,9 +3,7 @@
 #include <typeinfo>
 
 // bush
-GraphicsBush::GraphicsBush(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsBush::GraphicsBush(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsBush::shape() const {
   QPainterPath path;
@@ -15,9 +13,7 @@ QPainterPath GraphicsBush::shape() const {
 // bush
 
 // bush_three
-GraphicsThreeBush::GraphicsThreeBush(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsThreeBush::GraphicsThreeBush(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsThreeBush::shape() const {
   QPainterPath path;
@@ -27,9 +23,7 @@ QPainterPath GraphicsThreeBush::shape() const {
 // bush_three
 
 // tree
-GraphicsTree::GraphicsTree(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsTree::GraphicsTree(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsTree::shape() const {
   QPainterPath path;
@@ -39,9 +33,7 @@ QPainterPath GraphicsTree::shape() const {
 // tree
 
 // tree_two
-GraphicsTreeTwo::GraphicsTreeTwo(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsTreeTwo::GraphicsTreeTwo(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsTreeTwo::shape() const {
   QPainterPath path;
@@ -51,21 +43,17 @@ QPainterPath GraphicsTreeTwo::shape() const {
 // tree_two
 
 // stone
-GraphicsStone::GraphicsStone(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsStone::GraphicsStone(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsStone::shape() const {
   QPainterPath path;
-  path.addEllipse(14, 23, 12, 1);
+  path.addEllipse(14, 23, 8, 1);
   return path;
 }
 // stone
 
 // house
-GraphicsHouse::GraphicsHouse(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsHouse::GraphicsHouse(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsHouse::shape() const {
   QPainterPath path;
@@ -75,9 +63,7 @@ QPainterPath GraphicsHouse::shape() const {
 // house
 
 // cafe
-GraphicsCafe::GraphicsCafe(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsCafe::GraphicsCafe(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsCafe::shape() const {
   QPainterPath path;
@@ -87,9 +73,7 @@ QPainterPath GraphicsCafe::shape() const {
 // cafe
 
 // taverna
-GraphicsTaverna::GraphicsTaverna(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsTaverna::GraphicsTaverna(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsTaverna::shape() const {
   QPainterPath path;
@@ -99,9 +83,7 @@ QPainterPath GraphicsTaverna::shape() const {
 // taverna
 
 // house_man
-GraphicsHouseMan::GraphicsHouseMan(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsHouseMan::GraphicsHouseMan(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsHouseMan::shape() const {
   QPainterPath path;
@@ -111,9 +93,7 @@ QPainterPath GraphicsHouseMan::shape() const {
 // house_man
 
 // cook
-GraphicsCook::GraphicsCook(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsCook::GraphicsCook(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsCook::shape() const {
   QPainterPath path;
@@ -123,9 +103,7 @@ QPainterPath GraphicsCook::shape() const {
 // cook
 
 // security
-GraphicsSecurity::GraphicsSecurity(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsSecurity::GraphicsSecurity(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsSecurity::shape() const {
   QPainterPath path;
@@ -135,9 +113,7 @@ QPainterPath GraphicsSecurity::shape() const {
 // security
 
 // food
-GraphicsFood::GraphicsFood(QObject *parent) : QObject(parent) {
-  // this->setBrush(QColor(0, 255, 0));
-}
+GraphicsFood::GraphicsFood(QObject *parent) : QObject(parent) {}
 
 QPainterPath GraphicsFood::shape() const {
   QPainterPath path;
@@ -165,13 +141,13 @@ AnimationView::AnimationView(Room *room_, QWidget *parent)
   setFrameStyle(0);
 
   this->setHorizontalScrollBarPolicy(
-      Qt::ScrollBarAlwaysOff);  // Отключим скроллбар по горизонтали
+      Qt::ScrollBarAlwaysOff);
   this->setVerticalScrollBarPolicy(
-      Qt::ScrollBarAlwaysOff);  // Отключим скроллбар по вертикали
-  this->setAlignment(Qt::AlignCenter);  // Делаем привязку содержимого к центру
+      Qt::ScrollBarAlwaysOff);
+  this->setAlignment(Qt::AlignCenter);
   this->setSizePolicy(
       QSizePolicy::Expanding,
-      QSizePolicy::Expanding);  // Растягиваем содержимое по виджету
+      QSizePolicy::Expanding);
 
   scene = new QGraphicsScene();
   scene->setSceneRect(0, 0, 1280, 720);
@@ -193,7 +169,7 @@ AnimationView::AnimationView(Room *room_, QWidget *parent)
 void AnimationView::init_background_item() {
   QBrush *ibrush = new QBrush;
   ibrush->setTextureImage(
-      QImage(":/images/background1.png"));  // background scene
+      QImage(":/images/background1.png"));
   scene->setBackgroundBrush(*ibrush);
 
   // houses
@@ -354,21 +330,11 @@ void AnimationView::init_background_item() {
 
   // дополнительные item
   QPixmap texture_tree_two(
-      ":/pics/background_item/green_room/GrassObject_32_29_1.png");  // подкорректировать
-                                                                     // расположение
-                                                                     // изображения,
-                                                                     // чтобы
-                                                                     // прям над
-                                                                     // персонажем
+      ":/pics/background_item/green_room/GrassObject_32_29_1.png");
   QPixmap texture_three_bush(
       ":/pics/background_item/green_room/GrassObjects_32_06.png");
   QPixmap texture_bush(
-      ":/pics/background_item/green_room/GrassObjects_32_04.png");  // подкорректировать
-                                                                    // расположение
-                                                                    // изображения,
-                                                                    // чтобы
-                                                                    // прям над
-                                                                    // персонажем
+      ":/pics/background_item/green_room/GrassObjects_32_04.png");
 
   // деревья с кустиками по бокам
   int x_move, y_move;
@@ -875,7 +841,6 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame,
                                 QString local_id) {
   if (next_frame.size() > 1) {
     bool draw_local_player = false;
-    int id = -1;
     int end_player = next_frame.size() - 1;
 
     for (int i = 0; i < next_frame.size(); i++) {
@@ -893,7 +858,6 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame,
           display_message(next_frame[i]);
         }
       } else {
-        id = i;
         draw_local_player = true;
       }
     }
@@ -942,7 +906,6 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame,
 void AnimationView::add_tables(PlayerView *player) {
   if (sleep.xl <= player->x() && player->x() <= sleep.xr &&
       sleep.yl <= player->y() && player->y() <= sleep.yr) {
-    // хочу поспать!
     tablet_want_sleap =
         new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/"
                                         "more_texture/tablet_want_sleep.png"));
@@ -954,7 +917,6 @@ void AnimationView::add_tables(PlayerView *player) {
              want_or_dont_eat.yl <= player->y() &&
              player->y() <= want_or_dont_eat.yr) {
     if (local_player->saturation >= 100) {
-      // хватит есть!
       table_stop_eating = new QGraphicsPixmapItem();
       table_stop_eating->setPos(1130, 150);
       table_stop_eating->setPixmap(
@@ -963,7 +925,6 @@ void AnimationView::add_tables(PlayerView *player) {
       table_stop_eating->setZValue(+15);
       scene->addItem(table_stop_eating);
     } else {
-      // хочу поесть!
       tablet_want_eating = new QGraphicsPixmapItem();
       tablet_want_eating->setPos(1130, 150);
       tablet_want_eating->setPixmap(
@@ -976,7 +937,6 @@ void AnimationView::add_tables(PlayerView *player) {
              player->x() <= enter_close_to_taverna.xr &&
              enter_close_to_taverna.yl <= player->y() &&
              player->y() <= enter_close_to_taverna.yr) {
-    // сюда нельзя!
     tablet_stop = new QGraphicsPixmapItem();
     tablet_stop->setPos(1045, 570);
     tablet_stop->setPixmap(
@@ -988,7 +948,6 @@ void AnimationView::add_tables(PlayerView *player) {
              player->x() <= first_course_alive.xr &&
              first_course_alive.yl <= player->y() &&
              player->y() <= first_course_alive.yr) {
-    // первый курс жив!
     tablet_fist_course_alive = new QGraphicsPixmapItem();
     tablet_fist_course_alive->setPos(50, 600);
     tablet_fist_course_alive->setPixmap(
@@ -999,7 +958,6 @@ void AnimationView::add_tables(PlayerView *player) {
   }
   if (ay.xl <= player->x() && player->x() <= ay.xr && ay.yl <= player->y() &&
       player->y() <= ay.yr) {
-    // первый курс жив!
     tablet_ay = new QGraphicsPixmapItem();
     tablet_ay->setPos(80, 620);
     tablet_ay->setPixmap(
@@ -1074,7 +1032,6 @@ int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame) {
       }
     }
     count += count_i;
-    // delete item; нужно если при пересечении удалять объект
   }
   return count;
 }
@@ -1085,7 +1042,7 @@ void AnimationView::display_message(PlayerView *player) {
       player->message->setPos(
           player->pos().x() + 24 - player->message->boundingRect().width() / 2,
           player->pos().y() -
-              30);  // чтобы не было глюков при замене direction нужно,
+              30);
       player->message->setDefaultTextColor(Qt::white);
       scene->addItem(player->message);
     } else {

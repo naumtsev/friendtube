@@ -29,11 +29,6 @@ struct Menu : public QMainWindow {
   void paintEvent(QPaintEvent *event) override;
 
  public slots:
-  /*
-  void on_h_slider_sliderMoved(int len);
-  void on_s_slider_sliderMoved(int len);
-  void on_l_slider_sliderMoved(int len);
-  */
   void on_connectButton_clicked();
   void make_advert(const QString &advert);
 

@@ -21,8 +21,7 @@ struct ChatWindow : public QWidget {
   ChatWindow(QWidget *parent = 0);
   ChatWindow(QWidget *parent, Player &local_player);
 
-  void keyPressEvent(QKeyEvent *) override;  // обработка нажатий клавиш
-
+  void keyPressEvent(QKeyEvent *) override;
   void init_parameters();
 
   void init_buttons();

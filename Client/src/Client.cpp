@@ -19,7 +19,6 @@ void Client::start() {
 }
 
 void Client::connect_to_server(const QString &ip, int port) {
-  qDebug() << "Try connect";
   n_manager = new NetworkManager(this, ip, port);
 
   connect(n_manager, SIGNAL(disconnect(const QString &)), this,
@@ -36,8 +35,6 @@ void Client::connect_to_server(const QString &ip, int port) {
 
 void Client::createRoom(Player *player, QVector<PlayerView *> players_,
                         Video video) {
-  qDebug() << QThread::currentThreadId() << "CREATE ROOM";
-
   room = new Room(this, player, players_);
   connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager,
           SLOT(request_get_scene_on_the_server()));
@@ -52,8 +49,6 @@ void Client::createRoom(Player *player, QVector<PlayerView *> players_,
 }
 
 void Client::return_to_menu(const QString &reason) {
-  qDebug() << "return to menu. Reason: " << reason;
-
   if (room != nullptr) {
     delete room;
     room = nullptr;
