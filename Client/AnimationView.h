@@ -12,6 +12,7 @@
 #include <QGraphicsEllipseItem>
 #include <QRect>
 #include <QDateTime>
+#include <QColor>
 
 
 class GraphicsBush : public QObject, public QGraphicsPixmapItem {
@@ -129,6 +130,7 @@ private:
      QGraphicsPixmapItem *tablet_stop;
      QGraphicsPixmapItem *table_stop_eating;
      QGraphicsPixmapItem *tablet_fist_course_alive;
+     QGraphicsPixmapItem *tablet_ay;
 
 
      // Video
@@ -138,7 +140,7 @@ public:
      QGraphicsScene *scene;
      bool *move_player_or_no;
      Player   *local_player;
-     rectangle sleap = {20,180,100,230}, want_or_dont_eat = {1060, 180, 1190, 250}, enter_close_to_taverna = {980, 580, 1020,30}, first_course_alive = {40, 580, 70, 640};
+     rectangle sleap = {20,180,100,230}, want_or_dont_eat = {1060, 180, 1190, 250}, enter_close_to_taverna = {980, 580, 1020, 630}, first_course_alive = {40, 580, 70, 640}, ay = {60, 570, 90, 660};
 };
 
 #endif // ANIMATIONVIEW_H

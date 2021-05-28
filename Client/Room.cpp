@@ -45,6 +45,19 @@ void Room::init_variables(){
     food.push_back(":/pics/background_item/green_room/more_texture/apple.png");
     food.push_back(":/pics/background_item/green_room/more_texture/pig.png");
     food.push_back(":/pics/background_item/green_room/more_texture/strawberry.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/apple_2.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/chicken_leg.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/cookies.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/fish.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/green_pepper.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/kiwi.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/melon.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/potato.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/potato_2.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/red_pepper.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/ribs.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/steak.png");
+    food.push_back(":/pics/background_item/green_room/more_texture/tomato.png");
 }
 
 void Room::init_video() {
@@ -276,17 +289,18 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
         }
         if(apKeyEvent->key() == Qt::Key_Y && animation_scene->want_or_dont_eat.xl <= local_player->x()&& local_player->x() <= animation_scene->want_or_dont_eat.xr && animation_scene->want_or_dont_eat.yl <= local_player->y()&& local_player->y() <= animation_scene->want_or_dont_eat.yr){
             local_player->saturation += 10;
-            id_food %= 3;
-            QGraphicsPixmapItem *food_ = new QGraphicsPixmapItem(food[id_food]);
+            id_food %= food.size();
+            GraphicsFood *food_ = new GraphicsFood();
+            food_->setPixmap(food[id_food]);
             added_food.push_back(food_);
-            food_->setPos(1090, 175);
-            //food_->setPos(1125 + qrand()%100, 250 + qrand()%100);
+            //food_->setPos(1090, 175);
+            food_->setPos(1125 + qrand()%100, 250 + qrand()%100);
             food_->setZValue(+50);
             id_food++;
             animation_scene->scene->addItem(food_);
-            QTimer::singleShot(1000, this, [&](){
-                delete_food();
-            });
+//            QTimer::singleShot(1000, this, [&](){
+//                delete_food();
+//            });
         }
         if((apKeyEvent->key() == Qt::Key_End || apKeyEvent->key() == 16777216) && local_player->x() == x_very_far && local_player->y() == y_very_far){
             local_player->setPos(place_to_leave_the_house.first, place_to_leave_the_house.second);
@@ -311,7 +325,7 @@ void Room::keyReleaseEvent(QKeyEvent *apKeyEvent){
     }
 }
 
-void Room::mousePressEvent(QMouseEvent *apMouseEvent){
+void Room::mousePressEvent([[maybe_unused]] QMouseEvent *apMouseEvent){
     set_focus_room();
     if(tool_item_right->show_multicolor_emoji_list_widget->isVisible()){
         tool_item_right->show_multicolor_emoji_list_widget->hide();

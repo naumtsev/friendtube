@@ -52,7 +52,7 @@ GraphicsStone::GraphicsStone(QObject *parent)
 
 QPainterPath GraphicsStone::shape() const {
     QPainterPath path;
-    path.addEllipse(53,128,20,4);
+    path.addEllipse(14,23,12,1);
     return path;
 }
 // stone
@@ -212,9 +212,14 @@ void AnimationView::init_background_item(){
         taverna->setZValue(+4);
         scene->addItem(taverna);
 
+        QGraphicsPixmapItem *signboard  = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/decor/sign.png"));
+        signboard ->setPos(taverna->x() + 63, taverna->y() + 63);
+        signboard ->setZValue(+10);
+        scene->addItem(signboard );
+
         GraphicsSecurity *security = new GraphicsSecurity;
         security->setPixmap(QPixmap(":/pics/background_item/green_room/security.png"));
-        security->setPos(1020,575);
+        security->setPos(taverna->x() - 60,taverna->y() + 75);
         security->setZValue(+4);
         scene->addItem(security);
     // taverna
@@ -661,8 +666,164 @@ void AnimationView::init_background_item(){
     tree_two0014->setPos(50, -112);
     scene->addItem(tree_two0014);
     // деревья сверху экрана
-
     // деревья
+
+    // камни
+    QPixmap stone_one(":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png");
+    QPixmap stone_two(":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png");
+    QPixmap stone_three(":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png");
+
+    // камни первого типа
+    GraphicsStone *stone_001 = new GraphicsStone;
+    stone_001->setPixmap(stone_one);
+    stone_001->setZValue(+4);
+    stone_001->setPos(30, 200);
+    scene->addItem(stone_001);
+
+    GraphicsStone *stone_002 = new GraphicsStone;
+    stone_002->setPixmap(stone_one);
+    stone_002->setZValue(+4);
+    stone_002->setPos(80, 310);
+    scene->addItem(stone_002);
+
+    GraphicsStone *stone_003 = new GraphicsStone;
+    stone_003->setPixmap(stone_one);
+    stone_003->setZValue(+4);
+    stone_003->setPos(200, 430);
+    scene->addItem(stone_003);
+
+    GraphicsStone *stone_004 = new GraphicsStone;
+    stone_004->setPixmap(stone_one);
+    stone_004->setZValue(+4);
+    stone_004->setPos(110, 470);
+    scene->addItem(stone_004);
+
+    GraphicsStone *stone_005 = new GraphicsStone;
+    stone_005->setPixmap(stone_one);
+    stone_005->setZValue(+4);
+    stone_005->setPos(500, 50);
+    scene->addItem(stone_005);
+
+    GraphicsStone *stone_006 = new GraphicsStone;
+    stone_006->setPixmap(stone_one);
+    stone_006->setZValue(+4);
+    stone_006->setPos(550, 600);
+    scene->addItem(stone_006);
+
+    GraphicsStone *stone_007 = new GraphicsStone;
+    stone_007->setPixmap(stone_one);
+    stone_007->setZValue(+4);
+    stone_007->setPos(300, 1);
+    scene->addItem(stone_007);
+
+    GraphicsStone *stone_008 = new GraphicsStone;
+    stone_008->setPixmap(stone_one);
+    stone_008->setZValue(+4);
+    stone_008->setPos(350, -10);
+    scene->addItem(stone_008);
+
+    GraphicsStone *stone_009 = new GraphicsStone;
+    stone_009->setPixmap(stone_one);
+    stone_009->setZValue(+4);
+    stone_009->setPos(930, -3);
+    scene->addItem(stone_009);
+    // камни первого типа
+
+    // камни второго типа
+    GraphicsStone *stone_101 = new GraphicsStone;
+    stone_101->setPixmap(stone_two);
+    stone_101->setZValue(+4);
+    stone_101->setPos(1170, 200);
+    scene->addItem(stone_101);
+
+    GraphicsStone *stone_102 = new GraphicsStone;
+    stone_102->setPixmap(stone_two);
+    stone_102->setZValue(+4);
+    stone_102->setPos(1230, 10);
+    scene->addItem(stone_102);
+
+    GraphicsStone *stone_103 = new GraphicsStone;
+    stone_103->setPixmap(stone_two);
+    stone_103->setZValue(+4);
+    stone_103->setPos(1220, 40);
+    scene->addItem(stone_103);
+
+    GraphicsStone *stone_104 = new GraphicsStone;
+    stone_104->setPixmap(stone_two);
+    stone_104->setZValue(+4);
+    stone_104->setPos(100, 11);
+    scene->addItem(stone_104);
+
+    GraphicsStone *stone_105 = new GraphicsStone;
+    stone_105->setPixmap(stone_two);
+    stone_105->setZValue(+4);
+    stone_105->setPos(210, 7);
+    scene->addItem(stone_105);
+
+    GraphicsStone *stone_106 = new GraphicsStone;
+    stone_106->setPixmap(stone_two);
+    stone_106->setZValue(+4);
+    stone_106->setPos(250, 4);
+    scene->addItem(stone_106);
+
+    GraphicsStone *stone_107 = new GraphicsStone;
+    stone_107->setPixmap(stone_two);
+    stone_107->setZValue(+4);
+    stone_107->setPos(-10, 200);
+    scene->addItem(stone_107);
+
+    GraphicsStone *stone_108 = new GraphicsStone;
+    stone_108->setPixmap(stone_two);
+    stone_108->setZValue(+4);
+    stone_108->setPos(-15, 340);
+    scene->addItem(stone_108);
+
+    GraphicsStone *stone_109 = new GraphicsStone;
+    stone_109->setPixmap(stone_two);
+    stone_109->setZValue(+4);
+    stone_109->setPos(-7, 390);
+    scene->addItem(stone_109);
+
+    GraphicsStone *stone_110 = new GraphicsStone;
+    stone_110->setPixmap(stone_two);
+    stone_110->setZValue(+4);
+    stone_110->setPos(-20, 450);
+    scene->addItem(stone_110);
+
+    GraphicsStone *stone_111 = new GraphicsStone;
+    stone_111->setPixmap(stone_two);
+    stone_111->setZValue(+4);
+    stone_111->setPos(700, 2);
+    scene->addItem(stone_111);
+
+    GraphicsStone *stone_112 = new GraphicsStone;
+    stone_112->setPixmap(stone_two);
+    stone_112->setZValue(+4);
+    stone_112->setPos(810, 0);
+    scene->addItem(stone_112);
+    // камни второго типа
+
+    // камни тертьего типа
+    GraphicsStone *stone_200 = new GraphicsStone;
+    stone_200->setPixmap(stone_three);
+    stone_200->setZValue(+4);
+    stone_200->setPos(520, -15);
+    scene->addItem(stone_200);
+
+    GraphicsStone *stone_201 = new GraphicsStone;
+    stone_201->setPixmap(stone_three);
+    stone_201->setZValue(+4);
+    stone_201->setPos(570, -12);
+    scene->addItem(stone_201);
+
+    GraphicsStone *stone_202 = new GraphicsStone;
+    stone_202->setPixmap(stone_three);
+    stone_202->setZValue(+4);
+    stone_202->setPos(650, 0);
+    scene->addItem(stone_202);
+    // камни тертьего типа
+
+    // камни
 
 }
 
@@ -677,6 +838,7 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
                 next_frame[i]->update_state();
                 scene->addItem(next_frame[i]);
                     if(i != next_frame.size() - 1){
+                        next_frame[i]->name->setDefaultTextColor(Qt::white);
                         scene->addItem(next_frame[i]->name);
                         display_message(next_frame[i]);
                     }
@@ -705,8 +867,9 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
 
         }
 
-        next_frame[i]->update_state();
+        next_frame[next_frame.size() - 1]->update_state();
         add_tables(next_frame[next_frame.size() - 1]);
+        next_frame[next_frame.size() - 1]->name->setDefaultTextColor(Qt::white);
         scene->addItem(next_frame[next_frame.size() - 1]->name);
         display_message(next_frame[next_frame.size() - 1]);
 
@@ -759,6 +922,14 @@ void AnimationView::add_tables(PlayerView *player){
         tablet_fist_course_alive->setZValue(+15);
         scene->addItem(tablet_fist_course_alive);
     }
+    if(ay.xl <= player->x()&& player->x() <= ay.xr && ay.yl <= player->y()&& player->y() <= ay.yr){
+        // первый курс жив!
+        tablet_ay = new QGraphicsPixmapItem();
+        tablet_ay->setPos(80, 620);
+        tablet_ay->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/table_ay.png"));
+        tablet_ay->setZValue(+15);
+        scene->addItem(tablet_ay);
+    }
 }
 
 void AnimationView::delete_tables(PlayerView *player){
@@ -780,6 +951,10 @@ void AnimationView::delete_tables(PlayerView *player){
         scene->removeItem(tablet_fist_course_alive);
         delete tablet_fist_course_alive;
     }
+    if(ay.xl <= player->x()&& player->x() <= ay.xr && ay.yl <= player->y()&& player->y() <= ay.yr){
+        scene->removeItem(tablet_ay);
+        delete tablet_ay;
+    }
 }
 
 int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
@@ -788,10 +963,10 @@ int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame){
     QList<QGraphicsItem *> colliding = scene->collidingItems(next_frame[id]);
     for(QGraphicsItem* item: colliding){
         int count_i = 1;
-//        if(dynamic_cast<GraphicsFood *>(item)){
-//            count_i = 0;
-//            delete item;
-//        }
+        if(dynamic_cast<GraphicsFood *>(item)){
+            count_i = 0;
+            delete item;
+        }
         for(int i = 0; i <= id; i++){
             if(item == next_frame[i]){
                 count_i = 0;
@@ -816,9 +991,10 @@ void AnimationView::display_message(PlayerView *player){
     if(player->player_message.send_message != ""){
         if(player->player_message.type == "text"){
             player->message->setPos(player->pos().x() + 24 - player->message->boundingRect().width()/2, player->pos().y() - 30);     // чтобы не было глюков при замене direction нужно,
+            player->message->setDefaultTextColor(Qt::white);
             scene->addItem(player->message);
         } else {
-            QPixmap emoji(player->player_message.send_message); // подкорректировать расположение изображения, чтобы прям над персонажем
+            QPixmap emoji(player->player_message.send_message);
             emoji = emoji.scaled(36,36,Qt::KeepAspectRatio);
             player->player_message.emoji = new QGraphicsPixmapItem(emoji);
             player->player_message.emoji->setPos(player->pos().x() + 6, player->pos().y() - 48);
@@ -831,13 +1007,13 @@ void AnimationView ::clear_vector(QVector<PlayerView *> &last_frame, QString loc
     bool clear_local_player = false;
     for(int i = 0; i < last_frame.size(); i++){
         if(last_frame[i]->client_id != local_id || clear_local_player){
-            scene->removeItem(last_frame[i]); // тут скорее всего нужно удалять элемент
-            scene->removeItem(last_frame[i]->name); // тут скорее всего нужно удалять элемент
+            scene->removeItem(last_frame[i]);
+            scene->removeItem(last_frame[i]->name);
             if(last_frame[i]->player_message.send_message != ""){
                 if(last_frame[i]->player_message.type == "text"){
-                    scene->removeItem(last_frame[i]->message); // тут скорее всего нужно удалять элемент
+                    scene->removeItem(last_frame[i]->message);
                 } else {
-                    scene->removeItem(last_frame[i]->player_message.emoji); // тут скорее всего нужно удалять элемент
+                    scene->removeItem(last_frame[i]->player_message.emoji);
                     delete last_frame[i]->player_message.emoji;
                 }
             }

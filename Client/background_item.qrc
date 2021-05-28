@@ -82,5 +82,56 @@
         <file>pics/background_item/green_room/more_texture/apple.png</file>
         <file>pics/background_item/green_room/more_texture/pig.png</file>
         <file>pics/background_item/green_room/more_texture/strawberry.png</file>
+        <file>pics/background_item/green_room/more_texture/apple_2.png</file>
+        <file>pics/background_item/green_room/more_texture/chicken_leg.png</file>
+        <file>pics/background_item/green_room/more_texture/cookies.png</file>
+        <file>pics/background_item/green_room/more_texture/fish.png</file>
+        <file>pics/background_item/green_room/more_texture/green_pepper.png</file>
+        <file>pics/background_item/green_room/more_texture/kiwi.png</file>
+        <file>pics/background_item/green_room/more_texture/melon.png</file>
+        <file>pics/background_item/green_room/more_texture/potato.png</file>
+        <file>pics/background_item/green_room/more_texture/potato_2.png</file>
+        <file>pics/background_item/green_room/more_texture/red_pepper.png</file>
+        <file>pics/background_item/green_room/more_texture/ribs.png</file>
+        <file>pics/background_item/green_room/more_texture/steak.png</file>
+        <file>pics/background_item/green_room/more_texture/tomato.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_1.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_2.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_3.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_4.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_5.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_6.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_7.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_8.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_9.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_10.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_11.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_12.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_13.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_14.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_15.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_16.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_17.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/decor_18.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/greenery_1.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/greenery_2.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/greenery_3.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/greenery_4.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/greenery_5.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/popur.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/sign.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_1.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_2.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_3.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_4.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_5.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_6.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stones_7.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/tree_1.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/tree_2.png</file>
+        <file>pics/background_item/green_room/more_texture/table_ay.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stone_1_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stone_2_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/decor/stone_7_32px.png</file>
     </qresource>
 </RCC>
