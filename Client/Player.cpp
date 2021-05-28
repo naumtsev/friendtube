@@ -22,7 +22,6 @@ Player::Player(QJsonObject json_player){
     player_message = from_json_to_message(json_player["message"].toObject());// передаём сообщение
     message->setPlainText(player_message.send_message);
 
-    owner_video = json_player["owner_video"].toBool();
     saturation = json_player["saturation"].toInt();
     color_player = json_player["color_player"].toString();
     current_frame = json_player["current_frame"].toInt();
@@ -75,7 +74,6 @@ void Player::keyPressEvent(QKeyEvent *apKeyEvent){
 
 void Player::keyReleaseEvent(QKeyEvent *apKeyEvent)
 {
-   //qDebug() << "KeyPress";
    if(movement.x != 0 || movement.y != 0){
      update_movement(-1, apKeyEvent);
    }
@@ -88,8 +86,6 @@ void Player::move(){
     position_movement_last_frame.push_back({pos().x(), pos().y()});
     position_name_movement_last_frame.push_back({name->pos().x(), name->pos().y()});
 
-    std::cout<<this->x() << " "<< this->y()<< std::endl;
-
     setPos(pos().x() + movement.x, pos().y() + movement.y);
     state = AnimateState::Moving;
 
@@ -97,6 +93,7 @@ void Player::move(){
     if(this->pos().x() < 0){
         setPos(0, pos().y());
     }
+
     if(this->pos().x() > 1280 - 48){
         setPos(1280 - 48, pos().y());
     }
@@ -175,7 +172,6 @@ QJsonDocument Player::to_json(){
     json_player.insert("message", player_message.from_message_to_json());
     json_player.insert("current_frame", QJsonValue::fromVariant(current_frame));
     json_player.insert("direction", QJsonValue::fromVariant(direction));
-    json_player.insert("owner_video", QJsonValue::fromVariant(owner_video));
 
     if(state == AnimateState::Standing){
         json_player.insert("AnimateState", QJsonValue::fromVariant("Standing"));

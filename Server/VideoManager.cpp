@@ -62,7 +62,7 @@ void VideoManager::pause_video() {
 }
 
 void VideoManager::stop_video() {
-    current_video.state = Empty;
+    current_video = Video();
 
     QJsonObject req;
     req.insert("type", "video_event");

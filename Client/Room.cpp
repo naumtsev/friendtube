@@ -35,7 +35,7 @@ void Room::init_paramets(){
 }
 
 void Room::init_variables(){
-    animation_scene = new AnimationView(this);
+    animation_scene = new AnimationView(this, this);
 
     animation_scene->local_player = local_player;
 
@@ -262,10 +262,6 @@ void Room::draw_scene(){
     // добавляем в конец локального игрока
     next_frame.push_back(new PlayerView(*local_player));
 
-    if(video_player->current_video.sender_name == local_player->client_id){ // определяем владельца видео
-        local_player->owner_video = true;
-    }
-
     animation_scene->add_players(last_frame, next_frame, local_player->client_id);
     local_player->chat();
 
@@ -384,17 +380,11 @@ void Room::set_additional_layer(QMediaPlayer::State state) {
         video_player->try_stop();
     } else if(state == QMediaPlayer::PlayingState){
         additional_layer->setVisible(false);
-     }
-
-    /*
-    } else if(state == QMediaPlayer::PausedState) {
-        //NEED TO FIX
-        QPixmap pix(additional_layer->width(), additional_layer->height());
-        pix.fill(QColor(255, 255, 255, 30));
-        additional_layer->setPixmap(pix);
-        additional_layer->setVisible(true);
     }
-    */
+}
+
+bool Room::is_owner_video(const QString &client_id) {
+    return client_id == video_player->current_video.sender_name;
 }
 
 

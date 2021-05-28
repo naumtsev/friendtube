@@ -64,7 +64,7 @@ void ChatWindow::init_close_window_buttons(){
         player->message->setPlainText(player->player_message.send_message);
         player->player_message.metka_message = true;
         player->player_message.metka_message_painter = false;
-        qDebug() << s;
+        //qDebug() << s;
         player->movement = {0,0};
         text_edit->clear();
         // тут нужно фокус на Room делать

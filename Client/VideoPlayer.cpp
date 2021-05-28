@@ -46,7 +46,6 @@ void VideoPlayer::pause() {
 
 
 void VideoPlayer::try_set_video(const QString &url) {
-    //default url "https://disk.yandex.ru/i/maQWX1KvkNJlhQ"
     UrlHandler handler;
     QJsonObject part_video = handler.get_url(url);
     if(part_video.value("status") == "ok") {
@@ -89,6 +88,8 @@ void VideoPlayer::try_stop(){
 
 
 void VideoPlayer::stop(){
+    current_video = Video();
+
     m_player->stop();
     room->push_button_pause_video->setIcon(QIcon(QPixmap(":/pics/pause_new_video_push_button.png")));
 }
@@ -106,9 +107,8 @@ VideoPlayer::~VideoPlayer() {
 
 
 QJsonObject UrlHandler::get_url(QString url) {
-    QString site_url = "http://195.133.145.54:1234";
 
-    QNetworkRequest request(QUrl(site_url + "/get_url"));
+    QNetworkRequest request(QUrl(req_url + "/get_url"));
     request.setRawHeader("Content-Type","application/json");
 
     QJsonObject obj;

@@ -61,8 +61,7 @@ RESOURCES += \
     images.qrc \
     sprite.qrc
 
-DISTFILES += \
-    get_url.exe
+DISTFILES +=
 
 CONFIG += \
     file_copies

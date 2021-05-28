@@ -147,9 +147,9 @@ QPainterPath GraphicsFood::shape() const {
     return path;
 }
 // еда
-AnimationView::AnimationView(QWidget *parent) :
-    QGraphicsView(parent)
-{
+AnimationView::AnimationView(Room *room_, QWidget *parent) :
+    QGraphicsView(parent) {
+    room =room_;
     setRenderHint(QPainter::Antialiasing);
 
     setCacheMode(QGraphicsView::CacheNone);
@@ -841,14 +841,15 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
                 if(i != next_frame.size() - 1){
                     next_frame[i]->name->setDefaultTextColor(Qt::white);
                     scene->addItem(next_frame[i]->name);
-                    if(next_frame[i]->owner_video){
+                    if(room->is_owner_video(next_frame[i]->client_id)){
                         next_frame[i]->prefics_owner_video_name = new QGraphicsTextItem;
                         next_frame[i]->prefics_owner_video_name->setPlainText(prefics_owner_name);
                         next_frame[i]->prefics_owner_video_name->setDefaultTextColor(Qt::red);
                         next_frame[i]->prefics_owner_video_name->setPos(next_frame[i]->name->x() - 40, next_frame[i]->name->y());
                         scene->addItem(next_frame[i]->prefics_owner_video_name);
                     }
-                    if(next_frame[i]->owner_video){
+
+                    if(room->is_owner_video(next_frame[i]->client_id)) {
                         scene->removeItem(next_frame[i]->prefics_owner_video_name);
                         delete next_frame[i]->prefics_owner_video_name;
                     }
@@ -883,7 +884,7 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
         add_tables(next_frame[end_player]);
         next_frame[end_player]->name->setDefaultTextColor(Qt::white);
         scene->addItem(next_frame[end_player]->name);
-        if(next_frame[end_player]->owner_video){ // функцию сделать!!!
+        if(room->is_owner_video(next_frame[end_player]->client_id)){
             next_frame[end_player]->prefics_owner_video_name = new QGraphicsTextItem;
             next_frame[end_player]->prefics_owner_video_name->setPlainText(prefics_owner_name);
             next_frame[end_player]->prefics_owner_video_name->setDefaultTextColor(Qt::red);
@@ -1028,7 +1029,7 @@ void AnimationView ::clear_vector(QVector<PlayerView *> &last_frame, QString loc
         if(last_frame[i]->client_id != local_id || clear_local_player){
             scene->removeItem(last_frame[i]);
             scene->removeItem(last_frame[i]->name);
-            if(last_frame[i]->owner_video){
+            if(room->is_owner_video(last_frame[i]->client_id)){
                 scene->removeItem(last_frame[i]->prefics_owner_video_name);
                 delete last_frame[i]->prefics_owner_video_name;
             }

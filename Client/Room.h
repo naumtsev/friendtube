@@ -30,6 +30,7 @@
 struct Menu;
 struct Client;
 struct VideoPlayer;
+class AnimationView;
 
 namespace Ui {
 struct Room;
@@ -55,7 +56,7 @@ public:
     void init_NPC();
 
     void delete_food();
-
+    bool is_owner_video(const QString &s);
     ~Room();
 
 public slots:
@@ -79,7 +80,9 @@ public:
     int id_food = 0;
 
     Ui::Room          *ui;
-    AnimationView     *animation_scene;
+
+    AnimationView *animation_scene;
+
     Player            *local_player;
     bool              move_player_or_no = true;
     QTimer            *update_draw_timer;
