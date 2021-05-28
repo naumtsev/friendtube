@@ -29,8 +29,6 @@ private:
     const sprite_data& csd() const;
 
 public:
-    //double x;
-    //double y;
     int saturation;
     bool owner_video = false;
     QString color_player = ":/dino/pics/sheets/m_DinoSprites - mortBIG.png";

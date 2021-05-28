@@ -77,6 +77,7 @@ public:
     AnimateState state{AnimateState::Standing};
     int saturation = 0;
     int did_you_eat = 0;
+    const int player_max_saturation = 200;
 
     int current_frame = 0;
     QTimer timer_sprite;

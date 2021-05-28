@@ -283,7 +283,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
             chat_window->get_focus();
         }
     } else {
-        if(apKeyEvent->key() == Qt::Key_Y && animation_scene->sleap.xl <= local_player->x()&& local_player->x() <= animation_scene->sleap.xr && animation_scene->sleap.yl <= local_player->y()&& local_player->y() <= animation_scene->sleap.yr){
+        if(apKeyEvent->key() == Qt::Key_Y && animation_scene->sleep.xl <= local_player->x()&& local_player->x() <= animation_scene->sleep.xr && animation_scene->sleep.yl <= local_player->y()&& local_player->y() <= animation_scene->sleep.yr){
             local_player->setPos(x_very_far, y_very_far);
             local_player->saturation -= 100;
             local_player->state = AnimateState::Standing;
@@ -294,14 +294,10 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
             GraphicsFood *food_ = new GraphicsFood();
             food_->setPixmap(food[id_food]);
             added_food.push_back(food_);
-            //food_->setPos(1090, 175);
             food_->setPos(1125 + qrand()%100, 250 + qrand()%100);
             food_->setZValue(+50);
             id_food++;
             animation_scene->scene->addItem(food_);
-//            QTimer::singleShot(1000, this, [&](){
-//                delete_food();
-//            });
         }
         if((apKeyEvent->key() == Qt::Key_End || apKeyEvent->key() == 16777216) && local_player->x() == x_very_far && local_player->y() == y_very_far){
             local_player->setPos(place_to_leave_the_house.first, place_to_leave_the_house.second);

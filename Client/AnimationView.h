@@ -148,7 +148,7 @@ public:
      QGraphicsScene *scene;
      bool *move_player_or_no;
      Player   *local_player;
-     rectangle sleap = {20,180,100,230};
+     rectangle sleep = {20,180,100,230};
      rectangle want_or_dont_eat = {1060, 180, 1190, 250};
      rectangle enter_close_to_taverna = {980, 580, 1020, 630};
      rectangle first_course_alive = {40, 580, 70, 640};

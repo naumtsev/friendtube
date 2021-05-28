@@ -133,5 +133,6 @@
         <file>pics/background_item/green_room/more_texture/decor/stone_1_32px.png</file>
         <file>pics/background_item/green_room/more_texture/decor/stone_2_32px.png</file>
         <file>pics/background_item/green_room/more_texture/decor/stone_7_32px.png</file>
+        <file>pics/background_item/green_room/more_texture/tablet_want_sleep.png</file>
     </qresource>
 </RCC>

@@ -907,16 +907,14 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
 }
 
 void AnimationView::add_tables(PlayerView *player){
-    //std::cout<<"hello"<<std::endl;
-    if(sleap.xl <= player->x()&& player->x() <= sleap.xr && sleap.yl <= player->y()&& player->y() <= sleap.yr){
-        std::cout<<"hellosleap"<<std::endl;
+    if(sleep.xl <= player->x()&& player->x() <= sleep.xr && sleep.yl <= player->y()&& player->y() <= sleep.yr){
         // хочу поспать!
-        tablet_want_sleap = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/tablet_want_sleap.png"));
+        tablet_want_sleap = new QGraphicsPixmapItem(QPixmap(":/pics/background_item/green_room/more_texture/tablet_want_sleep.png"));
         tablet_want_sleap->setPos(50, 140);
         tablet_want_sleap->setZValue(+15);
         scene->addItem(tablet_want_sleap);
     } else if(want_or_dont_eat.xl <= player->x()&& player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= player->y()&& player->y() <= want_or_dont_eat.yr){
-        if(local_player->saturation > 100){
+        if(local_player->saturation >= 100){
             // хватит есть!
             table_stop_eating = new QGraphicsPixmapItem();
             table_stop_eating->setPos(1130, 150);
@@ -933,7 +931,6 @@ void AnimationView::add_tables(PlayerView *player){
         }
     } else if(enter_close_to_taverna.xl <= player->x()&& player->x() <= enter_close_to_taverna.xr && enter_close_to_taverna.yl <= player->y()&& player->y() <= enter_close_to_taverna.yr){
         // сюда нельзя!
-        std::cout<<"hellotaverna"<<std::endl;
         tablet_stop = new QGraphicsPixmapItem();
         tablet_stop->setPos(1045, 570);
         tablet_stop->setPixmap(QPixmap(":/pics/background_item/green_room/more_texture/tablet_entry_close.png"));
@@ -958,11 +955,11 @@ void AnimationView::add_tables(PlayerView *player){
 }
 
 void AnimationView::delete_tables(PlayerView *player){
-    if(sleap.xl <= player->x()&& player->x() <= sleap.xr && sleap.yl <= player->y()&& player->y() <= sleap.yr){
+    if(sleep.xl <= player->x()&& player->x() <= sleep.xr && sleep.yl <= player->y()&& player->y() <= sleep.yr){
         scene->removeItem(tablet_want_sleap);
         delete tablet_want_sleap;
     } else if(want_or_dont_eat.xl <= player->x()&& player->x() <= want_or_dont_eat.xr && want_or_dont_eat.yl <= player->y()&& player->y() <= want_or_dont_eat.yr){
-        if(player->saturation > 100){
+        if(player->saturation >= 100){
             scene->removeItem(table_stop_eating);
             delete table_stop_eating;
         } else{
