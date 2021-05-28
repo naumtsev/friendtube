@@ -49,7 +49,7 @@ void VideoPlayer::try_set_video(const QString &url) {
   QJsonObject part_video = handler.get_url(url);
   if (part_video.value("status") == "ok") {
     Video new_video;
-    new_video.sender_name = room->local_player->client_id;
+    new_video.sender_id = room->local_player->client_id;
     new_video.stream_url = part_video.value("stream_url").toString();
     new_video.duration = part_video.value("duration").toString().toLongLong();
 

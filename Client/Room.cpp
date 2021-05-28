@@ -447,7 +447,7 @@ void Room::set_additional_layer(QMediaPlayer::State state) {
 }
 
 bool Room::is_owner_video(const QString &client_id) {
-  return client_id == video_player->current_video.sender_name;
+  return client_id == video_player->current_video.sender_id;
 }
 
 Room::~Room() { delete ui; }
