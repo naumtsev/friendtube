@@ -16,21 +16,13 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
-    AnimationView.cpp \
-    ChatWindow.cpp \
-    Client.cpp \
-    HSL.cpp \
-    Menu.cpp \
-    Message.cpp \
-    NetworkManager.cpp \
-    Player.cpp \
-    PlayerView.cpp \
-    Room.cpp \
-    ToolManyItem.cpp \
-    Video.cpp \
-    VideoPlayer.cpp \
-    main.cpp
+
+INCLUDEPATH += $$PWD/include
+
+
+
+
+
 HEADERS += \
     AnimationView.h \
     ChatWindow.h \
@@ -44,7 +36,25 @@ HEADERS += \
     Room.h \
     ToolManyItem.h \
     Video.h \
-    VideoPlayer.h
+    VideoPlayer.h \
+    include/AnimationView.h \
+    include/ChatWindow.h \
+    include/Client.h \
+    include/HSL.h \
+    include/Menu.h \
+    include/Message.h \
+    include/NetworkManager.h \
+    include/Player.h \
+    include/PlayerView.h \
+    include/Room.h \
+    include/ToolManyItem.h \
+    include/Video.h \
+    include/VideoPlayer.h
+
+
+SOURCES += $$PWD/src/*
+
+
 FORMS += \
     Menu.ui \
     Room.ui
