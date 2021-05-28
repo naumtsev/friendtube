@@ -22,6 +22,7 @@ Player::Player(QJsonObject json_player){
     player_message = from_json_to_message(json_player["message"].toObject());// передаём сообщение
     message->setPlainText(player_message.send_message);
 
+    owner_video = json_player["owner_video"].toBool();
     saturation = json_player["saturation"].toInt();
     color_player = json_player["color_player"].toString();
     current_frame = json_player["current_frame"].toInt();
@@ -174,6 +175,7 @@ QJsonDocument Player::to_json(){
     json_player.insert("message", player_message.from_message_to_json());
     json_player.insert("current_frame", QJsonValue::fromVariant(current_frame));
     json_player.insert("direction", QJsonValue::fromVariant(direction));
+    json_player.insert("owner_video", QJsonValue::fromVariant(owner_video));
 
     if(state == AnimateState::Standing){
         json_player.insert("AnimateState", QJsonValue::fromVariant("Standing"));

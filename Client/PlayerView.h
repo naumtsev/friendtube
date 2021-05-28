@@ -32,6 +32,7 @@ public:
     //double x;
     //double y;
     int saturation;
+    bool owner_video = false;
     QString color_player = ":/dino/pics/sheets/m_DinoSprites - mortBIG.png";
     QString client_id;
     Message player_message;
@@ -44,6 +45,7 @@ public:
     QVector<QPair<QPixmap, sprite_data>> Pixmaps;
 
     QGraphicsTextItem *name = new QGraphicsTextItem;
+    QGraphicsTextItem *prefics_owner_video_name;
     QGraphicsTextItem *message = new QGraphicsTextItem;
 };
 

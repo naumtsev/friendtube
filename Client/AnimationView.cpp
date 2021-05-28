@@ -832,16 +832,28 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
 
         bool draw_local_player = false;
         int id = -1;
+        int end_player = next_frame.size() - 1;
 
         for(int i = 0; i < next_frame.size(); i++){
             if(next_frame[i]->client_id != local_id || draw_local_player){
                 next_frame[i]->update_state();
                 scene->addItem(next_frame[i]);
-                    if(i != next_frame.size() - 1){
-                        next_frame[i]->name->setDefaultTextColor(Qt::white);
-                        scene->addItem(next_frame[i]->name);
-                        display_message(next_frame[i]);
+                if(i != next_frame.size() - 1){
+                    next_frame[i]->name->setDefaultTextColor(Qt::white);
+                    scene->addItem(next_frame[i]->name);
+                    if(next_frame[i]->owner_video){
+                        next_frame[i]->prefics_owner_video_name = new QGraphicsTextItem;
+                        next_frame[i]->prefics_owner_video_name->setPlainText(prefics_owner_name);
+                        next_frame[i]->prefics_owner_video_name->setDefaultTextColor(Qt::red);
+                        next_frame[i]->prefics_owner_video_name->setPos(next_frame[i]->name->x() - 40, next_frame[i]->name->y());
+                        scene->addItem(next_frame[i]->prefics_owner_video_name);
                     }
+                    if(next_frame[i]->owner_video){
+                        scene->removeItem(next_frame[i]->prefics_owner_video_name);
+                        delete next_frame[i]->prefics_owner_video_name;
+                    }
+                    display_message(next_frame[i]);
+                }
             } else {
                 id = i;
                 draw_local_player = true;
@@ -853,9 +865,9 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
         int i = 0;
 
         while(colliding_with_player(next_frame) > 0){
-            next_frame[next_frame.size() - 1]->setPos(local_player->position_movement_last_frame[i].first,
+            next_frame[end_player]->setPos(local_player->position_movement_last_frame[i].first,
                                                       local_player->position_movement_last_frame[i].second);
-            next_frame[next_frame.size() - 1]->name->setPos(local_player->position_name_movement_last_frame[i].first,
+            next_frame[end_player]->name->setPos(local_player->position_name_movement_last_frame[i].first,
                                                             local_player->position_name_movement_last_frame[i].second);
 
             local_player->setPos(local_player->position_movement_last_frame[i].first,
@@ -867,11 +879,18 @@ void AnimationView::add_players(QVector<PlayerView *> &last_frame, QVector<Playe
 
         }
 
-        next_frame[next_frame.size() - 1]->update_state();
-        add_tables(next_frame[next_frame.size() - 1]);
-        next_frame[next_frame.size() - 1]->name->setDefaultTextColor(Qt::white);
-        scene->addItem(next_frame[next_frame.size() - 1]->name);
-        display_message(next_frame[next_frame.size() - 1]);
+        next_frame[end_player]->update_state();
+        add_tables(next_frame[end_player]);
+        next_frame[end_player]->name->setDefaultTextColor(Qt::white);
+        scene->addItem(next_frame[end_player]->name);
+        if(next_frame[end_player]->owner_video){ // функцию сделать!!!
+            next_frame[end_player]->prefics_owner_video_name = new QGraphicsTextItem;
+            next_frame[end_player]->prefics_owner_video_name->setPlainText(prefics_owner_name);
+            next_frame[end_player]->prefics_owner_video_name->setDefaultTextColor(Qt::red);
+            next_frame[end_player]->prefics_owner_video_name->setPos(next_frame[end_player]->name->x() - 40, next_frame[end_player]->name->y());
+            scene->addItem(next_frame[end_player]->prefics_owner_video_name);
+        }
+        display_message(next_frame[end_player]);
 
         local_player->position_movement_last_frame.clear();
         local_player->position_name_movement_last_frame.clear();
@@ -1009,6 +1028,10 @@ void AnimationView ::clear_vector(QVector<PlayerView *> &last_frame, QString loc
         if(last_frame[i]->client_id != local_id || clear_local_player){
             scene->removeItem(last_frame[i]);
             scene->removeItem(last_frame[i]->name);
+            if(last_frame[i]->owner_video){
+                scene->removeItem(last_frame[i]->prefics_owner_video_name);
+                delete last_frame[i]->prefics_owner_video_name;
+            }
             if(last_frame[i]->player_message.send_message != ""){
                 if(last_frame[i]->player_message.type == "text"){
                     scene->removeItem(last_frame[i]->message);

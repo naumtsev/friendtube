@@ -261,6 +261,11 @@ void Room::draw_scene(){
     QMutexLocker locker {&player_mutex};
     // добавляем в конец локального игрока
     next_frame.push_back(new PlayerView(*local_player));
+
+    if(video_player->current_video.sender_name == local_player->client_id){ // определяем владельца видео
+        local_player->owner_video = true;
+    }
+
     animation_scene->add_players(last_frame, next_frame, local_player->client_id);
     local_player->chat();
 

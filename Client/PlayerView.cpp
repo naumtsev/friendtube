@@ -4,6 +4,7 @@ PlayerView::PlayerView(Player& player){
     name->setPlainText(player.name->toPlainText());
     message->setPlainText(player.message->toPlainText());
     setPos(player.pos().x(), player.pos().y());
+    owner_video = player.owner_video;
     saturation = player.saturation;
     color_player = player.color_player;
     client_id = player.client_id;
@@ -19,6 +20,7 @@ PlayerView::PlayerView(Player&& player){
     name->setPlainText(player.name->toPlainText());
     setPos(player.pos().x(), player.pos().y());
     message->setPlainText(player.message->toPlainText());
+    owner_video = std::move(player.owner_video);
     saturation = std::move(player.saturation);
     color_player = std::move(player.color_player);
     client_id = std::move(player.client_id);
@@ -34,6 +36,7 @@ PlayerView::PlayerView(const PlayerView& player_view){
     name = player_view.name;
     setPos(player_view.pos().x(), player_view.pos().y());
     message = player_view.message;
+    owner_video = player_view.owner_video;
     saturation = player_view.saturation;
     color_player = player_view.color_player;
     client_id = player_view.client_id;

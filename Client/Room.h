@@ -35,7 +35,6 @@ namespace Ui {
 struct Room;
 }
 
-
 struct Room : public QWidget {
     Q_OBJECT
 
