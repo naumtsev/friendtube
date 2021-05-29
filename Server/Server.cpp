@@ -38,7 +38,10 @@ void Server::incoming_connection() {
   sockets.push_back(p_socket);
 }
 
-Server::~Server() { delete web_socket_server; }
+Server::~Server() {
+  delete web_socket_server;
+  delete video_m;
+}
 
 void Server::send_data_to_all_users(QByteArray data) {  //
   for (auto &socket : sockets) {
