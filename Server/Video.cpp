@@ -47,13 +47,13 @@ Video &Video::operator=(const Video &other) {
 
 QJsonObject Video::to_json() {
   QJsonObject json_video;
-  json_video.insert("stream_url", QJsonValue::fromVariant(stream_url));
-  json_video.insert("duration", QJsonValue::fromVariant(duration));
-  json_video.insert("begin_time", QJsonValue::fromVariant(begin_time));
-  json_video.insert("progress", QJsonValue::fromVariant(progress));
-  json_video.insert("name", QJsonValue::fromVariant(name));
-  json_video.insert("sender_id", QJsonValue::fromVariant(sender_id));
-  json_video.insert("state", QJsonValue::fromVariant(static_cast<int>(state)));
+  json_video.insert("stream_url", stream_url.toString());
+  json_video.insert("duration", duration);
+  json_video.insert("begin_time", begin_time);
+  json_video.insert("progress", progress);
+  json_video.insert("name", name);
+  json_video.insert("sender_id", sender_id);
+  json_video.insert("state", static_cast<int>(state));
   return json_video;
 }
 
