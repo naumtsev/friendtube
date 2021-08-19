@@ -1,0 +1,20 @@
+[
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_04.png",
+    "z" : 8,
+    "x" : 180,
+    "y" : 200
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_04.png",
+    "z" : 7,
+    "x" : 1170,
+    "y" : 80
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_04.png",
+    "z" : 7,
+    "x" : -24,
+    "y" : 120
+  }
+]

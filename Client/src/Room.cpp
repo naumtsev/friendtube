@@ -4,12 +4,13 @@
 #include "ui_Room.h"
 
 Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_,
-           QWidget *parent)
+           RoomType r_type, QWidget *parent)
     : QWidget(parent),
       ui(new Ui::Room),
       local_player(player_),
       next_frame(players_),
-      client(client_) {
+      client(client_),
+      type(r_type){
     ui->setupUi(this);
 
     init_variables();
@@ -18,6 +19,7 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_,
     init_buttons();
     init_timers();
     init_NPC();
+    init_chat();
 
     connect(chat_window, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
     connect(video_player, SIGNAL(set_focus_room()), this, SLOT(set_focus_room()));
@@ -25,6 +27,15 @@ Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_,
             SLOT(set_focus_room()));
     connect(push_button_exit_in_menu, SIGNAL(clicked()), this,
             SLOT(close_room()));
+    connect(local_chat, SIGNAL(sendMessageToAllUsers(const QString&, const QString&, const QString&)), client->n_manager,
+            SLOT(sendMessageToAllUsers(const QString&, const QString&, const QString&)));
+}
+
+void Room::init_chat() {
+    QJsonObject json_chat;
+    json_chat.insert("type", "getting_all_chat");
+    QJsonDocument doc(json_chat);
+    client->n_manager->sendData(doc.toJson());
 }
 
 void Room::init_paramets() {
@@ -45,7 +56,7 @@ void Room::init_variables() {
     animation_scene->local_player = local_player;
 
     chat_window =
-            new ChatWindow(this, *local_player);// тут могут быть утечки памяти
+            new ChatWindow(this, *local_player, *local_chat);// тут могут быть утечки памяти + Added chat
     tool_item_right = new ToolManyItem(this, *local_player);
 
     food.push_back(":/pics/background_item/green_room/more_texture/apple.png");
@@ -309,6 +320,7 @@ void Room::draw_scene() {
     // добавляем в конец локального игрока
     next_frame.push_back(new PlayerView(*local_player));
     animation_scene->add_players(last_frame, next_frame, local_player->client_id);
+
     local_player->chat();
 }
 
@@ -321,6 +333,13 @@ void Room::update_local_player_position() {
 }
 
 void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
+    if (this->hasFocus() &&
+        apKeyEvent->key() == Qt::Key_C) {
+        if (local_player->x() != x_very_far &&
+            local_player->y() != y_very_far) {// нельзя писать, когда в домике
+            local_chat->set_focus();
+        }
+    }
     if (this->hasFocus() &&
         (apKeyEvent->key() == Qt::Key_Enter || apKeyEvent->key() == 16777220)) {
         if (local_player->x() != x_very_far &&

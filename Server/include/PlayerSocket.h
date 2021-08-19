@@ -11,6 +11,7 @@
 #include "JsonHandler.h"
 #include "QtWebSockets/QWebSocket"
 #include "Server.h"
+#include "Message.h"
 
 class Server;
 

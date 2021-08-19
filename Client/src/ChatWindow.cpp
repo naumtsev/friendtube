@@ -13,7 +13,7 @@ ChatWindow::ChatWindow(QWidget *parent, Player &local_player)
 void ChatWindow::keyPressEvent(QKeyEvent *apKeyEvent) {
     if (apKeyEvent->key() == Qt::Key_Enter ||
         apKeyEvent->key() == 16777220) {
-        enter_message->clicked();
+        emit enter_message->clicked();
     }
 }
 
@@ -55,13 +55,34 @@ void ChatWindow::init_close_window_buttons() {
     connect(enter_message, &QPushButton::clicked, [=]() {
         player->player_message.type = "text";
         player->player_message.send_message = text_edit->text();
+        player->player_message.sender_name = player->name->toPlainText();
         player->message->setPlainText(player->player_message.send_message);
+//        qDebug() << "metka_true\n";
+//        player->player_message.is_new = true;
         player->player_message.metka_message = true;
         player->player_message.metka_message_painter = false;
         player->movement = {0, 0};
+        qDebug() << "message_sent";
+        if (player->color_player == ":/pics/sheets/m_DinoSprites - mortBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "red");
+        if (player->color_player == ":/pics/sheets/m_DinoSprites - douxBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "blue");
+        if (player->color_player == ":/pics/sheets/m_DinoSprites - vitaBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "green");
+        if (player->color_player == ":/pics/sheets/m_DinoSprites - tardBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "yellow");
         text_edit->clear();
         emit set_focus_room();
     });
 }
 
 ChatWindow::~ChatWindow() {}
+
+
+//Added
+
+ChatWindow::ChatWindow(QWidget *parent, Player &local_player, Chat &local_chat)
+    : QWidget(parent) {
+    player = &local_player;
+    chat = &local_chat;
+
+    init_parameters();
+    init_text_edit();
+    init_buttons();
+}

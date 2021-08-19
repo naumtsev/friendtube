@@ -35,11 +35,12 @@ void Client::connect_to_server(const QString &ip, int port) {
 
 void Client::createRoom(Player *player, QVector<PlayerView *> players_,
                         Video video) {
-    room = new Room(this, player, players_);
+    room = new Room(this, player, players_, r_type);
     connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager,
             SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager,
             SLOT(update_state_on_the_server(QJsonDocument)));
+    connect(room->local_chat, SIGNAL(sendMessageToAllUsers(QString)), n_manager, SLOT(sendMessageToAllUsers(QString)));
 
     menu->setVisible(false);
     room->show();

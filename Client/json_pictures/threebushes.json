@@ -1,0 +1,38 @@
+[
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+    "z" : 9,
+    "x" : 180,
+    "y" : 200
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+    "z" : 9,
+    "x" : 140,
+    "y" : 200
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+    "z" : 8,
+    "x" : 1170,
+    "y" : 80
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+    "z" : 8,
+    "x" : 1130,
+    "y" : 80
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+    "z" : 8,
+    "x" : -24,
+    "y" : 120
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+    "z" : 8,
+    "x" : -64,
+    "y" : 120
+  }
+]

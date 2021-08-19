@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "QDebug"
 
 namespace {
 QString generate_client_id(qint16 size) {
@@ -16,7 +17,7 @@ Server::Server(quint16 port_, QObject *parent)
           new QWebSocketServer(QStringLiteral("Server friendTube"),
                                QWebSocketServer::NonSecureMode, this)),
       port(port_),
-      video_m(new VideoManager(this)) {}
+      video_m(new VideoManager(this)), chat_m(new ChatManager(this)), m_check(new MovementCheck(this)) {}
 
 void Server::start_server() {
   if (web_socket_server->listen(QHostAddress::Any, port)) {
@@ -66,7 +67,9 @@ QJsonObject Server::get_scene_data() {
   QJsonArray clients_data;
 
   for (auto &socket : sockets) {
-    clients_data.push_back(socket->get_person_data());
+    QJsonObject j_obj = socket->get_person_data();
+    m_check->check_player_position(j_obj);
+    clients_data.push_back(j_obj);
   }
 
   QJsonObject res;

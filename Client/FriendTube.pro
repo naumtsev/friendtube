@@ -34,7 +34,8 @@ HEADERS += \
     include/Room.h \
     include/ToolManyItem.h \
     include/Video.h \
-    include/VideoPlayer.h
+    include/VideoPlayer.h \
+    include/chat.h
 
 VPATH += $$PWD/src
 
@@ -52,11 +53,13 @@ SOURCES += \
     ToolManyItem.cpp \
     Video.cpp \
     VideoPlayer.cpp \
-    main.cpp
+    main.cpp \
+    src/chat.cpp
 
 FORMS += \
     Menu.ui \
-    Room.ui
+    Room.ui \
+    include/chat.ui
 
 
 # Default rules for deployment.

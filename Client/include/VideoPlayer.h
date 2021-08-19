@@ -53,7 +53,7 @@ QJsonObject yandex_disk_url_to_stream_url(const QString &url);
 
 struct UrlHandler : public QObject {
     QJsonObject get_url(QString url);
-    QString req_url = "http://195.133.145.54:1234";
+    QString req_url = "http://localhost:1234";
 };
 
 #endif// VIDEOPLAYER_H

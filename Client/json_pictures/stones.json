@@ -1,0 +1,150 @@
+[
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 30,
+    "y" : 200
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 80,
+    "y" : 310
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 200,
+    "y" : 430
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 110,
+    "y" : 470
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 500,
+    "y" : 50
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 550,
+    "y" : 600
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 300,
+    "y" : 1
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 350,
+    "y" : -10
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+    "z" : 4,
+    "x" : 930,
+    "y" : -3
+  },
+
+
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 1170,
+    "y" : 200
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 1230,
+    "y" : 10
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 1220,
+    "y" : 40
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 100,
+    "y" : 11
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 210,
+    "y" : 7
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 250,
+    "y" : 4
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : -10,
+    "y" : 200
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : -15,
+    "y" : 340
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : -7,
+    "y" : 390
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : -20,
+    "y" : 450
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 700,
+    "y" : 2
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+    "z" : 4,
+    "x" : 810,
+    "y" : 0
+  },
+
+
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png",
+    "z" : 4,
+    "x" : 520,
+    "y" : -15
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png",
+    "z" : 4,
+    "x" : 570,
+    "y" : -12
+  },
+  {
+    "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png",
+    "z" : 4,
+    "x" : 650,
+    "y" : 0
+  }
+]

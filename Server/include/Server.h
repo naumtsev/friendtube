@@ -12,9 +12,13 @@
 #include "QtWebSockets/QWebSocket"
 #include "QtWebSockets/QWebSocketServer"
 #include "VideoManager.h"
+#include "ChatManager.h"
+#include "MovementCheck.h"
 
 class PlayerSocket;
 class VideoManager;
+class ChatManager;
+class MovementCheck;
 
 class Server : public QObject {
   Q_OBJECT
@@ -38,6 +42,8 @@ class Server : public QObject {
   qint16 port;
   const qint16 client_id_size = 10;
   VideoManager *video_m;
+  ChatManager *chat_m;
+  MovementCheck *m_check;
 };
 
 #endif  // SERVER_H

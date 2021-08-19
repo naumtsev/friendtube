@@ -9,6 +9,7 @@
 #include "Video.h"
 
 struct Menu;
+enum class RoomType;
 struct Room;
 struct NetworkManager;
 namespace Ui {
@@ -38,6 +39,7 @@ private:
     Room *room;
     NetworkManager *n_manager;
     QThread *n_thread;
+    RoomType r_type;
 };
 
 #endif// CLIENT_H

@@ -44,5 +44,8 @@ private slots:
     void on_BlueDino_clicked();
     void on_YellowDino_clicked();
     void on_GreenDino_clicked();
+
+    void on_SummerButton_clicked();
+    void on_StrangeButton_clicked();
 };
 #endif// MENU_H

@@ -22,6 +22,7 @@
 
 #include "AnimationView.h"
 #include "ChatWindow.h"
+#include "chat.h"
 #include "Client.h"
 #include "Player.h"
 #include "PlayerView.h"
@@ -37,12 +38,17 @@ namespace Ui {
     struct Room;
 }
 
+enum class RoomType {
+    Summer,
+    Strange
+};
+
 struct Room : public QWidget {
     Q_OBJECT
 
 public:
     Room(Client *client_, Player *player_, QVector<PlayerView *> &players_,
-         QWidget *parent = nullptr);
+         RoomType r_type, QWidget *parent = nullptr);
     void draw_scene();
     void keyPressEvent(QKeyEvent *) override;
     void keyReleaseEvent(QKeyEvent *) override;
@@ -55,6 +61,7 @@ public:
     void init_timers();
     void init_video();
     void init_NPC();
+    void init_chat();
 
     void delete_food();
     bool is_owner_video(const QString &s);
@@ -88,6 +95,7 @@ public:
     bool move_player_or_no = true;
     QTimer *update_draw_timer;
     ChatWindow *chat_window = new ChatWindow;
+    Chat *local_chat = new Chat;
     ToolManyItem *tool_item_right = new ToolManyItem;
     QVector<PlayerView *> last_frame;
     QVector<PlayerView *> next_frame;
@@ -96,6 +104,7 @@ public:
     Client *client;
     bool got_scene = false;
     bool updated_data = false;
+    RoomType type;
 
     QPushButton *push_button_exit_in_menu;
 
