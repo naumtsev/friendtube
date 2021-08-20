@@ -134,5 +134,10 @@
         <file>pics/background_item/green_room/more_texture/decor/stone_2_32px.png</file>
         <file>pics/background_item/green_room/more_texture/decor/stone_7_32px.png</file>
         <file>pics/background_item/green_room/more_texture/tablet_want_sleep.png</file>
+        <file>pics/background_item/blue_room/StrangeObject_32_29_1_.png</file>
+        <file>pics/background_item/blue_room/StrangeObjects_32_06_.png</file>
+        <file>pics/background_item/blue_room/StrangeObjects_32_04_.png</file>
+        <file>json_pictures/all_strange.json</file>
+        <file>json_pictures/all_summer.json</file>
     </qresource>
 </RCC>

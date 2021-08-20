@@ -2,7 +2,6 @@
 #define MESSAGE_H
 
 #include <QFile>
-#include <QGraphicsTextItem>
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QString>
@@ -10,14 +9,12 @@
 #include <QTime>
 
 struct Message {
-    QString send_message = "";
+    explicit Message(const QString sender_name_, const QString send_message_, const QString color_);
+    explicit Message() = default;
     QString sender_name;
+    QString send_message = "";
+    QString color;
     QString type = "text";
-    QTime sending_time;
-    QGraphicsPixmapItem *emoji;
-    bool metka_message = false;// есть ли сообщение
-    bool metka_message_painter =
-            false;// чтобы заново таймер не запускать
     QJsonObject from_message_to_json();
 };
 

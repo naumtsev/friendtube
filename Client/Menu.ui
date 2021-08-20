@@ -30,7 +30,7 @@
       <x>400</x>
       <y>210</y>
       <width>471</width>
-      <height>351</height>
+      <height>401</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -96,7 +96,7 @@
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>219</y>
+       <y>300</y>
        <width>371</width>
        <height>91</height>
       </rect>
@@ -291,24 +291,6 @@ QSlider::handle:horizontal {
       </item>
      </layout>
     </widget>
-    <widget class="QLabel" name="serverIpLabel">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>180</y>
-       <width>369</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-      </font>
-     </property>
-     <property name="text">
-      <string>SERVER IP:</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="ip_label">
      <property name="geometry">
       <rect>
@@ -325,46 +307,6 @@ QSlider::handle:horizontal {
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QWidget" name="gridLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>80</y>
-       <width>171</width>
-       <height>121</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QRadioButton" name="YellowDino">
-        <property name="text">
-         <string>Yellow Dino</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="BlueDino">
-        <property name="text">
-         <string>Blue Dino</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="RedDino">
-        <property name="text">
-         <string>Red Dino</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QRadioButton" name="GreenDino">
-        <property name="text">
-         <string>Green Dino</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
@@ -377,6 +319,90 @@ QSlider::handle:horizontal {
      <property name="text">
       <string>TextLabel</string>
      </property>
+    </widget>
+    <widget class="QLabel" name="serverIpLabel">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>270</y>
+       <width>369</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>SERVER IP:</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>220</y>
+       <width>201</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QRadioButton" name="SummerButton">
+        <property name="text">
+         <string>Summer</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="StrangeButton">
+        <property name="text">
+         <string>Strange</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>80</y>
+       <width>171</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QRadioButton" name="RedDino">
+        <property name="text">
+         <string>Red Dino</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="BlueDino">
+        <property name="text">
+         <string>Blue Dino</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="YellowDino">
+        <property name="text">
+         <string>Yellow Dino</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="GreenDino">
+        <property name="text">
+         <string>Green Dino</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QFrame" name="advert_frame">
@@ -444,7 +470,7 @@ QSlider::handle:horizontal {
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

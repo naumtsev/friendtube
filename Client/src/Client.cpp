@@ -1,7 +1,7 @@
 #include "Client.h"
 
 Client::Client(QObject *parent)
-    : QObject(parent), menu(nullptr), room(nullptr), n_manager(nullptr) {}
+    : QObject(parent), menu(nullptr), room(nullptr), n_manager(nullptr), r_type(RoomType::Summer) {}
 
 Client::~Client() {
     delete menu;
@@ -35,7 +35,7 @@ void Client::connect_to_server(const QString &ip, int port) {
 
 void Client::createRoom(Player *player, QVector<PlayerView *> players_,
                         Video video) {
-    room = new Room(this, player, players_);
+    room = new Room(this, player, players_, r_type);
     connect(room, SIGNAL(request_get_scene_on_the_server()), n_manager,
             SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager,

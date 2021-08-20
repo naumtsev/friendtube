@@ -12,6 +12,7 @@
 #include <QWidget>
 #include <unordered_map>
 
+#include "Chat.h"
 #include "Player.h"
 
 struct ChatWindow : public QWidget {
@@ -20,6 +21,7 @@ struct ChatWindow : public QWidget {
 public:
     ChatWindow(QWidget *parent = 0);
     ChatWindow(QWidget *parent, Player &local_player);
+    ChatWindow(QWidget *parent, Player &local_player, Chat &local_chat);
 
     void keyPressEvent(QKeyEvent *) override;
     void init_parameters();
@@ -38,6 +40,7 @@ signals:
 
 public:
     Player *player;
+    Chat *chat;
     QString *s;
     QLineEdit *text_edit;
     QPushButton *enter_message;

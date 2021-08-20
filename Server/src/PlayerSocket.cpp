@@ -90,6 +90,15 @@ void PlayerSocket::read_data(const QByteArray &data) {
       return;
     }
 
+    else if (event_type == "sending_message") {
+        server->chat_m->all_chat.push_back(new Message(json_data.object().value("sender_name").toString(), json_data.object().value("send_message").toString(), json_data.object().value("color").toString()));
+        server->chat_m->sendMessageToAllUsers(json_data.object().value("sender_name").toString(), json_data.object().value("send_message").toString(), json_data.object().value("color").toString());
+        return;
+    }
+    else if (event_type == "getting_all_chat") {
+        server->chat_m->sendAllChat(this);
+    }
+
   } else {
     // get invalid json
     sendData(json_handler::generate_error("Invalid json").toJson());

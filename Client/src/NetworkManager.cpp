@@ -40,7 +40,6 @@ void NetworkManager::socketReady(const QByteArray &data) {
 
     if (json_data_error.errorString().toInt() == QJsonParseError::NoError) {
         QString event_type = json_data.value("type").toString();
-
         if (event_type == "first_connection") {
             client_id = json_data.value("client_id").toString();
             client->menu->player->client_id = client_id;
@@ -92,6 +91,8 @@ void NetworkManager::socketReady(const QByteArray &data) {
             } else if (json_data.value("event_type") == "stop") {
                 emit video_stop();
             }
+        } else if (event_type == "receiving_message") {
+            client->room->local_chat->displayMessage(json_data.value("sender_name").toString(), json_data.value("send_message").toString(), json_data.value("color").toString());
         }
     }
 }
@@ -146,6 +147,19 @@ void NetworkManager::onWebSocketError(QAbstractSocket::SocketError error) {
 
 void NetworkManager::video_request(QJsonObject req) {
     req.insert("client_id", client_id);
+    QJsonDocument doc(req);
+    sendData(doc.toJson());
+}
+
+
+void NetworkManager::sendMessageToAllUsers(const QString& sender_name, const QString& message, const QString& color) {
+    QMutexLocker locker(socket_mutex);
+
+    QJsonObject req;
+    req.insert("type", "sending_message");
+    req.insert("sender_name", sender_name);
+    req.insert("send_message", message);
+    req.insert("color", color);
     QJsonDocument doc(req);
     sendData(doc.toJson());
 }

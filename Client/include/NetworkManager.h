@@ -39,6 +39,7 @@ public slots:
     void run();
     void socketReady(const QByteArray &data);
     void video_request(QJsonObject);
+    void sendMessageToAllUsers(const QString& sender_name, const QString& message, const QString& color);
     void request_get_scene_on_the_server();
     void update_state_on_the_server(const QJsonDocument &state);
     void onWebSocketError(QAbstractSocket::SocketError);

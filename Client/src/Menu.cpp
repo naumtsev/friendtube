@@ -6,6 +6,7 @@ Menu::Menu(Client *client_, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::Menu), client(client_) {
     ui->setupUi(this);
     ui->RedDino->setChecked(true);
+    ui->SummerButton->setChecked(true);
 
     this->setWindowTitle("FriendTube");
 
@@ -73,6 +74,7 @@ void Menu::on_GreenDino_clicked() {
     ui->label_2->setPixmap(picture_character_in_menu);
 }
 
+
 // connect to server
 void Menu::on_connectButton_clicked() {
     QString ip, s_port;
@@ -105,6 +107,16 @@ void Menu::make_advert(const QString &advert) {
         ui->advert_label->clear();
         ui->advert_frame->setVisible(false);
     });
+}
+
+void Menu::on_SummerButton_clicked()
+{
+    client->r_type = RoomType::Summer;
+}
+
+void Menu::on_StrangeButton_clicked()
+{
+    client->r_type = RoomType::Strange;
 }
 
 Menu::~Menu() { delete ui; }

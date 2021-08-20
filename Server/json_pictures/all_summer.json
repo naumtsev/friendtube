@@ -1,0 +1,476 @@
+{
+  "trees" : [
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 8,
+      "x" : 110,
+      "y" : 100
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 7,
+      "x" : 1170,
+      "y" : -20
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 7,
+      "x" : -94,
+      "y" : 20
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : -90,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : 100,
+      "y" : 620
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : 10,
+      "y" : 610
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 70,
+      "y" : 570
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 3,
+      "x" : 100,
+      "y" : 530
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 2,
+      "x" : 64,
+      "y" : 500
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : -80,
+      "y" : 500
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : -100,
+      "y" : 510
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : -70,
+      "y" : 607
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 6,
+      "x" : -80,
+      "y" : 617
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : -10,
+      "y" : 453
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : -3,
+      "y" : 543
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 230,
+      "y" : 653
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 450,
+      "y" : 630
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 560,
+      "y" : 615
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 727,
+      "y" : 650
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 830,
+      "y" : 620
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 920,
+      "y" : 670
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 975,
+      "y" : 630
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1200,
+      "y" : 670
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1059,
+      "y" : 663
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1250,
+      "y" : 0
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1223,
+      "y" : 70
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1235,
+      "y" : 147
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1263,
+      "y" : 243
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1243,
+      "y" : 400
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 5,
+      "x" : 1234,
+      "y" : 520
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 0,
+      "y" : -100
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 120,
+      "y" : -90
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 264,
+      "y" : -93
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 390,
+      "y" : -91
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 570,
+      "y" : -95
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 780,
+      "y" : -98
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 907,
+      "y" : -96
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 1070,
+      "y" : -103
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 1190,
+      "y" : -97
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 1000,
+      "y" : -110
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 470,
+      "y" : -113
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 850,
+      "y" : -107
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 620,
+      "y" : -115
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObject_32_29_1.png",
+      "z" : 4,
+      "x" : 50,
+      "y" : -112
+    }
+  ],
+  "bushes" : [
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_04.png",
+      "z" : 8,
+      "x" : 180,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_04.png",
+      "z" : 7,
+      "x" : 1170,
+      "y" : 80
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_04.png",
+      "z" : 7,
+      "x" : -24,
+      "y" : 120
+    }
+  ],
+  "threebushes" : [
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+      "z" : 9,
+      "x" : 180,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+      "z" : 9,
+      "x" : 140,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+      "z" : 8,
+      "x" : 1170,
+      "y" : 80
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+      "z" : 8,
+      "x" : 1130,
+      "y" : 80
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+      "z" : 8,
+      "x" : -24,
+      "y" : 120
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/GrassObjects_32_06.png",
+      "z" : 8,
+      "x" : -64,
+      "y" : 120
+    }
+  ],
+  "stones" : [
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 30,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 80,
+      "y" : 310
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 200,
+      "y" : 430
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 110,
+      "y" : 470
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 500,
+      "y" : 50
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 550,
+      "y" : 600
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 300,
+      "y" : 1
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 350,
+      "y" : -10
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_1_32px.png",
+      "z" : 4,
+      "x" : 930,
+      "y" : -3
+    },
+
+
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 1170,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 1230,
+      "y" : 10
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 1220,
+      "y" : 40
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 100,
+      "y" : 11
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 210,
+      "y" : 7
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 250,
+      "y" : 4
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : -10,
+      "y" : 200
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : -15,
+      "y" : 340
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : -7,
+      "y" : 390
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : -20,
+      "y" : 450
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 700,
+      "y" : 2
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_2_32px.png",
+      "z" : 4,
+      "x" : 810,
+      "y" : 0
+    },
+
+
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png",
+      "z" : 4,
+      "x" : 520,
+      "y" : -15
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png",
+      "z" : 4,
+      "x" : 570,
+      "y" : -12
+    },
+    {
+      "pixmap" : ":/pics/background_item/green_room/more_texture/decor/stone_7_32px.png",
+      "z" : 4,
+      "x" : 650,
+      "y" : 0
+    }
+  ]
+}
