@@ -10,7 +10,6 @@ void ChatManager::sendMessageToAllUsers(const QString &sender_name, const QStrin
     req.insert("send_message", message);
     req.insert("color", color);
     QJsonDocument doc(req);
-    qDebug() << "message sent back" << message;
     server->send_data_to_all_users(doc.toJson());
 }
 

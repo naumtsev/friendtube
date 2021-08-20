@@ -37,7 +37,7 @@ SOURCES += \
         ChatManager.cpp \
         Message.cpp \
         MovementCheck.cpp \
-        src/ForbiddenZone.cpp
+        ForbiddenZone.cpp
 
 
 QMAKE_CXXFLAGS += -O2
@@ -46,4 +46,7 @@ QMAKE_CXXFLAGS += -O2
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    check.qrc
 

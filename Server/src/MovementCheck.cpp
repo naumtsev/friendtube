@@ -16,7 +16,7 @@ void MovementCheck::init_forbidden_territory() {
     forbidden_territory.push_back({1044, 608, 1280, 720});//низ-право чел
     QString json_string;
     QFile file;
-    file.setFileName("D:\\Project\\friendtube\\Client\\json_pictures\\all_summer.json");
+    file.setFileName(":/json_pictures/all_summer.json");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     json_string = file.readAll();
     file.close();
@@ -30,8 +30,10 @@ void MovementCheck::init_forbidden_territory() {
     QJsonArray stones_array = json["stones"].toArray();
 
     foreach (const QJsonValue& tree_value, trees_array) {
+        if (tree_value.isObject()) {
             QJsonObject tree_obj = tree_value.toObject();
             forbidden_territory.push_back({tree_obj["x"].toInt()+ 40, tree_obj["y"].toInt() + 100, tree_obj["x"].toInt() + 60, tree_obj["y"].toInt() + 115});
+        }
     }
 
     foreach (const QJsonValue& bush_value, bushes_array) {
@@ -58,11 +60,19 @@ void MovementCheck::init_forbidden_territory() {
 
 void MovementCheck::check_player_position(QJsonObject &person_data) {
     bool ok = true;
-    qreal max_dist = 10;
-    qreal dist = (person_data["x"].toDouble() - current_position[person_data["id"].toString()].first) * (person_data["x"].toDouble() - current_position[person_data["id"].toString()].first) +
-            (person_data["y"].toDouble() - current_position[person_data["id"].toString()].second) * (person_data["y"].toDouble() - current_position[person_data["id"].toString()].second);
-    if (dist > max_dist * max_dist) {
+    qreal max_dist = 30;
+    qreal x_prev = current_position[person_data["id"].toString()].first;
+    qreal y_prev = current_position[person_data["id"].toString()].second;
+    qreal x_cur = person_data["x"].toDouble();
+    qreal y_cur = person_data["y"].toDouble();
+    if ((x_cur - x_prev) * (x_cur - x_prev) + (y_cur - y_prev) * (y_cur - y_prev) > max_dist * max_dist) {
         ok = false;
+    }
+    if (x_prev == 0 && y_prev == 0 && x_cur == 800 && y_cur == 90) {
+        ok = true;
+    }
+    if ((x_cur == -1000 && y_cur == -1000) || (x_prev == -1000 && y_prev == -1000)) {
+        ok = true;
     }
     for (int i = 0; i < forbidden_territory.size(); ++i) {
         if (i == 0) {
@@ -72,7 +82,6 @@ void MovementCheck::check_player_position(QJsonObject &person_data) {
             ok &= !forbidden_territory[i].is_crossed(person_data);
         }
     }
-    qDebug() << ok << "\n";
     if (ok) {
         current_position[person_data["id"].toString()] = {person_data["x"].toDouble(), person_data["y"].toDouble()};
     }
@@ -80,5 +89,4 @@ void MovementCheck::check_player_position(QJsonObject &person_data) {
         person_data["x"] = current_position[person_data["id"].toString()].first;
         person_data["y"] = current_position[person_data["id"].toString()].second;
     }
-    qDebug() << person_data["x"].toDouble() << "\n" << person_data["y"].toDouble() << "\n\n\n";
 }

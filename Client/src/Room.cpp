@@ -56,7 +56,7 @@ void Room::init_variables() {
     animation_scene->local_player = local_player;
 
     chat_window =
-            new ChatWindow(this, *local_player, *local_chat);// тут могут быть утечки памяти + Added chat
+            new ChatWindow(this, *local_player, *local_chat);// тут могут быть утечки памяти
     tool_item_right = new ToolManyItem(this, *local_player);
 
     food.push_back(":/pics/background_item/green_room/more_texture/apple.png");
@@ -336,7 +336,7 @@ void Room::keyPressEvent(QKeyEvent *apKeyEvent) {
     if (this->hasFocus() &&
         apKeyEvent->key() == Qt::Key_C) {
         if (local_player->x() != x_very_far &&
-            local_player->y() != y_very_far) {// нельзя писать, когда в домике
+            local_player->y() != y_very_far) {
             local_chat->set_focus();
         }
     }

@@ -109,8 +109,6 @@ void Menu::make_advert(const QString &advert) {
     });
 }
 
-Menu::~Menu() { delete ui; }
-
 void Menu::on_SummerButton_clicked()
 {
     client->r_type = RoomType::Summer;
@@ -118,7 +116,7 @@ void Menu::on_SummerButton_clicked()
 
 void Menu::on_StrangeButton_clicked()
 {
-    qDebug() << "room_type_switched_to_strange";
     client->r_type = RoomType::Strange;
-    qDebug() << "room_type_switched_to_strange";
 }
+
+Menu::~Menu() { delete ui; }

@@ -2,7 +2,6 @@
 
 #include <typeinfo>
 #include <QFile>
-#include <cassert>
 
 // bush
 GraphicsBush::GraphicsBush(QObject *parent) : QObject(parent) {}
@@ -171,12 +170,10 @@ AnimationView::AnimationView(Room *room_, QWidget *parent)
 void AnimationView::init_background_item() {
     QBrush *ibrush = new QBrush;
     if (room->type == RoomType::Summer) {
-        qDebug() << "summer_field_set";
         ibrush->setTextureImage(
                     QImage(":/images/background_summer.png"));
     }
     else if (room->type == RoomType::Strange) {
-        qDebug() << "strange_field_set";
         ibrush->setTextureImage(
                     QImage(":/images/background_strange.png"));
     }
@@ -342,33 +339,31 @@ void AnimationView::init_background_item() {
     QString json_string;
     QFile file;
     if (room->type == RoomType::Summer) {
-        file.setFileName("D:\\Project\\friendtube\\Client\\json_pictures\\all_summer.json");
+        file.setFileName(":/json_pictures/all_summer.json");
     }
     else if (room->type == RoomType::Strange) {
-        file.setFileName("D:\\Project\\friendtube\\Client\\json_pictures\\all_strange.json");
+        file.setFileName(":/json_pictures/all_strange.json");
     }
-    assert(file.exists());
     file.open(QIODevice::ReadOnly | QIODevice::Text);
-    assert(file.isOpen());
     json_string = file.readAll();
     file.close();
 
     QJsonDocument doc = QJsonDocument::fromJson(json_string.toUtf8());
     QJsonObject json = doc.object();
     QJsonArray trees_array = json["trees"].toArray();
-    qDebug() << trees_array.size();
     QJsonArray bushes_array = json["bushes"].toArray();
     QJsonArray threebushes_array = json["threebushes"].toArray();
     QJsonArray stones_array = json["stones"].toArray();
 
     foreach (const QJsonValue& tree_value, trees_array) {
+        if (tree_value.isObject()) {
             QJsonObject tree_obj = tree_value.toObject();
             GraphicsTreeTwo *megatree = new GraphicsTreeTwo;
             megatree->setPixmap(QPixmap(tree_obj["pixmap"].toString()));
             megatree->setZValue(+tree_obj["z"].toInt());
             megatree->setPos(tree_obj["x"].toInt(), tree_obj["y"].toInt());
             scene->addItem(megatree);
-
+        }
     }
 
     foreach (const QJsonValue& bush_value, bushes_array) {
@@ -602,7 +597,7 @@ int AnimationView::colliding_with_player(QVector<PlayerView *> &next_frame) {
         }
         count += count_i;
     }
-    return 0;
+    return count;
 }
 
 void AnimationView::display_message(PlayerView *player) {

@@ -15,7 +15,6 @@
 #include "PlayerView.h"
 #include "Room.h"
 #include "Video.h"
-#include "Message.h"
 
 struct Menu;
 struct Client;

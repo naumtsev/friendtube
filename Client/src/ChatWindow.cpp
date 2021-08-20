@@ -10,6 +10,16 @@ ChatWindow::ChatWindow(QWidget *parent, Player &local_player)
     init_buttons();
 }
 
+ChatWindow::ChatWindow(QWidget *parent, Player &local_player, Chat &local_chat)
+    : QWidget(parent) {
+    player = &local_player;
+    chat = &local_chat;
+
+    init_parameters();
+    init_text_edit();
+    init_buttons();
+}
+
 void ChatWindow::keyPressEvent(QKeyEvent *apKeyEvent) {
     if (apKeyEvent->key() == Qt::Key_Enter ||
         apKeyEvent->key() == 16777220) {
@@ -57,12 +67,9 @@ void ChatWindow::init_close_window_buttons() {
         player->player_message.send_message = text_edit->text();
         player->player_message.sender_name = player->name->toPlainText();
         player->message->setPlainText(player->player_message.send_message);
-//        qDebug() << "metka_true\n";
-//        player->player_message.is_new = true;
         player->player_message.metka_message = true;
         player->player_message.metka_message_painter = false;
         player->movement = {0, 0};
-        qDebug() << "message_sent";
         if (player->color_player == ":/pics/sheets/m_DinoSprites - mortBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "red");
         if (player->color_player == ":/pics/sheets/m_DinoSprites - douxBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "blue");
         if (player->color_player == ":/pics/sheets/m_DinoSprites - vitaBIG.png") emit chat->sendMessageToAllUsers(player->player_message.sender_name, player->player_message.send_message, "green");
@@ -73,16 +80,3 @@ void ChatWindow::init_close_window_buttons() {
 }
 
 ChatWindow::~ChatWindow() {}
-
-
-//Added
-
-ChatWindow::ChatWindow(QWidget *parent, Player &local_player, Chat &local_chat)
-    : QWidget(parent) {
-    player = &local_player;
-    chat = &local_chat;
-
-    init_parameters();
-    init_text_edit();
-    init_buttons();
-}

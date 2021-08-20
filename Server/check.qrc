@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>json_pictures/all_strange.json</file>
+        <file>json_pictures/all_summer.json</file>
+    </qresource>
+</RCC>

@@ -1,5 +1,4 @@
 #include "NetworkManager.h"
-#include <QDebug>
 
 NetworkManager::NetworkManager(Client *client_, const QString &ip_, int port_)
     : QObject() {
@@ -93,9 +92,7 @@ void NetworkManager::socketReady(const QByteArray &data) {
                 emit video_stop();
             }
         } else if (event_type == "receiving_message") {
-            qDebug() << "message_received";
             client->room->local_chat->displayMessage(json_data.value("sender_name").toString(), json_data.value("send_message").toString(), json_data.value("color").toString());
-            qDebug() << "message_done";
         }
     }
 }
@@ -164,6 +161,5 @@ void NetworkManager::sendMessageToAllUsers(const QString& sender_name, const QSt
     req.insert("send_message", message);
     req.insert("color", color);
     QJsonDocument doc(req);
-    qDebug() << "message_sent_to_server";
     sendData(doc.toJson());
 }

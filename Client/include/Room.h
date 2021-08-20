@@ -22,7 +22,7 @@
 
 #include "AnimationView.h"
 #include "ChatWindow.h"
-#include "chat.h"
+#include "Chat.h"
 #include "Client.h"
 #include "Player.h"
 #include "PlayerView.h"

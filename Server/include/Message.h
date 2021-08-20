@@ -15,7 +15,6 @@ struct Message {
     QString send_message = "";
     QString color;
     QString type = "text";
-    QTime sending_time;
     QJsonObject from_message_to_json();
 };
 

@@ -91,9 +91,7 @@ void PlayerSocket::read_data(const QByteArray &data) {
     }
 
     else if (event_type == "sending_message") {
-        qDebug() << "message received on server";
         server->chat_m->all_chat.push_back(new Message(json_data.object().value("sender_name").toString(), json_data.object().value("send_message").toString(), json_data.object().value("color").toString()));
-        qDebug() << "message added to chat history";
         server->chat_m->sendMessageToAllUsers(json_data.object().value("sender_name").toString(), json_data.object().value("send_message").toString(), json_data.object().value("color").toString());
         return;
     }

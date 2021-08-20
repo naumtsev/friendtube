@@ -1,5 +1,4 @@
 #include "Server.h"
-#include "QDebug"
 
 namespace {
 QString generate_client_id(qint16 size) {

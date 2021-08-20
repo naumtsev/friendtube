@@ -1,7 +1,7 @@
 #include "Client.h"
 
 Client::Client(QObject *parent)
-    : QObject(parent), menu(nullptr), room(nullptr), n_manager(nullptr) {}
+    : QObject(parent), menu(nullptr), room(nullptr), n_manager(nullptr), r_type(RoomType::Summer) {}
 
 Client::~Client() {
     delete menu;
@@ -40,7 +40,6 @@ void Client::createRoom(Player *player, QVector<PlayerView *> players_,
             SLOT(request_get_scene_on_the_server()));
     connect(room, SIGNAL(update_state_on_the_server(QJsonDocument)), n_manager,
             SLOT(update_state_on_the_server(QJsonDocument)));
-    connect(room->local_chat, SIGNAL(sendMessageToAllUsers(QString)), n_manager, SLOT(sendMessageToAllUsers(QString)));
 
     menu->setVisible(false);
     room->show();
