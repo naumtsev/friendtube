@@ -48,7 +48,7 @@ struct Room : public QWidget {
 
 public:
     Room(Client *client_, Player *player_, QVector<PlayerView *> &players_,
-         RoomType r_type, QWidget *parent = nullptr);
+         RoomType room_type_, QWidget *parent = nullptr);
     void draw_scene();
     void keyPressEvent(QKeyEvent *) override;
     void keyReleaseEvent(QKeyEvent *) override;
@@ -104,7 +104,7 @@ public:
     Client *client;
     bool got_scene = false;
     bool updated_data = false;
-    RoomType type;
+    RoomType room_type;
 
     QPushButton *push_button_exit_in_menu;
 

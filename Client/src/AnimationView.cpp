@@ -169,11 +169,11 @@ AnimationView::AnimationView(Room *room_, QWidget *parent)
 
 void AnimationView::init_background_item() {
     QBrush *ibrush = new QBrush;
-    if (room->type == RoomType::Summer) {
+    if (room->room_type == RoomType::Summer) {
         ibrush->setTextureImage(
                     QImage(":/images/background_summer.png"));
     }
-    else if (room->type == RoomType::Strange) {
+    else if (room->room_type == RoomType::Strange) {
         ibrush->setTextureImage(
                     QImage(":/images/background_strange.png"));
     }
@@ -338,10 +338,10 @@ void AnimationView::init_background_item() {
 
     QString json_string;
     QFile file;
-    if (room->type == RoomType::Summer) {
+    if (room->room_type == RoomType::Summer) {
         file.setFileName(":/json_pictures/all_summer.json");
     }
-    else if (room->type == RoomType::Strange) {
+    else if (room->room_type == RoomType::Strange) {
         file.setFileName(":/json_pictures/all_strange.json");
     }
     file.open(QIODevice::ReadOnly | QIODevice::Text);

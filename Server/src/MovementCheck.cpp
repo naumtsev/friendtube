@@ -60,9 +60,10 @@ void MovementCheck::init_forbidden_territory() {
 
 void MovementCheck::check_player_position(QJsonObject &person_data) {
     bool ok = true;
+    QString person_id = person_data["id"].toString();
     qreal max_dist = 30;
-    qreal x_prev = current_position[person_data["id"].toString()].first;
-    qreal y_prev = current_position[person_data["id"].toString()].second;
+    qreal x_prev = current_position[person_id].first;
+    qreal y_prev = current_position[person_id].second;
     qreal x_cur = person_data["x"].toDouble();
     qreal y_cur = person_data["y"].toDouble();
     if ((x_cur - x_prev) * (x_cur - x_prev) + (y_cur - y_prev) * (y_cur - y_prev) > max_dist * max_dist) {
@@ -83,10 +84,10 @@ void MovementCheck::check_player_position(QJsonObject &person_data) {
         }
     }
     if (ok) {
-        current_position[person_data["id"].toString()] = {person_data["x"].toDouble(), person_data["y"].toDouble()};
+        current_position[person_id] = {person_data["x"].toDouble(), person_data["y"].toDouble()};
     }
     else {
-        person_data["x"] = current_position[person_data["id"].toString()].first;
-        person_data["y"] = current_position[person_data["id"].toString()].second;
+        person_data["x"] = current_position[person_id].first;
+        person_data["y"] = current_position[person_id].second;
     }
 }

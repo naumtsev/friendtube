@@ -4,13 +4,13 @@
 #include "ui_Room.h"
 
 Room::Room(Client *client_, Player *player_, QVector<PlayerView *> &players_,
-           RoomType r_type, QWidget *parent)
+           RoomType room_type_, QWidget *parent)
     : QWidget(parent),
       ui(new Ui::Room),
       local_player(player_),
       next_frame(players_),
       client(client_),
-      type(r_type){
+      room_type(room_type_){
     ui->setupUi(this);
 
     init_variables();

@@ -10,6 +10,9 @@ struct ForbiddenZone {
     bool is_crossed(QJsonObject &player_data);
     bool is_in(QJsonObject & player_data);
 private:
+    const int player_rect_size_x = 40;
+    const int player_rect_size_y = 40;
+
     int x_min = 0;
     int y_min = 0;
     int x_max = 0;
